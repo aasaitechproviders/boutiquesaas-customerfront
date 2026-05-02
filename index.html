@@ -411,8 +411,8 @@ const SUBDOMAIN_BASE = 'boutiquesaas.aasaitech.in'
 // ── STATE ────────────────────────────────────────────────────────
 let agentConfig   = null
 let sessionId     = localStorage.getItem('ba_chat_session') || genId()
-let uploadBase64  = null
-let uploadMime    = null
+let uploadUrl     = null   // S3 public URL after direct upload
+let uploadBase64  = null   // local preview only
 let isSending     = false
 
 localStorage.setItem('ba_chat_session', sessionId)
@@ -484,8 +484,8 @@ function applyBranding(a) {
   // Avatar
   const av = document.getElementById('header-avatar')
   av.style.background = color
-  if (a.logo_base64) {
-    av.innerHTML = `<img src="${a.logo_base64}" alt="${a.agent_name}">`
+  if (a.logo_url) {
+    av.innerHTML = `<img src="${a.logo_url}" alt="${a.agent_name}">`
   } else {
     av.textContent = (a.agent_name || 'A')[0].toUpperCase()
   }
@@ -519,8 +519,9 @@ function addAgentMessage(text) {
 
   const avatarColor = a?.brand_color || 'var(--brand)'
   const avatarLetter = (a?.agent_name || 'A')[0].toUpperCase()
-  const avatarHtml = a?.logo_base64
-    ? `<img src="${a.logo_base64}" alt="">`
+  const logoSrc = a?.logo_url
+  const avatarHtml = logoSrc
+    ? `<img src="${logoSrc}" alt="">`
     : avatarLetter
 
   wrap.innerHTML = `
@@ -570,18 +571,17 @@ async function sendMessage() {
   if (isSending) return
   const input   = document.getElementById('msg-input')
   const text    = input.value.trim()
-  const hasImg  = !!uploadBase64
+  const hasImg  = !!uploadUrl
   if (!text && !hasImg) return
 
   isSending = true
   document.getElementById('send-btn').disabled = true
 
-  // Show user message
-  addUserMessage(text, uploadBase64, uploadMime)
+  // Show user message with local preview
+  addUserMessage(text, uploadBase64, null)
   input.value = ''
   autoResize(input)
-  const imgB64  = uploadBase64
-  const imgMime = uploadMime
+  const imgUrl  = uploadUrl
   removeUpload()
   showTyping()
 
@@ -590,11 +590,10 @@ async function sendMessage() {
       method:  'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        agent_id:     agentConfig._id,
-        session_id:   sessionId,
-        message:      text || '',
-        image_base64: imgB64  || null,
-        image_mime:   imgMime || null,
+        agent_id:   agentConfig._id,
+        session_id: sessionId,
+        message:    text || '',
+        image_url:  imgUrl || null,
       }),
     })
     const json = await res.json()
@@ -636,7 +635,7 @@ function autoResize(el) {
 
 function updateSendBtn() {
   const text = document.getElementById('msg-input').value.trim()
-  document.getElementById('send-btn').disabled = !text && !uploadBase64
+  document.getElementById('send-btn').disabled = !text && !uploadUrl
 }
 
 // ── PHOTO UPLOAD ─────────────────────────────────────────────────
@@ -644,29 +643,60 @@ function triggerPhotoUpload() {
   document.getElementById('file-input').click()
 }
 
-function handleFileSelect(input) {
+async function handleFileSelect(input) {
   const file = input.files[0]
   if (!file) return
   if (file.size > 5 * 1024 * 1024) {
     alert('Please choose an image under 5MB.')
     return
   }
+  input.value = ''
+
+  // Show local preview immediately while uploading
   const reader = new FileReader()
   reader.onload = e => {
     uploadBase64 = e.target.result
-    uploadMime   = file.type
     document.getElementById('preview-img').src = uploadBase64
     document.getElementById('upload-preview').classList.add('show')
-    document.getElementById('send-btn').disabled = false
+    document.getElementById('preview-label').textContent = '📸 Uploading…'
     scrollToBottom()
   }
   reader.readAsDataURL(file)
-  input.value = ''
+
+  try {
+    // Step 1 — get presigned PUT URL from backend
+    const presignRes = await fetch(`${API}/public/upload/presign`, {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ session_id: sessionId, content_type: file.type }),
+    })
+    const presignJson = await presignRes.json()
+    if (!presignJson.success) throw new Error(presignJson.error || 'Presign failed')
+    const { upload_url, public_url } = presignJson.data
+
+    // Step 2 — upload directly to S3
+    await fetch(upload_url, {
+      method:  'PUT',
+      headers: { 'Content-Type': file.type },
+      body:    file,
+    })
+
+    // Step 3 — store public URL
+    uploadUrl = public_url
+    document.getElementById('preview-label').textContent = '📸 Photo ready for try-on'
+    document.getElementById('send-btn').disabled = false
+  } catch(e) {
+    console.error('Upload failed:', e.message)
+    document.getElementById('preview-label').textContent = '❌ Upload failed — tap to retry'
+    uploadUrl = null
+    uploadBase64 = null
+    document.getElementById('upload-preview').classList.remove('show')
+  }
 }
 
 function removeUpload() {
+  uploadUrl    = null
   uploadBase64 = null
-  uploadMime   = null
   document.getElementById('upload-preview').classList.remove('show')
   document.getElementById('preview-img').src = ''
   updateSendBtn()
