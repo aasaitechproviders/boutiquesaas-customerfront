@@ -1271,30 +1271,52 @@ function closeAlbum() {
 }
 
 async function downloadTryon(tryonId, fallbackUrl) {
+  showToast('Preparing your download…')
   try {
-    const url = tryonId
-      ? `${API}/public/download/${tryonId}?mobile=${encodeURIComponent(mobile)}`
-      : fallbackUrl
-    if (!url) { showToast('Image URL not available'); return }
-    showToast('Preparing your download…')
-    const res  = await fetch(url)
-    if (!res.ok) throw new Error(`HTTP ${res.status}`)
-    const blob = await res.blob()
-    const a    = document.createElement('a')
-    a.href     = URL.createObjectURL(blob)
-    a.download = `tryon_${tryonId || Date.now()}.jpg`
-    a.click()
-    setTimeout(() => URL.revokeObjectURL(a.href), 5000)
-  } catch(e) {
-    console.warn('[download]', e.message)
-    // Fallback: open directly in new tab
+    if (tryonId) {
+      // Download via backend (with watermark) — returns base64 JSON
+      const url  = `${API}/public/download/${tryonId}?mobile=${encodeURIComponent(mobile)}`
+      const res  = await fetch(url)
+      const json = await res.json()
+
+      if (json.success && json.data?.image_b64) {
+        // Decode base64 → Uint8Array → Blob → object URL → click
+        const { image_b64, content_type, filename } = json.data
+        const bytes  = Uint8Array.from(atob(image_b64), c => c.charCodeAt(0))
+        const blob   = new Blob([bytes], { type: content_type || 'image/jpeg' })
+        const href   = URL.createObjectURL(blob)
+        const a      = document.createElement('a')
+        a.href       = href
+        a.download   = filename || `tryon_${tryonId}.jpg`
+        document.body.appendChild(a)
+        a.click()
+        document.body.removeChild(a)
+        setTimeout(() => URL.revokeObjectURL(href), 10000)
+        return
+      }
+      // API returned an error — fall through to direct URL
+      console.warn('[download] API error:', json.error)
+    }
+
+    // Fallback: direct URL (no watermark)
     if (fallbackUrl) {
       const a    = document.createElement('a')
       a.href     = fallbackUrl
       a.target   = '_blank'
       a.download = `tryon_${Date.now()}.jpg`
+      document.body.appendChild(a)
       a.click()
-      showToast('Opening image — long-press to save')
+      document.body.removeChild(a)
+      showToast('Opening image — long-press to save 📱')
+    } else {
+      showToast('Download failed — no image URL available')
+    }
+  } catch(e) {
+    console.error('[download]', e.message)
+    // Last resort fallback
+    if (fallbackUrl) {
+      window.open(fallbackUrl, '_blank')
+      showToast('Opening image — long-press to save 📱')
     } else {
       showToast('Download failed. Please try again.')
     }
