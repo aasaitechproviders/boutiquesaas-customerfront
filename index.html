@@ -59,9 +59,9 @@ html, body { height:100%; overflow:hidden; background:var(--bg); color:var(--tex
   z-index:998; gap:14px; padding:40px; text-align:center;
 }
 #error-screen.show { display:flex; }
-.error-icon { font-size:48px; margin-bottom:8px; }
+.error-icon  { font-size:48px; margin-bottom:8px; }
 .error-title { font-family:var(--ff-head); font-size:22px; font-weight:400; }
-.error-sub { font-size:14px; color:var(--text2); line-height:1.65; max-width:320px; }
+.error-sub   { font-size:14px; color:var(--text2); line-height:1.65; max-width:320px; }
 
 /* ── MOBILE ENTRY SCREEN ── */
 #mobile-screen {
@@ -78,9 +78,9 @@ html, body { height:100%; overflow:hidden; background:var(--bg); color:var(--tex
   box-shadow:0 8px 28px rgba(var(--brand-rgb),.35);
 }
 .mobile-brand-logo img { width:100%; height:100%; object-fit:cover; }
-.mobile-title { font-family:var(--ff-head); font-size:26px; font-weight:400; color:var(--cream); margin-bottom:8px; }
-.mobile-sub { font-size:14px; color:var(--text2); line-height:1.65; margin-bottom:36px; max-width:300px; }
-.mobile-label { font-size:12px; font-weight:600; color:var(--text2); letter-spacing:.06em; text-transform:uppercase; margin-bottom:10px; text-align:left; width:100%; max-width:340px; }
+.mobile-title  { font-family:var(--ff-head); font-size:26px; font-weight:400; color:var(--cream); margin-bottom:8px; }
+.mobile-sub    { font-size:14px; color:var(--text2); line-height:1.65; margin-bottom:36px; max-width:300px; }
+.mobile-label  { font-size:12px; font-weight:600; color:var(--text2); letter-spacing:.06em; text-transform:uppercase; margin-bottom:10px; text-align:left; width:100%; max-width:340px; }
 .mobile-input-wrap { width:100%; max-width:340px; position:relative; margin-bottom:14px; }
 .mobile-input-flag {
   position:absolute; left:14px; top:50%; transform:translateY(-50%);
@@ -106,8 +106,8 @@ html, body { height:100%; overflow:hidden; background:var(--bg); color:var(--tex
   cursor:pointer; transition:all .15s ease;
   box-shadow:0 6px 20px rgba(var(--brand-rgb),.35);
 }
-#mobile-continue-btn:hover { opacity:.92; transform:translateY(-1px); }
-#mobile-continue-btn:active { transform:scale(.97); }
+#mobile-continue-btn:hover   { opacity:.92; transform:translateY(-1px); }
+#mobile-continue-btn:active  { transform:scale(.97); }
 #mobile-continue-btn:disabled { opacity:.4; pointer-events:none; }
 .mobile-notice { font-size:11.5px; color:var(--text3); margin-top:18px; max-width:300px; line-height:1.6; }
 
@@ -125,8 +125,8 @@ html, body { height:100%; overflow:hidden; background:var(--bg); color:var(--tex
   overflow:hidden; box-shadow:0 8px 28px rgba(var(--brand-rgb),.35);
 }
 .base-avatar-wrap img { width:100%; height:100%; object-fit:cover; }
-.base-title { font-family:var(--ff-head); font-size:24px; font-weight:400; color:var(--cream); margin-bottom:8px; }
-.base-sub { font-size:14px; color:var(--text2); line-height:1.65; margin-bottom:32px; max-width:300px; }
+#base-title { font-family:var(--ff-head); font-size:24px; font-weight:400; color:var(--cream); margin-bottom:8px; }
+#base-sub   { font-size:14px; color:var(--text2); line-height:1.65; margin-bottom:32px; max-width:300px; }
 .base-upload-zone {
   width:100%; max-width:340px; border:2px dashed rgba(var(--brand-rgb),.3);
   border-radius:var(--r-lg); padding:32px 20px;
@@ -134,7 +134,9 @@ html, body { height:100%; overflow:hidden; background:var(--bg); color:var(--tex
   cursor:pointer; transition:all .2s ease; position:relative; overflow:hidden;
   background:rgba(var(--brand-rgb),.04);
 }
-.base-upload-zone:hover, .base-upload-zone:active { border-color:rgba(var(--brand-rgb),.6); background:rgba(var(--brand-rgb),.08); }
+.base-upload-zone:hover, .base-upload-zone:active {
+  border-color:rgba(var(--brand-rgb),.6); background:rgba(var(--brand-rgb),.08);
+}
 .base-upload-icon { font-size:42px; }
 .base-upload-text { font-size:15px; font-weight:500; color:var(--cream); }
 .base-upload-hint { font-size:12px; color:var(--text2); }
@@ -143,7 +145,15 @@ html, body { height:100%; overflow:hidden; background:var(--bg); color:var(--tex
   overflow:hidden; border:2px solid rgba(var(--brand-rgb),.4);
   box-shadow:0 8px 28px rgba(0,0,0,.5);
 }
-.base-preview-img img { width:100%; display:block; max-height:320px; object-fit:cover; }
+.base-preview-img img { width:100%; display:block; max-height:280px; object-fit:cover; }
+.base-preview-change-btn {
+  display:none; margin-top:8px; max-width:340px; width:100%;
+  background:var(--surface2); border:1px solid var(--border2);
+  border-radius:var(--r-sm); padding:9px; color:var(--text2);
+  font-family:var(--ff-body); font-size:13px; cursor:pointer;
+  transition:all .15s;
+}
+.base-preview-change-btn:hover { background:var(--surface3); color:var(--cream); }
 #base-upload-btn {
   display:none; width:100%; max-width:340px; padding:15px;
   background:var(--brand); border:none; border-radius:var(--r);
@@ -153,6 +163,13 @@ html, body { height:100%; overflow:hidden; background:var(--bg); color:var(--tex
   margin-top:14px;
 }
 #base-upload-btn:disabled { opacity:.5; pointer-events:none; }
+#base-cancel-btn {
+  display:none; width:100%; max-width:340px; padding:13px;
+  background:transparent; border:1px solid var(--border2); border-radius:var(--r);
+  color:var(--text2); font-family:var(--ff-body); font-size:14px; font-weight:500;
+  cursor:pointer; transition:all .15s ease; margin-top:10px;
+}
+#base-cancel-btn:hover { border-color:var(--border2); color:var(--cream); background:var(--surface2); }
 .base-uploading { display:none; align-items:center; gap:10px; color:var(--text2); font-size:14px; margin-top:14px; }
 .base-uploading.show { display:flex; }
 .mini-spin { width:18px; height:18px; border-radius:50%; border:2px solid rgba(var(--brand-rgb),.2); border-top-color:var(--brand); animation:spin .8s linear infinite; }
@@ -195,13 +212,20 @@ html, body { height:100%; overflow:hidden; background:var(--bg); color:var(--tex
   font-size:11.5px; color:var(--text2); margin-top:1px;
   white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
 }
-.header-album-btn {
+.header-btn {
   width:38px; height:38px; border-radius:10px; flex-shrink:0;
   background:var(--surface2); border:1px solid var(--border2);
   display:flex; align-items:center; justify-content:center;
   cursor:pointer; font-size:17px; position:relative;
   transition:all .15s ease;
 }
+.header-btn:hover { background:var(--surface3); }
+/* backward-compat alias */
+.header-album-btn { width:38px; height:38px; border-radius:10px; flex-shrink:0;
+  background:var(--surface2); border:1px solid var(--border2);
+  display:flex; align-items:center; justify-content:center;
+  cursor:pointer; font-size:17px; position:relative;
+  transition:all .15s ease; }
 .header-album-btn:hover { background:var(--surface3); }
 .album-badge {
   position:absolute; top:-4px; right:-4px; min-width:16px; height:16px;
@@ -230,7 +254,7 @@ html, body { height:100%; overflow:hidden; background:var(--bg); color:var(--tex
   height:1px; background:var(--border);
 }
 .date-divider::before { left:0; }
-.date-divider::after { right:0; }
+.date-divider::after  { right:0; }
 
 /* ── BUBBLES ── */
 .msg-wrap {
@@ -353,8 +377,20 @@ html, body { height:100%; overflow:hidden; background:var(--bg); color:var(--tex
 }
 .tryon-text { flex:1; min-width:0; }
 .tryon-title { font-size:13px; font-weight:600; color:var(--cream); }
-.tryon-sub { font-size:11.5px; color:var(--text2); margin-top:1px; }
+.tryon-sub   { font-size:11.5px; color:var(--text2); margin-top:1px; }
 .tryon-arrow { font-size:18px; color:var(--brand); }
+
+/* ── CHANGE PHOTO LINK ── */
+#change-photo-link {
+  text-align:center; padding:0 14px 8px;
+  font-size:11.5px; color:var(--text3);
+}
+#change-photo-link button {
+  background:none; border:none; color:var(--brand); font-family:var(--ff-body);
+  font-size:11.5px; cursor:pointer; padding:0; text-decoration:underline;
+  text-underline-offset:2px;
+}
+#change-photo-link button:hover { color:var(--cream); }
 
 /* ── INPUT AREA ── */
 #input-area {
@@ -368,7 +404,7 @@ html, body { height:100%; overflow:hidden; background:var(--bg); color:var(--tex
   display:flex; align-items:center; justify-content:center;
   cursor:pointer; font-size:18px; transition:all .15s ease;
 }
-#photo-btn:hover { background:var(--surface3); border-color:rgba(var(--brand-rgb),.4); }
+#photo-btn:hover  { background:var(--surface3); border-color:rgba(var(--brand-rgb),.4); }
 #photo-btn:active { transform:scale(.93); }
 #msg-input {
   flex:1; background:var(--surface2); border:1px solid var(--border2);
@@ -385,8 +421,8 @@ html, body { height:100%; overflow:hidden; background:var(--bg); color:var(--tex
   display:flex; align-items:center; justify-content:center;
   transition:all .15s ease; box-shadow:0 4px 12px rgba(var(--brand-rgb),.35);
 }
-#send-btn:hover { opacity:.9; transform:scale(1.04); }
-#send-btn:active { transform:scale(.93); }
+#send-btn:hover   { opacity:.9; transform:scale(1.04); }
+#send-btn:active  { transform:scale(.93); }
 #send-btn:disabled { opacity:.4; pointer-events:none; }
 #send-btn svg { width:18px; height:18px; }
 
@@ -546,8 +582,8 @@ html, body { height:100%; overflow:hidden; background:var(--bg); color:var(--tex
 <!-- Base Image Screen -->
 <div id="base-screen">
   <div class="base-avatar-wrap" id="base-agent-avatar">A</div>
-  <div class="base-title">Let's get started!</div>
-  <div class="base-sub">Upload a clear, full-length photo of yourself so I can show you how our collection looks on you.</div>
+  <div id="base-title">Let's get started!</div>
+  <div id="base-sub">Upload a clear, full-length photo of yourself so I can show you how our collection looks on you.</div>
   <div class="base-upload-zone" id="base-upload-zone" onclick="triggerBaseUpload()">
     <div class="base-upload-icon">📸</div>
     <div class="base-upload-text">Tap to upload your photo</div>
@@ -556,11 +592,13 @@ html, body { height:100%; overflow:hidden; background:var(--bg); color:var(--tex
   <div class="base-preview-img" id="base-preview-wrap">
     <img id="base-preview-img" src="" alt="">
   </div>
+  <button class="base-preview-change-btn" id="base-preview-change" onclick="triggerBaseUpload()">📷 Choose a different photo</button>
   <button id="base-upload-btn" onclick="submitBaseImage()">Use This Photo ✓</button>
   <div class="base-uploading" id="base-uploading">
     <div class="mini-spin"></div>
     Saving your photo…
   </div>
+  <button id="base-cancel-btn" onclick="cancelBaseUpdate()">Cancel</button>
 </div>
 
 <!-- Main App -->
@@ -573,6 +611,11 @@ html, body { height:100%; overflow:hidden; background:var(--bg); color:var(--tex
       <div class="header-name" id="header-name">BoutiqueAI</div>
       <div class="header-sub" id="header-sub">Your personal stylist</div>
     </div>
+    <!-- Change base photo button -->
+    <div class="header-btn" id="change-photo-btn" onclick="changeBasePhoto()" title="Update my photo" style="font-size:16px">
+      🤳
+    </div>
+    <!-- Album button -->
     <div class="header-album-btn" onclick="openAlbum()" title="My Try-ons">
       🖼️
       <div class="album-badge" id="album-badge">0</div>
@@ -604,7 +647,7 @@ html, body { height:100%; overflow:hidden; background:var(--bg); color:var(--tex
     </div>
   </div>
 
-  <!-- Try-On Banner (hidden once base image set) -->
+  <!-- Try-On Banner -->
   <div id="tryon-banner" onclick="triggerPhotoUpload()">
     <div class="tryon-icon">📸</div>
     <div class="tryon-text">
@@ -612,6 +655,11 @@ html, body { height:100%; overflow:hidden; background:var(--bg); color:var(--tex
       <div class="tryon-sub" id="tryon-banner-sub">Upload your photo to see how items look on you</div>
     </div>
     <div class="tryon-arrow">→</div>
+  </div>
+
+  <!-- Change photo link (shown below banner) -->
+  <div id="change-photo-link">
+    <button onclick="changeBasePhoto()">🤳 Update my base photo</button>
   </div>
 
   <!-- Input Area -->
@@ -675,23 +723,24 @@ html, body { height:100%; overflow:hidden; background:var(--bg); color:var(--tex
 <div id="toast"></div>
 
 <script>
-// ── CONFIG ──────────────────────────────────────────────────────────────
+// ── CONFIG ────────────────────────────────────────────────────────────────
 const API          = 'https://ekbg3nf6b6vr6i3ssxxni3g6ia0jwcwm.lambda-url.ap-southeast-2.on.aws'
 const SUBDOMAIN_BASE = 'boutiquesaas.aasaitech.in'
 
-// ── STATE ────────────────────────────────────────────────────────────────
-let agentConfig   = null
-let mobile        = null        // customer mobile number
-let sessionId     = null        // mobile-keyed session
-let hasBaseImage  = false       // whether customer has uploaded base selfie
-let baseImageUrl  = null        // S3 URL of base selfie
-let uploadUrl     = null        // S3 public URL after product photo upload
-let uploadBase64  = null        // local preview only
-let isSending     = false
-let isGenerating  = false
-let albumItems    = []          // local cache of try-on results
+// ── STATE ──────────────────────────────────────────────────────────────────
+let agentConfig      = null
+let mobile           = null       // customer mobile number
+let sessionId        = null       // mobile-keyed session
+let hasBaseImage     = false      // whether customer has uploaded base selfie
+let baseImageUrl     = null       // S3 URL of current base selfie
+let uploadUrl        = null       // S3 public URL after product photo upload
+let uploadBase64     = null       // local preview only
+let isSending        = false
+let isGenerating     = false
+let isUpdatingPhoto  = false      // are we in "update base photo" mode?
+let albumItems       = []         // local cache of try-on results
 
-// ── SLUG RESOLUTION ──────────────────────────────────────────────────────
+// ── SLUG RESOLUTION ────────────────────────────────────────────────────────
 function getSlug() {
   const hostname = window.location.hostname
   const p = new URLSearchParams(location.search)
@@ -704,7 +753,7 @@ function getSlug() {
   return { domain: hostname, mode: 'domain' }
 }
 
-// ── LOAD AGENT ───────────────────────────────────────────────────────────
+// ── LOAD AGENT ─────────────────────────────────────────────────────────────
 async function loadAgent() {
   const ref = getSlug()
   const url = ref.mode === 'slug'
@@ -726,7 +775,7 @@ async function loadAgent() {
   }
 }
 
-// ── APPLY BRANDING ───────────────────────────────────────────────────────
+// ── APPLY BRANDING ─────────────────────────────────────────────────────────
 function applyBranding(a) {
   const color = a.brand_color || '#7C6FFF'
   const rgb   = hexToRgb(color)
@@ -759,7 +808,7 @@ function applyBranding(a) {
   if (a.logo_url) ml.innerHTML = `<img src="${a.logo_url}" alt="">`
   else ml.textContent = (a.agent_name || 'A')[0].toUpperCase()
   document.getElementById('mobile-title').textContent = `Welcome to ${a.agent_name}!`
-  document.getElementById('mobile-sub').textContent =
+  document.getElementById('mobile-sub').textContent   =
     `Enter your mobile number to chat with your personal stylist at ${a.business_name}.`
 
   // Base screen avatar
@@ -769,15 +818,19 @@ function applyBranding(a) {
   else ba.textContent = (a.agent_name || 'A')[0].toUpperCase()
 
   // Input placeholder
-  const cat = { sarees:'sarees, silk, drapes', western:'dresses, tops, outfits',
-    jewellery:'necklaces, earrings', footwear:'heels, sandals', kids:'kids wear' }
+  const cat = {
+    sarees:    'sarees, silk, drapes',
+    western:   'dresses, tops, outfits',
+    jewellery: 'necklaces, earrings',
+    footwear:  'heels, sandals',
+    kids:      'kids wear',
+  }
   document.getElementById('msg-input').placeholder =
     `Ask about ${cat[a.category] || 'our collection'}, sizes, try-ons…`
 }
 
-// ── MOBILE ENTRY ─────────────────────────────────────────────────────────
+// ── MOBILE ENTRY ───────────────────────────────────────────────────────────
 function showMobileEntry() {
-  // Check if we already have mobile for this agent stored
   const storedMobile = localStorage.getItem(`ba_mobile_${agentConfig._id}`)
   if (storedMobile) {
     mobile = storedMobile
@@ -801,18 +854,16 @@ async function continueMobile() {
   initSession()
 }
 
-// ── SESSION INIT ─────────────────────────────────────────────────────────
+// ── SESSION INIT ───────────────────────────────────────────────────────────
 async function initSession() {
-  // Session ID is tied to mobile + agent
   sessionId = `${agentConfig._id}_${mobile}`
   localStorage.setItem('ba_chat_session', sessionId)
 
-  // Check if customer has base image
   try {
     const res  = await fetch(`${API}/public/customer/identify`, {
       method:  'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ agent_id: agentConfig._id, mobile }),
+      body:    JSON.stringify({ agent_id: agentConfig._id, mobile }),
     })
     const json = await res.json()
     if (json.success && json.data) {
@@ -820,21 +871,55 @@ async function initSession() {
       baseImageUrl = json.data.base_image_url || null
     }
   } catch(e) {
-    // If endpoint not ready, skip — proceed to chat
-    console.warn('identify endpoint:', e.message)
+    console.warn('[identify]', e.message)
   }
 
   if (!hasBaseImage) {
-    showBaseScreen()
+    showBaseScreen(false) // first-time upload
   } else {
     showChat()
     loadAlbum()
   }
 }
 
-// ── BASE IMAGE FLOW ───────────────────────────────────────────────────────
-function showBaseScreen() {
+// ── BASE IMAGE FLOW ────────────────────────────────────────────────────────
+/**
+ * showBaseScreen(isUpdate)
+ * isUpdate=false → first-time upload, no cancel button
+ * isUpdate=true  → user triggered change, show cancel button
+ */
+function showBaseScreen(isUpdate) {
+  isUpdatingPhoto = !!isUpdate
+
+  // Reset upload zone UI
+  document.getElementById('base-preview-wrap').style.display   = 'none'
+  document.getElementById('base-upload-zone').style.display    = 'flex'
+  document.getElementById('base-upload-btn').style.display     = 'none'
+  document.getElementById('base-preview-change').style.display = 'none'
+  document.getElementById('base-uploading').classList.remove('show')
+  document.getElementById('base-cancel-btn').style.display     = isUpdate ? 'block' : 'none'
+
+  // Update text
+  document.getElementById('base-title').textContent = isUpdate
+    ? 'Update your photo'
+    : "Let's get started!"
+  document.getElementById('base-sub').textContent = isUpdate
+    ? 'Upload a new full-length photo to update your virtual try-on.'
+    : 'Upload a clear, full-length photo of yourself so I can show you how our collection looks on you.'
+
+  // Clear the stored file reference
+  document.getElementById('base-upload-btn')._file = null
+
   document.getElementById('base-screen').classList.add('show')
+}
+
+function changeBasePhoto() {
+  showBaseScreen(true)
+}
+
+function cancelBaseUpdate() {
+  document.getElementById('base-screen').classList.remove('show')
+  isUpdatingPhoto = false
 }
 
 function triggerBaseUpload() {
@@ -849,10 +934,11 @@ function handleBaseFileSelect(input) {
 
   const reader = new FileReader()
   reader.onload = e => {
-    document.getElementById('base-preview-img').src = e.target.result
-    document.getElementById('base-preview-wrap').style.display = 'block'
-    document.getElementById('base-upload-zone').style.display = 'none'
-    document.getElementById('base-upload-btn').style.display = 'block'
+    document.getElementById('base-preview-img').src           = e.target.result
+    document.getElementById('base-preview-wrap').style.display  = 'block'
+    document.getElementById('base-upload-zone').style.display   = 'none'
+    document.getElementById('base-upload-btn').style.display    = 'block'
+    document.getElementById('base-preview-change').style.display = 'block'
     document.getElementById('base-upload-btn')._file = file
   }
   reader.readAsDataURL(file)
@@ -862,68 +948,80 @@ async function submitBaseImage() {
   const file = document.getElementById('base-upload-btn')._file
   if (!file) return
 
-  document.getElementById('base-upload-btn').style.display = 'none'
+  document.getElementById('base-upload-btn').style.display     = 'none'
+  document.getElementById('base-preview-change').style.display = 'none'
+  document.getElementById('base-cancel-btn').style.display     = 'none'
   document.getElementById('base-uploading').classList.add('show')
 
   try {
-    // Presign upload
+    // 1. Get presigned URL
     const presignRes = await fetch(`${API}/public/upload/presign`, {
-      method: 'POST',
+      method:  'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ session_id: `base_${agentConfig._id}_${mobile}`, content_type: file.type }),
+      body:    JSON.stringify({ session_id: `base_${agentConfig._id}_${mobile}`, content_type: file.type }),
     })
     const presignJson = await presignRes.json()
     if (!presignJson.success) throw new Error(presignJson.error || 'Upload failed')
     const { upload_url, public_url } = presignJson.data
 
-    // Upload to S3
-    await fetch(upload_url, { method:'PUT', headers:{'Content-Type':file.type}, body:file })
+    // 2. Upload to S3
+    const uploadRes = await fetch(upload_url, { method:'PUT', headers:{'Content-Type':file.type}, body:file })
+    if (!uploadRes.ok) throw new Error(`S3 upload failed: HTTP ${uploadRes.status}`)
     baseImageUrl = public_url
 
-    // Register with backend
-    try {
-      await fetch(`${API}/public/customer/base-image`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ agent_id: agentConfig._id, mobile, base_image_url: public_url }),
-      })
-    } catch(e) { console.warn('base-image endpoint:', e.message) }
+    // 3. Register with backend
+    const regRes = await fetch(`${API}/public/customer/base-image`, {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify({ agent_id: agentConfig._id, mobile, base_image_url: public_url }),
+    })
+    if (!regRes.ok) {
+      const regJson = await regRes.json().catch(() => ({}))
+      throw new Error(regJson.error || 'Failed to save photo on server')
+    }
 
     hasBaseImage = true
     document.getElementById('base-screen').classList.remove('show')
-    showChat()
-    loadAlbum()
+
+    if (isUpdatingPhoto) {
+      isUpdatingPhoto = false
+      showToast('Photo updated! ✨ Future try-ons will use your new photo.')
+    } else {
+      showChat()
+      loadAlbum()
+    }
   } catch(e) {
+    console.error('[base upload]', e.message)
     document.getElementById('base-uploading').classList.remove('show')
-    document.getElementById('base-upload-btn').style.display = 'block'
-    showToast('Upload failed. Please try again.')
+    document.getElementById('base-upload-btn').style.display     = 'block'
+    document.getElementById('base-preview-change').style.display = 'block'
+    document.getElementById('base-cancel-btn').style.display     = isUpdatingPhoto ? 'block' : 'none'
+    showToast(`Upload failed: ${e.message}`)
   }
 }
 
-// ── SHOW CHAT ─────────────────────────────────────────────────────────────
+// ── SHOW CHAT ──────────────────────────────────────────────────────────────
 function showChat() {
   document.getElementById('app').style.display = 'flex'
 
-  // Update try-on banner text now that base image exists
   if (hasBaseImage) {
     document.getElementById('tryon-banner-sub').textContent =
       'Upload any product image to try it on instantly!'
   }
 
-  // Welcome message
   const a = agentConfig
   setTimeout(() => {
     addAgentMessage(a.welcome_msg || `Hi! I'm ${a.agent_name}. Upload any product photo and I'll show you how it looks on you! 😊`)
   }, 300)
 }
 
-// ── MESSAGING ─────────────────────────────────────────────────────────────
+// ── MESSAGING ──────────────────────────────────────────────────────────────
 function nowTime() {
   return new Date().toLocaleTimeString('en-IN', { hour:'2-digit', minute:'2-digit', hour12:true })
 }
 
 function agentAvatarHtml() {
-  const a = agentConfig
+  const a     = agentConfig
   const color = a?.brand_color || 'var(--brand)'
   if (a?.logo_url) return `<div class="bubble-avatar" style="background:${color}"><img src="${a.logo_url}" alt=""></div>`
   return `<div class="bubble-avatar" style="background:${color}">${(a?.agent_name||'A')[0].toUpperCase()}</div>`
@@ -945,7 +1043,7 @@ function addUserMessage(text, imageBase64 = null) {
   wrap.className = 'msg-wrap user'
   let inner = ''
   if (imageBase64) {
-    inner += `<div class="bubble-img" onclick="viewImage('${imageBase64}')">
+    inner += `<div class="bubble-img" onclick="viewImage(this.querySelector('img').src)">
       <img src="${imageBase64}" alt="Product photo">
       <div class="bubble-img-caption">📸 Product photo</div>
     </div>`
@@ -962,10 +1060,12 @@ function addTryonResult(tryonUrl, tryonId) {
   wrap.className = 'msg-wrap agent'
   wrap.innerHTML = `${agentAvatarHtml()}<div>
     <div class="tryon-result">
-      <img class="tryon-result-img" src="${tryonUrl}" alt="Try-on result" onclick="viewImage('${tryonUrl}')">
+      <img class="tryon-result-img" src="${tryonUrl}" alt="Try-on result"
+           onclick="viewImage('${tryonUrl}')">
       <div class="tryon-result-footer">
         <span class="tryon-result-label">✨ Your look</span>
-        <button class="tryon-download-btn" onclick="downloadTryon('${tryonId}','${tryonUrl}')">⬇ Save</button>
+        <button class="tryon-download-btn"
+                onclick="downloadTryon('${tryonId}','${tryonUrl}')">⬇ Save</button>
       </div>
     </div>
     <div class="bubble-time">${nowTime()}</div>
@@ -974,9 +1074,9 @@ function addTryonResult(tryonUrl, tryonId) {
   scrollToBottom()
 }
 
-function showTyping()  { document.getElementById('typing-indicator').classList.add('show'); scrollToBottom() }
-function hideTyping()  { document.getElementById('typing-indicator').classList.remove('show') }
-function showTryonIndicator() { document.getElementById('tryon-indicator').classList.add('show'); scrollToBottom() }
+function showTyping()         { document.getElementById('typing-indicator').classList.add('show');  scrollToBottom() }
+function hideTyping()         { document.getElementById('typing-indicator').classList.remove('show') }
+function showTryonIndicator() { document.getElementById('tryon-indicator').classList.add('show');   scrollToBottom() }
 function hideTryonIndicator() { document.getElementById('tryon-indicator').classList.remove('show') }
 
 function scrollToBottom() {
@@ -984,7 +1084,7 @@ function scrollToBottom() {
   setTimeout(() => el.scrollTop = el.scrollHeight, 60)
 }
 
-// ── SEND MESSAGE ──────────────────────────────────────────────────────────
+// ── SEND MESSAGE ───────────────────────────────────────────────────────────
 async function sendMessage() {
   if (isSending || isGenerating) return
   const input  = document.getElementById('msg-input')
@@ -1002,17 +1102,16 @@ async function sendMessage() {
   const imgUrl = uploadUrl
   removeUpload()
 
-  // If image uploaded and base image exists → generate try-on
+  // If product image uploaded and customer has base image → generate try-on
   if (imgUrl && hasBaseImage) {
     await generateTryon(imgUrl, text)
   } else {
-    // Normal chat
     showTyping()
     try {
       const res  = await fetch(`${API}/public/chat`, {
         method:  'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
+        body:    JSON.stringify({
           agent_id:   agentConfig._id,
           session_id: sessionId,
           message:    text || 'I uploaded a product photo.',
@@ -1029,11 +1128,11 @@ async function sendMessage() {
   }
 
   isSending = false
-  document.getElementById('send-btn').disabled = false
+  updateSendBtn()
   input.focus()
 }
 
-// ── TRY-ON GENERATION ─────────────────────────────────────────────────────
+// ── TRY-ON GENERATION ──────────────────────────────────────────────────────
 async function generateTryon(productImageUrl, userMessage) {
   isGenerating = true
   showTryonIndicator()
@@ -1042,7 +1141,7 @@ async function generateTryon(productImageUrl, userMessage) {
     const res  = await fetch(`${API}/public/tryon`, {
       method:  'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
+      body:    JSON.stringify({
         agent_id:          agentConfig._id,
         mobile,
         session_id:        sessionId,
@@ -1055,27 +1154,33 @@ async function generateTryon(productImageUrl, userMessage) {
 
     if (json.success && json.data?.result_url) {
       const { result_url, tryon_id, reply } = json.data
-      // Show AI text response first
       if (reply) addAgentMessage(reply)
-      // Show the generated try-on image
       addTryonResult(result_url, tryon_id)
-      // Add to album cache
-      albumItems.unshift({ id: tryon_id, url: result_url, created_at: new Date().toISOString() })
+
+      // Add to local album cache — use result_url consistently
+      albumItems.unshift({
+        id:                tryon_id,
+        result_url:        result_url,
+        product_image_url: productImageUrl,
+        created_at:        new Date().toISOString(),
+      })
       updateAlbumBadge()
       renderAlbumGrid()
     } else {
-      // Fallback to normal chat if tryon endpoint not ready
-      addAgentMessage(json.error || 'Try-on generation is being set up. In the meantime, I\'d love to tell you more about this piece! 😊')
+      addAgentMessage(
+        json.error ||
+        "Try-on generation is being set up. In the meantime, I'd love to tell you more about this piece! 😊"
+      )
     }
   } catch(e) {
     hideTryonIndicator()
-    // Backend endpoint not built yet — gracefully fall back to chat
+    // Fallback to normal chat
     showTyping()
     try {
       const res  = await fetch(`${API}/public/chat`, {
         method:  'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
+        body:    JSON.stringify({
           agent_id:   agentConfig._id,
           session_id: sessionId,
           message:    userMessage || 'I uploaded a product photo.',
@@ -1085,7 +1190,7 @@ async function generateTryon(productImageUrl, userMessage) {
       const json = await res.json()
       hideTyping()
       addAgentMessage(json.data?.reply || 'Thanks for sharing the product photo!')
-    } catch(e2) {
+    } catch {
       hideTyping()
       addAgentMessage('Sorry, something went wrong. Please try again.')
     }
@@ -1094,18 +1199,24 @@ async function generateTryon(productImageUrl, userMessage) {
   isGenerating = false
 }
 
-// ── ALBUM ─────────────────────────────────────────────────────────────────
+// ── ALBUM ──────────────────────────────────────────────────────────────────
 async function loadAlbum() {
   try {
     const res  = await fetch(`${API}/public/album?agent_id=${agentConfig._id}&mobile=${encodeURIComponent(mobile)}`)
     const json = await res.json()
     if (json.success && json.data?.tryons) {
-      albumItems = json.data.tryons
+      // FIX: Normalize all items to use result_url consistently
+      albumItems = json.data.tryons.map(t => ({
+        id:                t.id,
+        result_url:        t.result_url,
+        product_image_url: t.product_image_url || null,
+        created_at:        t.created_at,
+      }))
       updateAlbumBadge()
       renderAlbumGrid()
     }
   } catch(e) {
-    // Album endpoint not ready yet — use local cache
+    console.warn('[loadAlbum]', e.message)
   }
 }
 
@@ -1130,17 +1241,24 @@ function renderAlbumGrid() {
     </div>`
     return
   }
-  grid.innerHTML = albumItems.map((item, i) => `
-    <div class="album-item" style="animation-delay:${i * 50}ms">
-      <img src="${item.url}" alt="Try-on" onclick="viewImage('${item.url}')">
+  // FIX: Always use result_url (normalized above), with fallback safety
+  grid.innerHTML = albumItems.map((item, i) => {
+    const imgUrl = item.result_url || ''
+    const safeId = escAttr(item.id || '')
+    const safeUrl = escAttr(imgUrl)
+    return `<div class="album-item" style="animation-delay:${i * 50}ms">
+      <img src="${safeUrl}" alt="Try-on" loading="lazy"
+           onerror="this.parentElement.style.opacity='0.5'"
+           onclick="viewImage('${safeUrl}')">
       <div class="album-item-footer">
         <span class="album-item-date">${fmtDate(item.created_at)}</span>
         <div class="album-item-actions">
-          <button class="album-dl-btn" onclick="downloadTryon('${item.id}','${item.url}')" title="Download">⬇</button>
-          <button class="album-del-btn" onclick="deleteTryon('${item.id}')" title="Delete">🗑</button>
+          <button class="album-dl-btn"  onclick="downloadTryon('${safeId}','${safeUrl}')" title="Download">⬇</button>
+          <button class="album-del-btn" onclick="deleteTryon('${safeId}')"                title="Delete">🗑</button>
         </div>
       </div>
-    </div>`).join('')
+    </div>`
+  }).join('')
 }
 
 function openAlbum() {
@@ -1157,21 +1275,29 @@ async function downloadTryon(tryonId, fallbackUrl) {
     const url = tryonId
       ? `${API}/public/download/${tryonId}?mobile=${encodeURIComponent(mobile)}`
       : fallbackUrl
+    if (!url) { showToast('Image URL not available'); return }
+    showToast('Preparing your download…')
     const res  = await fetch(url)
-    if (!res.ok) throw new Error()
+    if (!res.ok) throw new Error(`HTTP ${res.status}`)
     const blob = await res.blob()
     const a    = document.createElement('a')
-    a.href = URL.createObjectURL(blob)
+    a.href     = URL.createObjectURL(blob)
     a.download = `tryon_${tryonId || Date.now()}.jpg`
     a.click()
+    setTimeout(() => URL.revokeObjectURL(a.href), 5000)
   } catch(e) {
-    // Fallback — direct download without watermark
-    const a = document.createElement('a')
-    a.href = fallbackUrl
-    a.download = `tryon_${Date.now()}.jpg`
-    a.target = '_blank'
-    a.click()
-    showToast('Saving image…')
+    console.warn('[download]', e.message)
+    // Fallback: open directly in new tab
+    if (fallbackUrl) {
+      const a    = document.createElement('a')
+      a.href     = fallbackUrl
+      a.target   = '_blank'
+      a.download = `tryon_${Date.now()}.jpg`
+      a.click()
+      showToast('Opening image — long-press to save')
+    } else {
+      showToast('Download failed. Please try again.')
+    }
   }
 }
 
@@ -1179,14 +1305,14 @@ async function deleteTryon(tryonId) {
   if (!confirm('Remove this look from your album?')) return
   try {
     await fetch(`${API}/public/album/${tryonId}?mobile=${encodeURIComponent(mobile)}`, { method:'DELETE' })
-  } catch(e) { /* ignore if endpoint not ready */ }
+  } catch(e) { console.warn('[deleteTryon]', e.message) }
   albumItems = albumItems.filter(i => i.id !== tryonId)
   updateAlbumBadge()
   renderAlbumGrid()
   showToast('Removed from album')
 }
 
-// ── PHOTO UPLOAD (product photo) ──────────────────────────────────────────
+// ── PHOTO UPLOAD (product photo) ───────────────────────────────────────────
 function triggerPhotoUpload() {
   document.getElementById('file-input').click()
 }
@@ -1211,13 +1337,14 @@ async function handleFileSelect(input) {
     const presignRes = await fetch(`${API}/public/upload/presign`, {
       method:  'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ session_id: sessionId, content_type: file.type }),
+      body:    JSON.stringify({ session_id: sessionId, content_type: file.type }),
     })
     const presignJson = await presignRes.json()
     if (!presignJson.success) throw new Error(presignJson.error || 'Presign failed')
     const { upload_url, public_url } = presignJson.data
 
-    await fetch(upload_url, { method:'PUT', headers:{'Content-Type':file.type}, body:file })
+    const uploadRes = await fetch(upload_url, { method:'PUT', headers:{'Content-Type':file.type}, body:file })
+    if (!uploadRes.ok) throw new Error(`S3 upload failed: HTTP ${uploadRes.status}`)
 
     uploadUrl = public_url
     document.getElementById('preview-label').textContent = hasBaseImage
@@ -1225,20 +1352,23 @@ async function handleFileSelect(input) {
       : '📸 Photo ready — tap Send'
     document.getElementById('send-btn').disabled = false
   } catch(e) {
+    console.error('[productUpload]', e.message)
     showToast('Upload failed. Please try again.')
-    uploadUrl = null; uploadBase64 = null
+    uploadUrl   = null
+    uploadBase64 = null
     document.getElementById('upload-preview').classList.remove('show')
   }
 }
 
 function removeUpload() {
-  uploadUrl = null; uploadBase64 = null
+  uploadUrl    = null
+  uploadBase64 = null
   document.getElementById('upload-preview').classList.remove('show')
   document.getElementById('preview-img').src = ''
   updateSendBtn()
 }
 
-// ── INPUT HELPERS ─────────────────────────────────────────────────────────
+// ── INPUT HELPERS ──────────────────────────────────────────────────────────
 function handleKey(e) {
   if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage() }
   updateSendBtn()
@@ -1253,14 +1383,15 @@ function updateSendBtn() {
   document.getElementById('send-btn').disabled = !text && !uploadUrl
 }
 
-// ── IMAGE VIEWER ──────────────────────────────────────────────────────────
+// ── IMAGE VIEWER ───────────────────────────────────────────────────────────
 function viewImage(src) {
+  if (!src) return
   document.getElementById('img-viewer-src').src = src
   document.getElementById('img-viewer').classList.add('show')
 }
 function closeViewer() { document.getElementById('img-viewer').classList.remove('show') }
 
-// ── TOAST ─────────────────────────────────────────────────────────────────
+// ── TOAST ──────────────────────────────────────────────────────────────────
 let toastTimer
 function showToast(msg) {
   const t = document.getElementById('toast')
@@ -1270,11 +1401,17 @@ function showToast(msg) {
   toastTimer = setTimeout(() => t.classList.remove('show'), 2800)
 }
 
-// ── UTILS ─────────────────────────────────────────────────────────────────
+// ── UTILS ──────────────────────────────────────────────────────────────────
 function escHtml(str) {
   return String(str)
     .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
     .replace(/"/g,'&quot;').replace(/\n/g,'<br>')
+}
+// For HTML attribute contexts (onclick values etc.)
+function escAttr(str) {
+  return String(str)
+    .replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/'/g,'&#39;')
+    .replace(/</g,'&lt;').replace(/>/g,'&gt;')
 }
 function hexToRgb(hex) {
   const r = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex)
@@ -1287,7 +1424,7 @@ function fmtDate(iso) {
 }
 function genId() { return 'sess_' + Math.random().toString(36).slice(2) + Date.now().toString(36) }
 
-// ── INIT ──────────────────────────────────────────────────────────────────
+// ── INIT ───────────────────────────────────────────────────────────────────
 loadAgent()
 </script>
 </body>
