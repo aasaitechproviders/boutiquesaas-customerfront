@@ -317,6 +317,16 @@ html, body { height:100%; overflow:hidden; background:var(--bg); color:var(--tex
   font-family:var(--ff-body); transition:all .15s;
 }
 .tryon-download-btn:hover { color:var(--cream); background:var(--surface2); }
+.tryon-result-timing {
+  padding:5px 12px 7px; background:var(--surface);
+  border-top:1px solid rgba(255,255,255,.05);
+  display:flex; align-items:center; gap:4px;
+  font-size:10.5px; color:var(--text3); letter-spacing:.02em; flex-wrap:wrap;
+}
+.tryon-meta-sep { color:var(--text3); opacity:.4; }
+.tryon-cost { cursor:default; display:inline-flex; align-items:center; gap:3px; }
+.tryon-cost strong { color:var(--cream); font-weight:600; font-size:11px; }
+.tryon-cost-usd { color:var(--text3); font-size:10px; }
 
 /* ── TYPING INDICATOR ── */
 #typing-indicator {
@@ -1055,9 +1065,35 @@ function addUserMessage(text, imageBase64 = null) {
   scrollToBottom()
 }
 
-function addTryonResult(tryonUrl, tryonId) {
+function addTryonResult(tryonUrl, tryonId, elapsedSeconds, cost) {
   const wrap = document.createElement('div')
   wrap.className = 'msg-wrap agent'
+
+  let metaHtml = ''
+  if (elapsedSeconds != null || cost) {
+    const parts = []
+    if (elapsedSeconds != null) parts.push(`⏱ ${elapsedSeconds}s`)
+    if (cost?.total_usd != null) {
+      // Build tooltip with full breakdown
+      let tip = `$${cost.total_usd.toFixed(6)} total`
+      if (cost.image_tokens) {
+        tip += ` | Image: in_text=${cost.image_tokens.input_text} in_img=${cost.image_tokens.input_image} out=${cost.image_tokens.output}`
+      }
+      tip += ` | Chat: in=${cost.chat_tokens?.input||0} out=${cost.chat_tokens?.output||0}`
+      tip += ` | Rate: $1 = ₹${cost.usd_to_inr || 84}`
+
+      const inrStr = cost.total_inr != null ? `₹${cost.total_inr.toFixed(2)}` : ''
+      const usdStr = `$${cost.total_usd.toFixed(4)}`
+      parts.push(
+        `<span class="tryon-cost" title="${tip}">` +
+          `💰 <strong>${inrStr}</strong>` +
+          (inrStr ? `<span class="tryon-cost-usd"> (${usdStr})</span>` : usdStr) +
+        `</span>`
+      )
+    }
+    metaHtml = `<div class="tryon-result-timing">${parts.join('<span class="tryon-meta-sep"> · </span>')}</div>`
+  }
+
   wrap.innerHTML = `${agentAvatarHtml()}<div>
     <div class="tryon-result">
       <img class="tryon-result-img" src="${tryonUrl}" alt="Try-on result"
@@ -1067,6 +1103,7 @@ function addTryonResult(tryonUrl, tryonId) {
         <button class="tryon-download-btn"
                 onclick="downloadTryon('${tryonId}','${tryonUrl}')">⬇ Save</button>
       </div>
+      ${metaHtml}
     </div>
     <div class="bubble-time">${nowTime()}</div>
   </div>`
@@ -1076,8 +1113,27 @@ function addTryonResult(tryonUrl, tryonId) {
 
 function showTyping()         { document.getElementById('typing-indicator').classList.add('show');  scrollToBottom() }
 function hideTyping()         { document.getElementById('typing-indicator').classList.remove('show') }
-function showTryonIndicator() { document.getElementById('tryon-indicator').classList.add('show');   scrollToBottom() }
-function hideTryonIndicator() { document.getElementById('tryon-indicator').classList.remove('show') }
+let tryonTimerInterval = null
+
+function showTryonIndicator() {
+  document.getElementById('tryon-indicator').classList.add('show')
+  const subEl = document.querySelector('.tryon-gen-sub')
+  let secs = 0
+  if (subEl) subEl.textContent = 'Starting…'
+  tryonTimerInterval = setInterval(() => {
+    secs++
+    if (subEl) subEl.textContent = `${secs}s elapsed…`
+  }, 1000)
+  scrollToBottom()
+}
+
+function hideTryonIndicator() {
+  document.getElementById('tryon-indicator').classList.remove('show')
+  clearInterval(tryonTimerInterval)
+  tryonTimerInterval = null
+  const subEl = document.querySelector('.tryon-gen-sub')
+  if (subEl) subEl.textContent = 'This takes about 20–30 seconds…'
+}
 
 function scrollToBottom() {
   const el = document.getElementById('messages')
@@ -1136,6 +1192,7 @@ async function sendMessage() {
 async function generateTryon(productImageUrl, userMessage) {
   isGenerating = true
   showTryonIndicator()
+  const genStart = Date.now()
 
   try {
     const res  = await fetch(`${API}/public/tryon`, {
@@ -1151,11 +1208,12 @@ async function generateTryon(productImageUrl, userMessage) {
     })
     const json = await res.json()
     hideTryonIndicator()
+    const elapsed = Math.round((Date.now() - genStart) / 1000)
 
     if (json.success && json.data?.result_url) {
-      const { result_url, tryon_id, reply } = json.data
+      const { result_url, tryon_id, reply, cost } = json.data
       if (reply) addAgentMessage(reply)
-      addTryonResult(result_url, tryon_id)
+      addTryonResult(result_url, tryon_id, elapsed, cost)
 
       // Add to local album cache — use result_url consistently
       albumItems.unshift({
