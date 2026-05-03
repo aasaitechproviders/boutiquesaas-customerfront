@@ -978,13 +978,16 @@ function handleBaseFileSelect(input) {
 }
 
 async function submitBaseImage() {
-  const file = document.getElementById('base-upload-btn')._file
-  if (!file) return
+  const raw = document.getElementById('base-upload-btn')._file
+  if (!raw) return
 
   document.getElementById('base-upload-btn').style.display     = 'none'
   document.getElementById('base-preview-change').style.display = 'none'
   document.getElementById('base-cancel-btn').style.display     = 'none'
   document.getElementById('base-uploading').classList.add('show')
+
+  // Resize client-side before uploading
+  const file = await resizeImageFile(raw)
 
   try {
     // 1. Get presigned URL
@@ -1421,10 +1424,13 @@ function triggerPhotoUpload() {
 }
 
 async function handleFileSelect(input) {
-  const file = input.files[0]
-  if (!file) return
-  if (file.size > 5 * 1024 * 1024) { showToast('Please choose an image under 5MB.'); return }
+  const raw = input.files[0]
+  if (!raw) return
+  if (raw.size > 5 * 1024 * 1024) { showToast('Please choose an image under 5MB.'); return }
   input.value = ''
+
+  // Resize client-side before anything else
+  const file = await resizeImageFile(raw)
 
   const reader = new FileReader()
   reader.onload = e => {
@@ -1502,6 +1508,37 @@ function showToast(msg) {
   t.classList.add('show')
   clearTimeout(toastTimer)
   toastTimer = setTimeout(() => t.classList.remove('show'), 2800)
+}
+
+// ── CLIENT-SIDE IMAGE RESIZE ──────────────────────────────────────────────
+// Resize any image file to maxPx on the longest side before uploading to S3.
+// Runs entirely in the browser — no server round-trip.
+// Ensures Azure never receives a multi-megapixel phone photo.
+const CLIENT_MAX_PX = 1024
+
+function resizeImageFile(file, maxPx = CLIENT_MAX_PX) {
+  return new Promise((resolve) => {
+    const img    = new Image()
+    const objUrl = URL.createObjectURL(file)
+    img.onload = () => {
+      URL.revokeObjectURL(objUrl)
+      let w = img.naturalWidth, h = img.naturalHeight
+      // Already small enough — skip resize
+      if (w <= maxPx && h <= maxPx) { resolve(file); return }
+      if (w > h) { h = Math.round(h * maxPx / w); w = maxPx }
+      else       { w = Math.round(w * maxPx / h); h = maxPx }
+      const canvas = document.createElement('canvas')
+      canvas.width = w; canvas.height = h
+      canvas.getContext('2d').drawImage(img, 0, 0, w, h)
+      canvas.toBlob(blob => {
+        const resized = new File([blob], file.name.replace(/\.[^.]+$/, '.jpg'), { type: 'image/jpeg' })
+        console.log(`[resize] ${file.name}: ${(file.size/1024).toFixed(0)}KB → ${(resized.size/1024).toFixed(0)}KB (${w}×${h})`)
+        resolve(resized)
+      }, 'image/jpeg', 0.88)
+    }
+    img.onerror = () => { URL.revokeObjectURL(objUrl); resolve(file) }
+    img.src = objUrl
+  })
 }
 
 // ── UTILS ──────────────────────────────────────────────────────────────────
