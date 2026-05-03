@@ -146,6 +146,10 @@ html, body { height:100%; overflow:hidden; background:var(--bg); color:var(--tex
   box-shadow:0 8px 28px rgba(0,0,0,.5);
 }
 .base-preview-img img { width:100%; display:block; max-height:280px; object-fit:cover; }
+.base-preview-hint {
+  padding:5px 12px 8px; background:rgba(0,0,0,.3);
+  font-size:10.5px; color:var(--text3); text-align:center; letter-spacing:.02em;
+}
 .base-preview-change-btn {
   display:none; margin-top:8px; max-width:340px; width:100%;
   background:var(--surface2); border:1px solid var(--border2);
@@ -600,7 +604,10 @@ html, body { height:100%; overflow:hidden; background:var(--bg); color:var(--tex
     <div class="base-upload-hint">Full-length photo works best · JPG/PNG up to 8MB</div>
   </div>
   <div class="base-preview-img" id="base-preview-wrap">
-    <img id="base-preview-img" src="" alt="">
+    <img id="base-preview-img" src="" alt=""
+         onclick="if(this.src) viewImage(this.src)"
+         style="cursor:pointer" title="Tap to view full size">
+    <div class="base-preview-hint">👆 Tap image to view full size</div>
   </div>
   <button class="base-preview-change-btn" id="base-preview-change" onclick="triggerBaseUpload()">📷 Choose a different photo</button>
   <button id="base-upload-btn" onclick="submitBaseImage()">Use This Photo ✓</button>
@@ -925,6 +932,21 @@ function showBaseScreen(isUpdate) {
 
 function changeBasePhoto() {
   showBaseScreen(true)
+
+  // If the customer already has a base image, show it immediately as the current preview
+  if (baseImageUrl) {
+    document.getElementById('base-preview-img').src          = baseImageUrl
+    document.getElementById('base-preview-wrap').style.display  = 'block'
+    document.getElementById('base-upload-zone').style.display   = 'none'
+    document.getElementById('base-preview-change').style.display = 'block'
+    document.getElementById('base-preview-change').textContent  = '📷 Choose a different photo'
+    // Show a "keep current" button instead of "Use This Photo" when no new file chosen
+    document.getElementById('base-upload-btn').style.display    = 'none'
+    document.getElementById('base-upload-btn')._file            = null
+    // Update title to reflect they're viewing their current photo
+    document.getElementById('base-title').textContent = 'Your current photo'
+    document.getElementById('base-sub').textContent   = 'This is the photo used for your virtual try-ons. Tap below to replace it.'
+  }
 }
 
 function cancelBaseUpdate() {
