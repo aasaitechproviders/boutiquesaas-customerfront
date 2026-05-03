@@ -142,10 +142,11 @@ html, body { height:100%; overflow:hidden; background:var(--bg); color:var(--tex
 .base-upload-hint { font-size:12px; color:var(--text2); }
 .base-preview-img {
   display:none; width:100%; max-width:340px; border-radius:var(--r-lg);
-  overflow:hidden; border:2px solid rgba(var(--brand-rgb),.4);
-  box-shadow:0 8px 28px rgba(0,0,0,.5);
+  border:2px solid rgba(var(--brand-rgb),.4);
+  box-shadow:0 8px 28px rgba(0,0,0,.5); overflow:hidden;
+  background:var(--surface3);
 }
-.base-preview-img img { width:100%; display:block; max-height:280px; object-fit:cover; }
+.base-preview-img img { width:100%; display:block; max-height:340px; object-fit:contain; background:var(--surface3); }
 .base-preview-hint {
   padding:5px 12px 8px; background:rgba(0,0,0,.3);
   font-size:10.5px; color:var(--text3); text-align:center; letter-spacing:.02em;
@@ -300,7 +301,7 @@ html, body { height:100%; overflow:hidden; background:var(--bg); color:var(--tex
   max-width:220px; border-radius:14px; overflow:hidden; cursor:pointer;
   border:1px solid var(--border2); box-shadow:0 4px 14px rgba(0,0,0,.4);
 }
-.bubble-img img { width:100%; display:block; }
+.bubble-img img { width:100%; display:block; object-fit:contain; background:var(--surface3); max-height:200px; }
 .bubble-img-caption { padding:7px 10px; font-size:12px; color:var(--text2); background:var(--surface2); }
 
 /* ── TRYON RESULT BUBBLE ── */
@@ -309,7 +310,7 @@ html, body { height:100%; overflow:hidden; background:var(--bg); color:var(--tex
   border:1px solid rgba(var(--brand-rgb),.3);
   box-shadow:0 6px 24px rgba(0,0,0,.5);
 }
-.tryon-result-img { width:100%; display:block; cursor:pointer; }
+.tryon-result-img { width:100%; display:block; cursor:pointer; object-fit:contain; background:var(--surface3); max-height:320px; }
 .tryon-result-footer {
   padding:8px 12px; background:var(--surface2);
   display:flex; align-items:center; justify-content:space-between;
@@ -505,7 +506,7 @@ html, body { height:100%; overflow:hidden; background:var(--bg); color:var(--tex
   background:var(--surface2); border:1px solid var(--border);
   animation:msgIn .3s var(--ease) both;
 }
-.album-item img { width:100%; aspect-ratio:3/4; object-fit:cover; display:block; cursor:pointer; }
+.album-item img { width:100%; aspect-ratio:3/4; object-fit:contain; display:block; cursor:pointer; background:var(--surface3); }
 .album-item-footer {
   padding:8px 10px; display:flex; align-items:center; justify-content:space-between;
 }
