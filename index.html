@@ -71,45 +71,49 @@ html, body { height:100%; overflow:hidden; background:var(--bg); color:var(--tex
 }
 #mobile-screen.show { display:flex; }
 .mobile-brand-logo {
-  width:64px; height:64px; border-radius:18px;
+  width:72px; height:72px; border-radius:22px;
   display:flex; align-items:center; justify-content:center;
-  font-family:var(--ff-head); font-size:26px; font-weight:600; color:#fff;
-  margin-bottom:22px; overflow:hidden;
-  box-shadow:0 8px 28px rgba(var(--brand-rgb),.35);
+  font-family:var(--ff-head); font-size:28px; font-weight:600; color:#fff;
+  margin-bottom:24px; overflow:hidden;
+  box-shadow:0 8px 32px rgba(var(--brand-rgb),.4);
 }
 .mobile-brand-logo img { width:100%; height:100%; object-fit:cover; }
-.mobile-title  { font-family:var(--ff-head); font-size:26px; font-weight:400; color:var(--cream); margin-bottom:8px; }
+.mobile-title  { font-family:var(--ff-head); font-size:28px; font-weight:400; color:var(--cream); margin-bottom:8px; }
 .mobile-sub    { font-size:14px; color:var(--text2); line-height:1.65; margin-bottom:36px; max-width:300px; }
-.mobile-label  { font-size:12px; font-weight:600; color:var(--text2); letter-spacing:.06em; text-transform:uppercase; margin-bottom:10px; text-align:left; width:100%; max-width:340px; }
+.mobile-label  { font-size:11px; font-weight:600; color:var(--text2); letter-spacing:.1em; text-transform:uppercase; margin-bottom:10px; text-align:left; width:100%; max-width:340px; }
 .mobile-input-wrap { width:100%; max-width:340px; position:relative; margin-bottom:14px; }
 .mobile-input-flag {
-  position:absolute; left:14px; top:50%; transform:translateY(-50%);
+  position:absolute; left:16px; top:50%; transform:translateY(-50%);
   font-size:20px; line-height:1;
 }
 .mobile-input-code {
-  position:absolute; left:44px; top:50%; transform:translateY(-50%);
+  position:absolute; left:46px; top:50%; transform:translateY(-50%);
   font-size:14px; color:var(--text2); font-weight:500;
 }
 #mobile-input {
-  width:100%; padding:14px 16px 14px 84px;
-  background:var(--surface2); border:1px solid var(--border2);
+  width:100%; padding:16px 16px 16px 88px;
+  background:var(--surface2); border:1.5px solid var(--border2);
   border-radius:var(--r); color:var(--text); font-family:var(--ff-body);
   font-size:16px; outline:none; letter-spacing:.04em;
-  transition:border-color .15s;
+  transition:border-color .2s, box-shadow .2s;
 }
-#mobile-input:focus { border-color:rgba(var(--brand-rgb),.5); }
+#mobile-input:focus {
+  border-color:rgba(var(--brand-rgb),.5);
+  box-shadow:0 0 0 3px rgba(var(--brand-rgb),.1);
+}
 #mobile-input::placeholder { color:var(--text3); letter-spacing:0; }
 #mobile-continue-btn {
-  width:100%; max-width:340px; padding:15px;
+  width:100%; max-width:340px; padding:16px;
   background:var(--brand); border:none; border-radius:var(--r);
   color:#fff; font-family:var(--ff-body); font-size:15px; font-weight:600;
-  cursor:pointer; transition:all .15s ease;
-  box-shadow:0 6px 20px rgba(var(--brand-rgb),.35);
+  cursor:pointer; transition:all .2s var(--ease);
+  box-shadow:0 8px 24px rgba(var(--brand-rgb),.4);
+  letter-spacing:.02em;
 }
-#mobile-continue-btn:hover   { opacity:.92; transform:translateY(-1px); }
+#mobile-continue-btn:hover   { opacity:.92; transform:translateY(-2px); box-shadow:0 12px 32px rgba(var(--brand-rgb),.5); }
 #mobile-continue-btn:active  { transform:scale(.97); }
-#mobile-continue-btn:disabled { opacity:.4; pointer-events:none; }
-.mobile-notice { font-size:11.5px; color:var(--text3); margin-top:18px; max-width:300px; line-height:1.6; }
+#mobile-continue-btn:disabled { opacity:.35; pointer-events:none; }
+.mobile-notice { font-size:11px; color:var(--text3); margin-top:20px; max-width:300px; line-height:1.7; }
 
 /* ── BASE IMAGE SCREEN ── */
 #base-screen {
@@ -187,56 +191,81 @@ html, body { height:100%; overflow:hidden; background:var(--bg); color:var(--tex
 
 /* ── HEADER ── */
 #chat-header {
-  flex-shrink:0; padding:14px 16px 12px;
+  flex-shrink:0; padding:12px 14px 10px;
   background:var(--surface);
   border-bottom:1px solid var(--border);
-  display:flex; align-items:center; gap:12px;
+  display:flex; align-items:center; gap:10px;
   position:relative; z-index:10;
-  box-shadow:0 2px 20px rgba(0,0,0,.4);
+  box-shadow:0 2px 24px rgba(0,0,0,.5);
 }
+
+/* Agent avatar (square logo) */
 .header-avatar {
-  width:42px; height:42px; border-radius:13px; flex-shrink:0;
+  width:40px; height:40px; border-radius:12px; flex-shrink:0;
   display:flex; align-items:center; justify-content:center;
-  font-family:var(--ff-head); font-weight:600; font-size:17px; color:#fff;
+  font-family:var(--ff-head); font-weight:600; font-size:16px; color:#fff;
   overflow:hidden; position:relative;
   box-shadow:0 4px 12px rgba(0,0,0,.4);
 }
 .header-avatar img { width:100%; height:100%; object-fit:cover; }
 .header-avatar::after {
   content:''; position:absolute; bottom:2px; right:2px;
-  width:9px; height:9px; background:var(--green); border-radius:50%;
+  width:8px; height:8px; background:var(--green); border-radius:50%;
   border:2px solid var(--surface);
 }
+
+/* User profile circle in header */
+#user-avatar-circle {
+  width:40px; height:40px; border-radius:50%; flex-shrink:0;
+  overflow:hidden; position:relative;
+  background:var(--surface2);
+  border:2px solid rgba(var(--brand-rgb),.4);
+  box-shadow:0 0 0 2px var(--surface), 0 4px 12px rgba(0,0,0,.4);
+  display:flex; align-items:center; justify-content:center;
+  transition:border-color .2s ease;
+  cursor:pointer;
+}
+#user-avatar-circle:hover { border-color:var(--brand); }
+#user-avatar-circle img { width:100%; height:100%; object-fit:cover; display:block; }
+#user-avatar-circle .uav-placeholder {
+  font-size:18px; color:var(--text3);
+}
+#user-avatar-circle.has-photo {
+  border-color:rgba(var(--brand-rgb),.7);
+}
+
 .header-info { flex:1; min-width:0; }
 .header-name {
-  font-family:var(--ff-head); font-size:16px; font-weight:500;
+  font-family:var(--ff-head); font-size:15px; font-weight:500;
   color:var(--cream); letter-spacing:-.01em;
   white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
 }
 .header-sub {
-  font-size:11.5px; color:var(--text2); margin-top:1px;
+  font-size:11px; color:var(--text2); margin-top:1px;
   white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
 }
+
 .header-btn {
-  width:38px; height:38px; border-radius:10px; flex-shrink:0;
+  width:36px; height:36px; border-radius:10px; flex-shrink:0;
   background:var(--surface2); border:1px solid var(--border2);
   display:flex; align-items:center; justify-content:center;
-  cursor:pointer; font-size:17px; position:relative;
+  cursor:pointer; font-size:16px; position:relative;
   transition:all .15s ease;
 }
 .header-btn:hover { background:var(--surface3); }
-/* backward-compat alias */
-.header-album-btn { width:38px; height:38px; border-radius:10px; flex-shrink:0;
+.header-album-btn {
+  width:36px; height:36px; border-radius:10px; flex-shrink:0;
   background:var(--surface2); border:1px solid var(--border2);
   display:flex; align-items:center; justify-content:center;
-  cursor:pointer; font-size:17px; position:relative;
-  transition:all .15s ease; }
+  cursor:pointer; font-size:16px; position:relative;
+  transition:all .15s ease;
+}
 .header-album-btn:hover { background:var(--surface3); }
 .album-badge {
-  position:absolute; top:-4px; right:-4px; min-width:16px; height:16px;
-  background:var(--brand); border-radius:8px; border:2px solid var(--surface);
+  position:absolute; top:-5px; right:-5px; min-width:17px; height:17px;
+  background:var(--brand); border-radius:10px; border:2px solid var(--surface);
   font-size:9px; font-weight:700; color:#fff;
-  display:none; align-items:center; justify-content:center; padding:0 3px;
+  display:none; align-items:center; justify-content:center; padding:0 4px;
 }
 .album-badge.show { display:flex; }
 
@@ -251,7 +280,7 @@ html, body { height:100%; overflow:hidden; background:var(--bg); color:var(--tex
 
 /* ── DATE DIVIDER ── */
 .date-divider {
-  text-align:center; font-size:11px; color:var(--text3);
+  text-align:center; font-size:10.5px; color:var(--text3);
   position:relative; margin:6px 0;
 }
 .date-divider::before, .date-divider::after {
@@ -281,8 +310,8 @@ html, body { height:100%; overflow:hidden; background:var(--bg); color:var(--tex
 .bubble-avatar img { width:100%; height:100%; object-fit:cover; }
 
 .bubble {
-  padding:10px 13px; border-radius:18px;
-  font-size:14px; line-height:1.55; position:relative; max-width:100%;
+  padding:10px 14px; border-radius:18px;
+  font-size:14px; line-height:1.58; position:relative; max-width:100%;
 }
 .msg-wrap.agent .bubble {
   background:var(--surface2); color:var(--text);
@@ -372,78 +401,18 @@ html, body { height:100%; overflow:hidden; background:var(--bg); color:var(--tex
   animation:spin .9s linear infinite;
 }
 
-/* ── TRY-ON BANNER ── */
-#tryon-banner {
-  flex-shrink:0; margin:0 14px 10px;
-  background:linear-gradient(135deg,rgba(var(--brand-rgb),.12),rgba(var(--brand-rgb),.06));
-  border:1px solid rgba(var(--brand-rgb),.25); border-radius:var(--r);
-  padding:11px 14px; display:flex; align-items:center; gap:12px; cursor:pointer;
-  transition:all .2s ease; position:relative; overflow:hidden;
-}
-#tryon-banner::before {
-  content:''; position:absolute; inset:0;
-  background:linear-gradient(135deg,rgba(var(--brand-rgb),.1),transparent);
-  opacity:0; transition:opacity .2s;
-}
-#tryon-banner:hover::before, #tryon-banner:active::before { opacity:1; }
-.tryon-icon {
-  width:36px; height:36px; border-radius:10px; background:rgba(var(--brand-rgb),.2);
-  display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0;
-}
-.tryon-text { flex:1; min-width:0; }
-.tryon-title { font-size:13px; font-weight:600; color:var(--cream); }
-.tryon-sub   { font-size:11.5px; color:var(--text2); margin-top:1px; }
-.tryon-arrow { font-size:18px; color:var(--brand); }
-
-/* ── CHANGE PHOTO LINK ── */
-#change-photo-link {
-  text-align:center; padding:0 14px 8px;
-  font-size:11.5px; color:var(--text3);
-}
-#change-photo-link button {
-  background:none; border:none; color:var(--brand); font-family:var(--ff-body);
-  font-size:11.5px; cursor:pointer; padding:0; text-decoration:underline;
-  text-underline-offset:2px;
-}
-#change-photo-link button:hover { color:var(--cream); }
-
-/* ── INPUT AREA ── */
+/* ── INPUT AREA — photo-only, no textarea ── */
 #input-area {
-  flex-shrink:0; padding:10px 12px 14px;
-  background:var(--surface); border-top:1px solid var(--border);
+  flex-shrink:0;
+  padding:12px 14px 18px;
+  background:var(--surface);
+  border-top:1px solid var(--border);
 }
-.input-row { display:flex; align-items:flex-end; gap:8px; }
-#photo-btn {
-  width:42px; height:42px; border-radius:12px; flex-shrink:0;
-  background:var(--surface2); border:1px solid var(--border2);
-  display:flex; align-items:center; justify-content:center;
-  cursor:pointer; font-size:18px; transition:all .15s ease;
-}
-#photo-btn:hover  { background:var(--surface3); border-color:rgba(var(--brand-rgb),.4); }
-#photo-btn:active { transform:scale(.93); }
-#msg-input {
-  flex:1; background:var(--surface2); border:1px solid var(--border2);
-  border-radius:14px; padding:11px 14px; color:var(--text);
-  font-family:var(--ff-body); font-size:14px; resize:none;
-  min-height:42px; max-height:120px; overflow-y:auto; line-height:1.5;
-  outline:none; transition:border-color .15s;
-}
-#msg-input:focus { border-color:rgba(var(--brand-rgb),.5); }
-#msg-input::placeholder { color:var(--text3); }
-#send-btn {
-  width:42px; height:42px; border-radius:12px; flex-shrink:0;
-  background:var(--brand); border:none; cursor:pointer;
-  display:flex; align-items:center; justify-content:center;
-  transition:all .15s ease; box-shadow:0 4px 12px rgba(var(--brand-rgb),.35);
-}
-#send-btn:hover   { opacity:.9; transform:scale(1.04); }
-#send-btn:active  { transform:scale(.93); }
-#send-btn:disabled { opacity:.4; pointer-events:none; }
-#send-btn svg { width:18px; height:18px; }
 
-/* ── IMAGE UPLOAD PREVIEW ── */
+/* Upload preview strip */
 #upload-preview {
-  display:none; padding:8px 12px 4px;
+  display:none;
+  margin-bottom:10px;
   animation:slideUp .25s var(--ease);
 }
 #upload-preview.show { display:block; }
@@ -452,13 +421,74 @@ html, body { height:100%; overflow:hidden; background:var(--bg); color:var(--tex
   position:relative; display:inline-block; border-radius:10px; overflow:hidden;
   border:2px solid rgba(var(--brand-rgb),.4);
 }
-.preview-inner img { height:80px; display:block; border-radius:8px; }
+.preview-inner img { height:76px; display:block; border-radius:8px; }
 .preview-remove {
   position:absolute; top:4px; right:4px; width:22px; height:22px;
-  background:rgba(0,0,0,.7); border:none; border-radius:50%; color:#fff;
-  font-size:13px; cursor:pointer; display:flex; align-items:center; justify-content:center;
+  background:rgba(0,0,0,.75); border:none; border-radius:50%; color:#fff;
+  font-size:12px; cursor:pointer; display:flex; align-items:center; justify-content:center;
 }
-.preview-label { font-size:11px; color:var(--brand); margin-top:4px; font-weight:500; }
+.preview-label { font-size:11px; color:var(--brand); margin-top:5px; font-weight:500; display:flex; align-items:center; gap:6px; }
+.preview-upload-spinner { width:12px; height:12px; border-radius:50%; border:1.5px solid rgba(var(--brand-rgb),.2); border-top-color:var(--brand); animation:spin .8s linear infinite; display:none; }
+.preview-upload-spinner.show { display:inline-block; }
+
+/* The main upload button */
+#tryon-upload-btn {
+  width:100%; padding:0;
+  background:linear-gradient(135deg, rgba(var(--brand-rgb),.18) 0%, rgba(var(--brand-rgb),.1) 100%);
+  border:1.5px solid rgba(var(--brand-rgb),.35);
+  border-radius:18px;
+  cursor:pointer;
+  transition:all .2s var(--ease);
+  overflow:hidden;
+  position:relative;
+}
+#tryon-upload-btn::before {
+  content:'';
+  position:absolute; inset:0;
+  background:linear-gradient(135deg, rgba(var(--brand-rgb),.12), transparent);
+  opacity:0; transition:opacity .2s;
+}
+#tryon-upload-btn:hover::before, #tryon-upload-btn:active::before { opacity:1; }
+#tryon-upload-btn:hover { border-color:rgba(var(--brand-rgb),.6); transform:translateY(-1px); }
+#tryon-upload-btn:active { transform:scale(.98); }
+#tryon-upload-btn:disabled { opacity:.4; pointer-events:none; }
+
+.upload-btn-inner {
+  display:flex; align-items:center; gap:12px; padding:14px 18px;
+}
+.upload-btn-icon {
+  width:40px; height:40px; border-radius:12px; flex-shrink:0;
+  background:rgba(var(--brand-rgb),.25);
+  display:flex; align-items:center; justify-content:center; font-size:19px;
+}
+.upload-btn-text { flex:1; text-align:left; }
+.upload-btn-title { font-size:14px; font-weight:600; color:var(--cream); }
+.upload-btn-sub   { font-size:11.5px; color:var(--text2); margin-top:2px; }
+.upload-btn-arrow {
+  font-size:20px; color:var(--brand);
+  transition:transform .2s var(--ease);
+}
+#tryon-upload-btn:hover .upload-btn-arrow { transform:translateX(3px); }
+
+/* Change photo subtle link */
+#change-photo-link {
+  text-align:center; padding:8px 0 0;
+  font-size:11px; color:var(--text3);
+}
+#change-photo-link button {
+  background:none; border:none; color:var(--text3); font-family:var(--ff-body);
+  font-size:11px; cursor:pointer; padding:0;
+  transition:color .15s;
+}
+#change-photo-link button:hover { color:var(--brand); }
+
+/* Powered-by */
+.powered-by {
+  text-align:center; font-size:10px; color:var(--text3);
+  padding:6px 0 0; letter-spacing:.02em;
+}
+.powered-by a { color:var(--text3); text-decoration:none; }
+.powered-by a:hover { color:var(--text2); }
 
 /* ── ALBUM SHEET ── */
 #album-sheet {
@@ -467,94 +497,129 @@ html, body { height:100%; overflow:hidden; background:var(--bg); color:var(--tex
 }
 #album-sheet.open { display:flex; }
 #album-backdrop {
-  position:absolute; inset:0; background:rgba(0,0,0,.7);
-  backdrop-filter:blur(6px);
+  position:absolute; inset:0; background:rgba(0,0,0,.75);
+  backdrop-filter:blur(8px);
 }
 #album-panel {
   position:absolute; bottom:0; left:50%; transform:translateX(-50%);
   width:100%; max-width:520px; background:var(--surface);
-  border-radius:22px 22px 0 0; border-top:1px solid var(--border2);
-  max-height:85vh; display:flex; flex-direction:column;
-  animation:sheetUp .3s var(--ease);
+  border-radius:24px 24px 0 0; border-top:1px solid rgba(var(--brand-rgb),.15);
+  max-height:90vh; display:flex; flex-direction:column;
+  animation:sheetUp .32s var(--ease);
+  box-shadow:0 -8px 48px rgba(0,0,0,.6);
 }
 @keyframes sheetUp { from{transform:translateX(-50%) translateY(100%)} to{transform:translateX(-50%) translateY(0)} }
-.album-handle { width:40px; height:4px; background:var(--border2); border-radius:2px; margin:14px auto 0; }
+
+.album-handle {
+  width:36px; height:4px; background:rgba(255,255,255,.15); border-radius:2px; margin:12px auto 0;
+  flex-shrink:0;
+}
+
+/* Album header with user profile */
 .album-header {
   padding:16px 18px 14px; border-bottom:1px solid var(--border);
-  display:flex; align-items:center; justify-content:space-between; flex-shrink:0;
+  display:flex; align-items:center; gap:14px; flex-shrink:0;
 }
-.album-title { font-family:var(--ff-head); font-size:18px; font-weight:400; color:var(--cream); }
-.album-count { font-size:12px; color:var(--text3); margin-top:2px; }
-.album-close {
-  width:32px; height:32px; border-radius:50%; background:var(--surface2);
-  border:none; color:var(--text2); font-size:16px; cursor:pointer;
+.album-user-circle {
+  width:48px; height:48px; border-radius:50%; flex-shrink:0;
+  overflow:hidden; border:2.5px solid rgba(var(--brand-rgb),.5);
+  background:var(--surface2);
+  box-shadow:0 0 0 3px rgba(var(--brand-rgb),.12);
   display:flex; align-items:center; justify-content:center;
 }
+.album-user-circle img { width:100%; height:100%; object-fit:cover; display:block; }
+.album-user-circle .auc-placeholder { font-size:22px; color:var(--text3); }
+.album-header-text { flex:1; min-width:0; }
+.album-title { font-family:var(--ff-head); font-size:19px; font-weight:400; color:var(--cream); }
+.album-count { font-size:11.5px; color:var(--text3); margin-top:2px; }
+.album-close {
+  width:32px; height:32px; border-radius:50%; background:var(--surface2);
+  border:1px solid var(--border2); color:var(--text2); font-size:14px; cursor:pointer;
+  display:flex; align-items:center; justify-content:center; flex-shrink:0;
+  transition:all .15s;
+}
+.album-close:hover { background:var(--surface3); color:var(--cream); }
+
+/* Album grid — FIXED: cover images, proper sizing */
 #album-grid {
-  overflow-y:auto; padding:16px; flex:1;
+  overflow-y:auto; padding:14px; flex:1;
   display:grid; grid-template-columns:1fr 1fr; gap:10px;
 }
 #album-grid::-webkit-scrollbar { width:3px; }
-#album-grid::-webkit-scrollbar-thumb { background:var(--surface3); }
+#album-grid::-webkit-scrollbar-thumb { background:var(--surface3); border-radius:3px; }
+
 .album-empty {
-  grid-column:1/-1; text-align:center; padding:40px 20px;
-  color:var(--text3); font-size:14px; line-height:1.65;
+  grid-column:1/-1; text-align:center; padding:48px 20px;
+  color:var(--text3); font-size:14px; line-height:1.7;
 }
-.album-empty-icon { font-size:40px; margin-bottom:12px; }
+.album-empty-icon { font-size:48px; margin-bottom:14px; }
+.album-empty-title { color:var(--text2); font-size:15px; margin-bottom:6px; }
+
+/* Album card — production grade */
 .album-item {
-  border-radius:14px; overflow:hidden; position:relative;
-  background:var(--surface2); border:1px solid var(--border);
+  border-radius:16px; overflow:hidden; position:relative;
+  background:var(--surface2);
+  box-shadow:0 4px 16px rgba(0,0,0,.4);
   animation:msgIn .3s var(--ease) both;
+  cursor:pointer;
+  transition:transform .2s var(--ease), box-shadow .2s;
 }
-.album-item img { width:100%; aspect-ratio:3/4; object-fit:contain; display:block; cursor:pointer; background:var(--surface3); }
-.album-item-footer {
-  padding:8px 10px; display:flex; align-items:center; justify-content:space-between;
+.album-item:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(0,0,0,.5); }
+.album-item:active { transform:scale(.97); }
+
+/* THE KEY FIX: object-fit:cover for proper image fill */
+.album-item img {
+  width:100%;
+  aspect-ratio:3/4;
+  object-fit:cover;     /* ← was "contain", now "cover" */
+  display:block;
+  background:var(--surface3);
 }
-.album-item-date { font-size:10px; color:var(--text3); }
-.album-item-actions { display:flex; gap:6px; }
+
+/* Gradient overlay at bottom of image */
+.album-item-overlay {
+  position:absolute; bottom:0; left:0; right:0;
+  background:linear-gradient(to top, rgba(0,0,0,.85) 0%, rgba(0,0,0,.4) 50%, transparent 100%);
+  padding:28px 10px 10px;
+  display:flex; align-items:flex-end; justify-content:space-between;
+}
+.album-item-date { font-size:10px; color:rgba(255,255,255,.7); font-weight:500; letter-spacing:.02em; }
+.album-item-actions { display:flex; gap:5px; }
 .album-dl-btn, .album-del-btn {
-  width:28px; height:28px; border-radius:7px; border:none; cursor:pointer;
-  display:flex; align-items:center; justify-content:center; font-size:14px;
-  transition:all .15s;
+  width:28px; height:28px; border-radius:8px; border:none; cursor:pointer;
+  display:flex; align-items:center; justify-content:center; font-size:13px;
+  transition:all .15s; backdrop-filter:blur(4px);
 }
-.album-dl-btn  { background:rgba(var(--brand-rgb),.15); color:var(--brand); }
-.album-dl-btn:hover  { background:rgba(var(--brand-rgb),.3); }
-.album-del-btn { background:rgba(239,68,68,.12); color:var(--red); }
-.album-del-btn:hover { background:rgba(239,68,68,.25); }
+.album-dl-btn  { background:rgba(var(--brand-rgb),.4); color:#fff; }
+.album-dl-btn:hover  { background:rgba(var(--brand-rgb),.65); }
+.album-del-btn { background:rgba(239,68,68,.3); color:#fff; }
+.album-del-btn:hover { background:rgba(239,68,68,.55); }
 
 /* ── IMAGE VIEWER OVERLAY ── */
 #img-viewer {
-  position:fixed; inset:0; background:rgba(0,0,0,.92); z-index:9998;
+  position:fixed; inset:0; background:rgba(0,0,0,.95); z-index:9998;
   display:none; align-items:center; justify-content:center; padding:20px;
 }
 #img-viewer.show { display:flex; }
-#img-viewer img { max-width:100%; max-height:90vh; border-radius:12px; object-fit:contain; }
+#img-viewer img { max-width:100%; max-height:90vh; border-radius:14px; object-fit:contain; }
 #img-viewer-close {
-  position:absolute; top:20px; right:20px; background:rgba(255,255,255,.1);
-  border:none; color:#fff; font-size:22px; width:40px; height:40px;
+  position:absolute; top:18px; right:18px; background:rgba(255,255,255,.12);
+  border:none; color:#fff; font-size:20px; width:40px; height:40px;
   border-radius:50%; cursor:pointer; display:flex; align-items:center; justify-content:center;
+  transition:background .15s;
 }
+#img-viewer-close:hover { background:rgba(255,255,255,.22); }
 
 /* ── TOAST ── */
 #toast {
-  position:fixed; bottom:100px; left:50%; transform:translateX(-50%);
-  background:var(--surface2); border:1px solid var(--border2); border-radius:10px;
-  padding:10px 18px; font-size:13px; color:var(--text); z-index:9999;
-  opacity:0; pointer-events:none; transition:opacity .25s ease; white-space:nowrap;
+  position:fixed; bottom:110px; left:50%; transform:translateX(-50%);
+  background:rgba(30,24,20,.95); border:1px solid var(--border2); border-radius:12px;
+  padding:10px 20px; font-size:13px; color:var(--text); z-index:9999;
+  opacity:0; pointer-events:none; transition:opacity .25s ease;
+  white-space:nowrap; backdrop-filter:blur(8px);
+  box-shadow:0 8px 24px rgba(0,0,0,.5);
 }
 #toast.show { opacity:1; }
-
-/* ── SCROLLBAR ── */
-#msg-input::-webkit-scrollbar { width:3px; }
-#msg-input::-webkit-scrollbar-thumb { background:var(--surface3); border-radius:3px; }
-
-/* ── POWERED BY ── */
-.powered-by {
-  text-align:center; font-size:10.5px; color:var(--text3);
-  padding:4px 0 2px; letter-spacing:.02em;
-}
-.powered-by a { color:var(--text3); text-decoration:none; }
-.powered-by a:hover { color:var(--text2); }
 
 /* ── DESKTOP FRAME ── */
 @media(min-width:521px) {
@@ -624,15 +689,19 @@ html, body { height:100%; overflow:hidden; background:var(--bg); color:var(--tex
 
   <!-- Header -->
   <div id="chat-header">
+    <!-- Agent logo -->
     <div class="header-avatar" id="header-avatar">A</div>
+
     <div class="header-info">
       <div class="header-name" id="header-name">BoutiqueAI</div>
       <div class="header-sub" id="header-sub">Your personal stylist</div>
     </div>
-    <!-- Change base photo button -->
-    <div class="header-btn" id="change-photo-btn" onclick="changeBasePhoto()" title="Update my photo" style="font-size:16px">
-      🤳
+
+    <!-- User base-image circle -->
+    <div id="user-avatar-circle" onclick="changeBasePhoto()" title="Update my photo">
+      <span class="uav-placeholder">🤳</span>
     </div>
+
     <!-- Album button -->
     <div class="header-album-btn" onclick="openAlbum()" title="My Try-ons">
       🖼️
@@ -665,43 +734,38 @@ html, body { height:100%; overflow:hidden; background:var(--bg); color:var(--tex
     </div>
   </div>
 
-  <!-- Try-On Banner -->
-  <div id="tryon-banner" onclick="triggerPhotoUpload()">
-    <div class="tryon-icon">📸</div>
-    <div class="tryon-text">
-      <div class="tryon-title">Try on our collection</div>
-      <div class="tryon-sub" id="tryon-banner-sub">Upload your photo to see how items look on you</div>
-    </div>
-    <div class="tryon-arrow">→</div>
-  </div>
-
-  <!-- Change photo link (shown below banner) -->
-  <div id="change-photo-link">
-    <button onclick="changeBasePhoto()">🤳 Update my base photo</button>
-  </div>
-
-  <!-- Input Area -->
+  <!-- Input Area (photo-only — no textarea) -->
   <div id="input-area">
+
+    <!-- Upload preview (shown after photo picked) -->
     <div id="upload-preview">
       <div class="preview-inner">
         <img id="preview-img" src="" alt="upload">
         <button class="preview-remove" onclick="removeUpload()">✕</button>
       </div>
-      <div class="preview-label" id="preview-label">📸 Uploading…</div>
+      <div class="preview-label" id="preview-label">
+        <span class="preview-upload-spinner" id="preview-spinner"></span>
+        <span id="preview-label-text">📸 Uploading…</span>
+      </div>
     </div>
-    <div class="input-row">
-      <button id="photo-btn" onclick="triggerPhotoUpload()" title="Upload product photo">📷</button>
-      <textarea id="msg-input"
-        placeholder="Ask about sarees, try-ons, sizes…"
-        rows="1"
-        onkeydown="handleKey(event)"
-        oninput="autoResize(this)"></textarea>
-      <button id="send-btn" onclick="sendMessage()" disabled>
-        <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-          <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
-        </svg>
-      </button>
+
+    <!-- Main upload CTA button -->
+    <button id="tryon-upload-btn" onclick="triggerPhotoUpload()">
+      <div class="upload-btn-inner">
+        <div class="upload-btn-icon">📷</div>
+        <div class="upload-btn-text">
+          <div class="upload-btn-title" id="upload-btn-title">Try on a product</div>
+          <div class="upload-btn-sub" id="upload-btn-sub">Upload any product photo to see it on you</div>
+        </div>
+        <div class="upload-btn-arrow">→</div>
+      </div>
+    </button>
+
+    <!-- Change photo link -->
+    <div id="change-photo-link">
+      <button onclick="changeBasePhoto()">🤳 Update my photo</button>
     </div>
+
     <div class="powered-by">Powered by <a href="https://boutiquesaas.aasaitech.in" target="_blank">BoutiqueAI</a></div>
   </div>
 </div>
@@ -712,7 +776,11 @@ html, body { height:100%; overflow:hidden; background:var(--bg); color:var(--tex
   <div id="album-panel">
     <div class="album-handle"></div>
     <div class="album-header">
-      <div>
+      <!-- User profile circle in album -->
+      <div class="album-user-circle" id="album-user-circle">
+        <span class="auc-placeholder">🤳</span>
+      </div>
+      <div class="album-header-text">
         <div class="album-title">My Try-ons</div>
         <div class="album-count" id="album-count">0 looks generated</div>
       </div>
@@ -721,7 +789,8 @@ html, body { height:100%; overflow:hidden; background:var(--bg); color:var(--tex
     <div id="album-grid">
       <div class="album-empty">
         <div class="album-empty-icon">👗</div>
-        Upload a product photo in the chat to generate your first try-on look!
+        <div class="album-empty-title">No looks yet</div>
+        Upload a product photo to generate your first virtual try-on!
       </div>
     </div>
   </div>
@@ -747,16 +816,16 @@ const SUBDOMAIN_BASE = 'boutiquesaas.aasaitech.in'
 
 // ── STATE ──────────────────────────────────────────────────────────────────
 let agentConfig      = null
-let mobile           = null       // customer mobile number
-let sessionId        = null       // mobile-keyed session
-let hasBaseImage     = false      // whether customer has uploaded base selfie
-let baseImageUrl     = null       // S3 URL of current base selfie
-let uploadUrl        = null       // S3 public URL after product photo upload
-let uploadBase64     = null       // local preview only
+let mobile           = null
+let sessionId        = null
+let hasBaseImage     = false
+let baseImageUrl     = null
+let uploadUrl        = null
+let uploadBase64     = null
 let isSending        = false
 let isGenerating     = false
-let isUpdatingPhoto  = false      // are we in "update base photo" mode?
-let albumItems       = []         // local cache of try-on results
+let isUpdatingPhoto  = false
+let albumItems       = []
 
 // ── SLUG RESOLUTION ────────────────────────────────────────────────────────
 function getSlug() {
@@ -802,17 +871,14 @@ function applyBranding(a) {
 
   document.title = `${a.agent_name} — ${a.business_name || 'BoutiqueAI'}`
 
-  // Header avatar
   const av = document.getElementById('header-avatar')
   av.style.background = color
   if (a.logo_url) av.innerHTML = `<img src="${a.logo_url}" alt="">`
   else av.textContent = (a.agent_name || 'A')[0].toUpperCase()
 
-  // Header info
   document.getElementById('header-name').textContent = a.agent_name || 'Your Stylist'
   document.getElementById('header-sub').textContent  = a.business_name || ''
 
-  // Typing / tryon avatars
   ;['typing-avatar','tryon-avatar'].forEach(id => {
     const el = document.getElementById(id)
     el.style.background = color
@@ -820,7 +886,6 @@ function applyBranding(a) {
     else el.textContent = (a.agent_name || 'A')[0].toUpperCase()
   })
 
-  // Mobile entry screen
   const ml = document.getElementById('mobile-logo')
   ml.style.background = color
   if (a.logo_url) ml.innerHTML = `<img src="${a.logo_url}" alt="">`
@@ -829,13 +894,12 @@ function applyBranding(a) {
   document.getElementById('mobile-sub').textContent   =
     `Enter your mobile number to chat with your personal stylist at ${a.business_name}.`
 
-  // Base screen avatar
   const ba = document.getElementById('base-agent-avatar')
   ba.style.background = color
   if (a.logo_url) ba.innerHTML = `<img src="${a.logo_url}" alt="">`
   else ba.textContent = (a.agent_name || 'A')[0].toUpperCase()
 
-  // Input placeholder
+  // Update upload button sub text based on category
   const cat = {
     sarees:    'sarees, silk, drapes',
     western:   'dresses, tops, outfits',
@@ -843,8 +907,24 @@ function applyBranding(a) {
     footwear:  'heels, sandals',
     kids:      'kids wear',
   }
-  document.getElementById('msg-input').placeholder =
-    `Ask about ${cat[a.category] || 'our collection'}, sizes, try-ons…`
+  const catLabel = cat[a.category] || 'any product'
+  document.getElementById('upload-btn-sub').textContent =
+    `Upload ${catLabel} photo to see it on you`
+}
+
+// ── UPDATE USER AVATAR (profile circle) ─────────────────────────────────────
+function updateUserAvatar(url) {
+  if (!url) return
+  baseImageUrl = url
+
+  // Header circle
+  const hc = document.getElementById('user-avatar-circle')
+  hc.innerHTML = `<img src="${url}" alt="Your photo">`
+  hc.classList.add('has-photo')
+
+  // Album circle
+  const ac = document.getElementById('album-user-circle')
+  ac.innerHTML = `<img src="${url}" alt="Your photo">`
 }
 
 // ── MOBILE ENTRY ───────────────────────────────────────────────────────────
@@ -886,14 +966,16 @@ async function initSession() {
     const json = await res.json()
     if (json.success && json.data) {
       hasBaseImage = json.data.has_base_image
-      baseImageUrl = json.data.base_image_url || null
+      if (json.data.base_image_url) {
+        updateUserAvatar(json.data.base_image_url)
+      }
     }
   } catch(e) {
     console.warn('[identify]', e.message)
   }
 
   if (!hasBaseImage) {
-    showBaseScreen(false) // first-time upload
+    showBaseScreen(false)
   } else {
     showChat()
     loadAlbum()
@@ -901,15 +983,9 @@ async function initSession() {
 }
 
 // ── BASE IMAGE FLOW ────────────────────────────────────────────────────────
-/**
- * showBaseScreen(isUpdate)
- * isUpdate=false → first-time upload, no cancel button
- * isUpdate=true  → user triggered change, show cancel button
- */
 function showBaseScreen(isUpdate) {
   isUpdatingPhoto = !!isUpdate
 
-  // Reset upload zone UI
   document.getElementById('base-preview-wrap').style.display   = 'none'
   document.getElementById('base-upload-zone').style.display    = 'flex'
   document.getElementById('base-upload-btn').style.display     = 'none'
@@ -917,7 +993,6 @@ function showBaseScreen(isUpdate) {
   document.getElementById('base-uploading').classList.remove('show')
   document.getElementById('base-cancel-btn').style.display     = isUpdate ? 'block' : 'none'
 
-  // Update text
   document.getElementById('base-title').textContent = isUpdate
     ? 'Update your photo'
     : "Let's get started!"
@@ -925,26 +1000,20 @@ function showBaseScreen(isUpdate) {
     ? 'Upload a new full-length photo to update your virtual try-on.'
     : 'Upload a clear, full-length photo of yourself so I can show you how our collection looks on you.'
 
-  // Clear the stored file reference
   document.getElementById('base-upload-btn')._file = null
-
   document.getElementById('base-screen').classList.add('show')
 }
 
 function changeBasePhoto() {
   showBaseScreen(true)
-
-  // If the customer already has a base image, show it immediately as the current preview
   if (baseImageUrl) {
     document.getElementById('base-preview-img').src          = baseImageUrl
     document.getElementById('base-preview-wrap').style.display  = 'block'
     document.getElementById('base-upload-zone').style.display   = 'none'
     document.getElementById('base-preview-change').style.display = 'block'
     document.getElementById('base-preview-change').textContent  = '📷 Choose a different photo'
-    // Show a "keep current" button instead of "Use This Photo" when no new file chosen
     document.getElementById('base-upload-btn').style.display    = 'none'
     document.getElementById('base-upload-btn')._file            = null
-    // Update title to reflect they're viewing their current photo
     document.getElementById('base-title').textContent = 'Your current photo'
     document.getElementById('base-sub').textContent   = 'This is the photo used for your virtual try-ons. Tap below to replace it.'
   }
@@ -986,11 +1055,9 @@ async function submitBaseImage() {
   document.getElementById('base-cancel-btn').style.display     = 'none'
   document.getElementById('base-uploading').classList.add('show')
 
-  // Resize client-side before uploading
   const file = await resizeImageFile(raw)
 
   try {
-    // 1. Get presigned URL
     const presignRes = await fetch(`${API}/public/upload/presign`, {
       method:  'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -1000,12 +1067,9 @@ async function submitBaseImage() {
     if (!presignJson.success) throw new Error(presignJson.error || 'Upload failed')
     const { upload_url, public_url } = presignJson.data
 
-    // 2. Upload to S3
     const uploadRes = await fetch(upload_url, { method:'PUT', headers:{'Content-Type':file.type}, body:file })
     if (!uploadRes.ok) throw new Error(`S3 upload failed: HTTP ${uploadRes.status}`)
-    baseImageUrl = public_url
 
-    // 3. Register with backend
     const regRes = await fetch(`${API}/public/customer/base-image`, {
       method:  'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -1017,6 +1081,7 @@ async function submitBaseImage() {
     }
 
     hasBaseImage = true
+    updateUserAvatar(public_url)
     document.getElementById('base-screen').classList.remove('show')
 
     if (isUpdatingPhoto) {
@@ -1041,8 +1106,7 @@ function showChat() {
   document.getElementById('app').style.display = 'flex'
 
   if (hasBaseImage) {
-    document.getElementById('tryon-banner-sub').textContent =
-      'Upload any product image to try it on instantly!'
+    document.getElementById('upload-btn-title').textContent = 'Try on a product'
   }
 
   const a = agentConfig
@@ -1100,14 +1164,12 @@ function addTryonResult(tryonUrl, tryonId, elapsedSeconds, cost) {
     const parts = []
     if (elapsedSeconds != null) parts.push(`⏱ ${elapsedSeconds}s`)
     if (cost?.total_usd != null) {
-      // Build tooltip with full breakdown
       let tip = `$${cost.total_usd.toFixed(6)} total`
       if (cost.image_tokens) {
         tip += ` | Image: in_text=${cost.image_tokens.input_text} in_img=${cost.image_tokens.input_image} out=${cost.image_tokens.output}`
       }
       tip += ` | Chat: in=${cost.chat_tokens?.input||0} out=${cost.chat_tokens?.output||0}`
       tip += ` | Rate: $1 = ₹${cost.usd_to_inr || 84}`
-
       const inrStr = cost.total_inr != null ? `₹${cost.total_inr.toFixed(2)}` : ''
       const usdStr = `$${cost.total_usd.toFixed(4)}`
       parts.push(
@@ -1137,8 +1199,8 @@ function addTryonResult(tryonUrl, tryonId, elapsedSeconds, cost) {
   scrollToBottom()
 }
 
-function showTyping()         { document.getElementById('typing-indicator').classList.add('show');  scrollToBottom() }
-function hideTyping()         { document.getElementById('typing-indicator').classList.remove('show') }
+function showTyping()  { document.getElementById('typing-indicator').classList.add('show');  scrollToBottom() }
+function hideTyping()  { document.getElementById('typing-indicator').classList.remove('show') }
 let tryonTimerInterval = null
 
 function showTryonIndicator() {
@@ -1166,27 +1228,75 @@ function scrollToBottom() {
   setTimeout(() => el.scrollTop = el.scrollHeight, 60)
 }
 
-// ── SEND MESSAGE ───────────────────────────────────────────────────────────
-async function sendMessage() {
+// ── PHOTO UPLOAD (product photo) ───────────────────────────────────────────
+function triggerPhotoUpload() {
+  document.getElementById('file-input').click()
+}
+
+async function handleFileSelect(input) {
+  const raw = input.files[0]
+  if (!raw) return
+  if (raw.size > 5 * 1024 * 1024) { showToast('Please choose an image under 5MB.'); return }
+  input.value = ''
+
+  const file = await resizeImageFile(raw)
+
+  const reader = new FileReader()
+  reader.onload = e => {
+    uploadBase64 = e.target.result
+    document.getElementById('preview-img').src = uploadBase64
+    document.getElementById('upload-preview').classList.add('show')
+    const spinner = document.getElementById('preview-spinner')
+    spinner.classList.add('show')
+    document.getElementById('preview-label-text').textContent = 'Uploading…'
+    scrollToBottom()
+  }
+  reader.readAsDataURL(file)
+
+  try {
+    const presignRes = await fetch(`${API}/public/upload/presign`, {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify({ session_id: sessionId, content_type: file.type }),
+    })
+    const presignJson = await presignRes.json()
+    if (!presignJson.success) throw new Error(presignJson.error || 'Presign failed')
+    const { upload_url, public_url } = presignJson.data
+
+    const uploadRes = await fetch(upload_url, { method:'PUT', headers:{'Content-Type':file.type}, body:file })
+    if (!uploadRes.ok) throw new Error(`S3 upload failed: HTTP ${uploadRes.status}`)
+
+    uploadUrl = public_url
+    document.getElementById('preview-spinner').classList.remove('show')
+    document.getElementById('preview-label-text').textContent = hasBaseImage
+      ? '✨ Ready — generating your look…'
+      : '📸 Photo ready'
+
+    // Auto-send immediately when upload is complete
+    await autoSend()
+  } catch(e) {
+    console.error('[productUpload]', e.message)
+    showToast('Upload failed. Please try again.')
+    uploadUrl    = null
+    uploadBase64 = null
+    document.getElementById('upload-preview').classList.remove('show')
+  }
+}
+
+// Auto-trigger try-on after photo upload completes
+async function autoSend() {
   if (isSending || isGenerating) return
-  const input  = document.getElementById('msg-input')
-  const text   = input.value.trim()
-  const hasImg = !!uploadUrl
-  if (!text && !hasImg) return
+  if (!uploadUrl) return
 
   isSending = true
-  document.getElementById('send-btn').disabled = true
 
-  addUserMessage(text, uploadBase64)
-  input.value = ''
-  autoResize(input)
+  addUserMessage(null, uploadBase64)
 
   const imgUrl = uploadUrl
   removeUpload()
 
-  // If product image uploaded and customer has base image → generate try-on
   if (imgUrl && hasBaseImage) {
-    await generateTryon(imgUrl, text)
+    await generateTryon(imgUrl, '')
   } else {
     showTyping()
     try {
@@ -1196,7 +1306,7 @@ async function sendMessage() {
         body:    JSON.stringify({
           agent_id:   agentConfig._id,
           session_id: sessionId,
-          message:    text || 'I uploaded a product photo.',
+          message:    'I uploaded a product photo.',
           image_url:  imgUrl || null,
         }),
       })
@@ -1210,8 +1320,13 @@ async function sendMessage() {
   }
 
   isSending = false
-  updateSendBtn()
-  input.focus()
+}
+
+function removeUpload() {
+  uploadUrl    = null
+  uploadBase64 = null
+  document.getElementById('upload-preview').classList.remove('show')
+  document.getElementById('preview-img').src = ''
 }
 
 // ── TRY-ON GENERATION ──────────────────────────────────────────────────────
@@ -1241,7 +1356,6 @@ async function generateTryon(productImageUrl, userMessage) {
       if (reply) addAgentMessage(reply)
       addTryonResult(result_url, tryon_id, elapsed, cost)
 
-      // Add to local album cache — use result_url consistently
       albumItems.unshift({
         id:                tryon_id,
         result_url:        result_url,
@@ -1258,7 +1372,6 @@ async function generateTryon(productImageUrl, userMessage) {
     }
   } catch(e) {
     hideTryonIndicator()
-    // Fallback to normal chat
     showTyping()
     try {
       const res  = await fetch(`${API}/public/chat`, {
@@ -1289,7 +1402,6 @@ async function loadAlbum() {
     const res  = await fetch(`${API}/public/album?agent_id=${agentConfig._id}&mobile=${encodeURIComponent(mobile)}`)
     const json = await res.json()
     if (json.success && json.data?.tryons) {
-      // FIX: Normalize all items to use result_url consistently
       albumItems = json.data.tryons.map(t => ({
         id:                t.id,
         result_url:        t.result_url,
@@ -1321,24 +1433,24 @@ function renderAlbumGrid() {
   if (!albumItems.length) {
     grid.innerHTML = `<div class="album-empty">
       <div class="album-empty-icon">👗</div>
-      Upload a product photo in the chat to generate your first try-on look!
+      <div class="album-empty-title">No looks yet</div>
+      Upload a product photo to generate your first virtual try-on!
     </div>`
     return
   }
-  // FIX: Always use result_url (normalized above), with fallback safety
   grid.innerHTML = albumItems.map((item, i) => {
-    const imgUrl = item.result_url || ''
-    const safeId = escAttr(item.id || '')
+    const imgUrl  = item.result_url || ''
+    const safeId  = escAttr(item.id || '')
     const safeUrl = escAttr(imgUrl)
-    return `<div class="album-item" style="animation-delay:${i * 50}ms">
+    return `<div class="album-item" style="animation-delay:${i * 40}ms">
       <img src="${safeUrl}" alt="Try-on" loading="lazy"
            onerror="this.parentElement.style.opacity='0.5'"
            onclick="viewImage('${safeUrl}')">
-      <div class="album-item-footer">
+      <div class="album-item-overlay">
         <span class="album-item-date">${fmtDate(item.created_at)}</span>
         <div class="album-item-actions">
-          <button class="album-dl-btn"  onclick="downloadTryon('${safeId}','${safeUrl}')" title="Download">⬇</button>
-          <button class="album-del-btn" onclick="deleteTryon('${safeId}')"                title="Delete">🗑</button>
+          <button class="album-dl-btn"  onclick="event.stopPropagation();downloadTryon('${safeId}','${safeUrl}')" title="Download">⬇</button>
+          <button class="album-del-btn" onclick="event.stopPropagation();deleteTryon('${safeId}')"                title="Delete">🗑</button>
         </div>
       </div>
     </div>`
@@ -1358,13 +1470,11 @@ async function downloadTryon(tryonId, fallbackUrl) {
   showToast('Preparing your download…')
   try {
     if (tryonId) {
-      // Download via backend (with watermark) — returns base64 JSON
       const url  = `${API}/public/download/${tryonId}?mobile=${encodeURIComponent(mobile)}`
       const res  = await fetch(url)
       const json = await res.json()
 
       if (json.success && json.data?.image_b64) {
-        // Decode base64 → Uint8Array → Blob → object URL → click
         const { image_b64, content_type, filename } = json.data
         const bytes  = Uint8Array.from(atob(image_b64), c => c.charCodeAt(0))
         const blob   = new Blob([bytes], { type: content_type || 'image/jpeg' })
@@ -1378,11 +1488,9 @@ async function downloadTryon(tryonId, fallbackUrl) {
         setTimeout(() => URL.revokeObjectURL(href), 10000)
         return
       }
-      // API returned an error — fall through to direct URL
       console.warn('[download] API error:', json.error)
     }
 
-    // Fallback: direct URL (no watermark)
     if (fallbackUrl) {
       const a    = document.createElement('a')
       a.href     = fallbackUrl
@@ -1397,7 +1505,6 @@ async function downloadTryon(tryonId, fallbackUrl) {
     }
   } catch(e) {
     console.error('[download]', e.message)
-    // Last resort fallback
     if (fallbackUrl) {
       window.open(fallbackUrl, '_blank')
       showToast('Opening image — long-press to save 📱')
@@ -1416,80 +1523,6 @@ async function deleteTryon(tryonId) {
   updateAlbumBadge()
   renderAlbumGrid()
   showToast('Removed from album')
-}
-
-// ── PHOTO UPLOAD (product photo) ───────────────────────────────────────────
-function triggerPhotoUpload() {
-  document.getElementById('file-input').click()
-}
-
-async function handleFileSelect(input) {
-  const raw = input.files[0]
-  if (!raw) return
-  if (raw.size > 5 * 1024 * 1024) { showToast('Please choose an image under 5MB.'); return }
-  input.value = ''
-
-  // Resize client-side before anything else
-  const file = await resizeImageFile(raw)
-
-  const reader = new FileReader()
-  reader.onload = e => {
-    uploadBase64 = e.target.result
-    document.getElementById('preview-img').src = uploadBase64
-    document.getElementById('upload-preview').classList.add('show')
-    document.getElementById('preview-label').textContent = '📸 Uploading…'
-    scrollToBottom()
-  }
-  reader.readAsDataURL(file)
-
-  try {
-    const presignRes = await fetch(`${API}/public/upload/presign`, {
-      method:  'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body:    JSON.stringify({ session_id: sessionId, content_type: file.type }),
-    })
-    const presignJson = await presignRes.json()
-    if (!presignJson.success) throw new Error(presignJson.error || 'Presign failed')
-    const { upload_url, public_url } = presignJson.data
-
-    const uploadRes = await fetch(upload_url, { method:'PUT', headers:{'Content-Type':file.type}, body:file })
-    if (!uploadRes.ok) throw new Error(`S3 upload failed: HTTP ${uploadRes.status}`)
-
-    uploadUrl = public_url
-    document.getElementById('preview-label').textContent = hasBaseImage
-      ? '📸 Ready! Hit send to try on this item ✨'
-      : '📸 Photo ready — tap Send'
-    document.getElementById('send-btn').disabled = false
-  } catch(e) {
-    console.error('[productUpload]', e.message)
-    showToast('Upload failed. Please try again.')
-    uploadUrl   = null
-    uploadBase64 = null
-    document.getElementById('upload-preview').classList.remove('show')
-  }
-}
-
-function removeUpload() {
-  uploadUrl    = null
-  uploadBase64 = null
-  document.getElementById('upload-preview').classList.remove('show')
-  document.getElementById('preview-img').src = ''
-  updateSendBtn()
-}
-
-// ── INPUT HELPERS ──────────────────────────────────────────────────────────
-function handleKey(e) {
-  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage() }
-  updateSendBtn()
-}
-function autoResize(el) {
-  el.style.height = 'auto'
-  el.style.height = Math.min(el.scrollHeight, 120) + 'px'
-  updateSendBtn()
-}
-function updateSendBtn() {
-  const text = document.getElementById('msg-input').value.trim()
-  document.getElementById('send-btn').disabled = !text && !uploadUrl
 }
 
 // ── IMAGE VIEWER ───────────────────────────────────────────────────────────
@@ -1511,11 +1544,7 @@ function showToast(msg) {
 }
 
 // ── CLIENT-SIDE IMAGE RESIZE ──────────────────────────────────────────────
-// Resize any image file to maxPx on the longest side before uploading to S3.
-// Runs entirely in the browser — no server round-trip.
-// Ensures Azure never receives a multi-megapixel phone photo.
 const CLIENT_MAX_PX = 1024
-
 function resizeImageFile(file, maxPx = CLIENT_MAX_PX) {
   return new Promise((resolve) => {
     const img    = new Image()
@@ -1523,7 +1552,6 @@ function resizeImageFile(file, maxPx = CLIENT_MAX_PX) {
     img.onload = () => {
       URL.revokeObjectURL(objUrl)
       let w = img.naturalWidth, h = img.naturalHeight
-      // Already small enough — skip resize
       if (w <= maxPx && h <= maxPx) { resolve(file); return }
       if (w > h) { h = Math.round(h * maxPx / w); w = maxPx }
       else       { w = Math.round(w * maxPx / h); h = maxPx }
@@ -1547,7 +1575,6 @@ function escHtml(str) {
     .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
     .replace(/"/g,'&quot;').replace(/\n/g,'<br>')
 }
-// For HTML attribute contexts (onclick values etc.)
 function escAttr(str) {
   return String(str)
     .replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/'/g,'&#39;')
