@@ -426,27 +426,103 @@ html, body { height:100%; height:100dvh; overflow:hidden; background:var(--bg); 
   border-top:1px solid var(--border);
 }
 
-/* Upload preview strip */
-#upload-preview {
-  display:none;
-  margin-bottom:10px;
-  animation:slideUp .25s var(--ease);
-}
-#upload-preview.show { display:block; }
+/* ── PRODUCT TRAY (multi-item) ── */
 @keyframes slideUp { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:none} }
-.preview-inner {
-  position:relative; display:inline-block; border-radius:10px; overflow:hidden;
-  border:2px solid rgba(var(--brand-rgb),.4);
+
+#product-tray-wrap {
+  display:none;
+  animation:slideUp .25s var(--ease);
+  margin-bottom:10px;
 }
-.preview-inner img { height:76px; display:block; border-radius:8px; }
-.preview-remove {
-  position:absolute; top:4px; right:4px; width:22px; height:22px;
-  background:rgba(0,0,0,.75); border:none; border-radius:50%; color:#fff;
-  font-size:12px; cursor:pointer; display:flex; align-items:center; justify-content:center;
+
+.tray-meta {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:0 2px 6px;
 }
-.preview-label { font-size:11px; color:var(--brand); margin-top:5px; font-weight:500; display:flex; align-items:center; gap:6px; }
-.preview-upload-spinner { width:12px; height:12px; border-radius:50%; border:1.5px solid rgba(var(--brand-rgb),.2); border-top-color:var(--brand); animation:spin .8s linear infinite; display:none; }
-.preview-upload-spinner.show { display:inline-block; }
+.tray-meta-label { font-size:11px; font-weight:600; color:var(--text2); }
+.tray-meta-hint  { font-size:10px; color:var(--text3); }
+
+.product-tray {
+  display:flex; gap:8px; align-items:center;
+  overflow-x:auto; padding-bottom:4px;
+  -webkit-overflow-scrolling:touch;
+}
+.product-tray::-webkit-scrollbar { display:none; }
+
+/* Individual product thumbnail */
+.tray-item {
+  position:relative; flex-shrink:0;
+  width:68px; height:68px; border-radius:11px; overflow:visible;
+  border:2px solid rgba(var(--brand-rgb),.45);
+  background:var(--surface3);
+  box-shadow:0 4px 14px rgba(0,0,0,.45);
+  animation:msgIn .25s var(--ease);
+}
+.tray-item img {
+  width:100%; height:100%; object-fit:cover; display:block; border-radius:9px;
+}
+.tray-item-num {
+  position:absolute; top:-6px; left:-6px;
+  width:18px; height:18px; border-radius:50%;
+  background:var(--brand); color:#fff;
+  font-size:9px; font-weight:700;
+  display:flex; align-items:center; justify-content:center;
+  border:2px solid var(--surface);
+  box-shadow:0 2px 6px rgba(var(--brand-rgb),.5);
+}
+.tray-item-rm {
+  position:absolute; top:-6px; right:-6px;
+  width:18px; height:18px; border-radius:50%;
+  background:rgba(30,24,20,.9); color:#fff;
+  border:2px solid var(--surface);
+  font-size:9px; cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
+  transition:background .15s; box-shadow:0 2px 6px rgba(0,0,0,.5);
+}
+.tray-item-rm:hover { background:#ef4444; }
+
+/* Uploading placeholder */
+.tray-item-loading {
+  flex-shrink:0; width:68px; height:68px; border-radius:11px;
+  border:2px dashed rgba(var(--brand-rgb),.3);
+  background:rgba(var(--brand-rgb),.05);
+  display:flex; align-items:center; justify-content:center;
+  animation:msgIn .25s var(--ease);
+}
+
+/* "+ Add item" slot */
+.tray-add-slot {
+  flex-shrink:0; width:68px; height:68px; border-radius:11px;
+  border:2px dashed rgba(var(--brand-rgb),.3);
+  background:rgba(var(--brand-rgb),.04);
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  cursor:pointer; transition:all .15s;
+  color:var(--brand); gap:2px;
+}
+.tray-add-slot:hover { border-color:rgba(var(--brand-rgb),.65); background:rgba(var(--brand-rgb),.1); }
+.tray-add-slot:active { transform:scale(.95); }
+.tray-add-icon { font-size:22px; line-height:1; }
+.tray-add-label { font-size:9px; color:var(--text2); font-weight:600; letter-spacing:.03em; }
+
+/* Generate button */
+#generate-btn {
+  width:100%; margin-top:10px;
+  padding:14px 18px;
+  background:linear-gradient(135deg, var(--brand) 0%, rgba(var(--brand-rgb),.8) 100%);
+  border:none; border-radius:var(--r); color:#fff;
+  font-family:var(--ff-body); font-size:15px; font-weight:600;
+  cursor:pointer; transition:all .2s var(--ease);
+  box-shadow:0 6px 24px rgba(var(--brand-rgb),.45);
+  display:flex; align-items:center; justify-content:center; gap:8px;
+  letter-spacing:.02em;
+}
+#generate-btn:hover { opacity:.92; transform:translateY(-2px); box-shadow:0 10px 30px rgba(var(--brand-rgb),.5); }
+#generate-btn:active { transform:scale(.97); }
+#generate-btn:disabled { opacity:.38; pointer-events:none; background:var(--surface3); box-shadow:none; color:var(--text2); }
+.gen-btn-combo-badge {
+  background:rgba(255,255,255,.22); border-radius:20px;
+  padding:2px 7px; font-size:10px; font-weight:700; letter-spacing:.06em;
+}
 
 /* The main upload button */
 #tryon-upload-btn {
@@ -922,22 +998,22 @@ html, body { height:100%; height:100dvh; overflow:hidden; background:var(--bg); 
     </div>
   </div>
 
-  <!-- Input Area (photo-only — no textarea) -->
+  <!-- Input Area (photo-only — multi-product tray) -->
   <div id="input-area">
 
-    <!-- Upload preview (shown after photo picked) -->
-    <div id="upload-preview">
-      <div class="preview-inner">
-        <img id="preview-img" src="" alt="upload">
-        <button class="preview-remove" onclick="removeUpload()">✕</button>
+    <!-- ── Multi-Product Tray ── -->
+    <div id="product-tray-wrap">
+      <div class="tray-meta">
+        <span class="tray-meta-label" id="tray-meta-label">0 items selected</span>
+        <span class="tray-meta-hint" id="tray-meta-hint">Add up to 3 items</span>
       </div>
-      <div class="preview-label" id="preview-label">
-        <span class="preview-upload-spinner" id="preview-spinner"></span>
-        <span id="preview-label-text">📸 Uploading…</span>
-      </div>
+      <div class="product-tray" id="product-tray"></div>
+      <button id="generate-btn" disabled onclick="generateCombinedTryon()">
+        ✨ Generate Look
+      </button>
     </div>
 
-    <!-- Main upload CTA button -->
+    <!-- Main upload CTA button (visible when tray is empty) -->
     <button id="tryon-upload-btn" onclick="triggerPhotoUpload()">
       <div class="upload-btn-inner">
         <div class="upload-btn-icon">📷</div>
@@ -1008,12 +1084,11 @@ let mobile           = null
 let sessionId        = null
 let hasBaseImage     = false
 let baseImageUrl     = null
-let uploadUrl        = null
-let uploadBase64     = null
 let isSending        = false
 let isGenerating     = false
 let isUpdatingPhoto  = false
 let albumItems       = []
+let pendingProducts  = []   // [{url, base64, uploading}] — up to 3
 
 // ── SLUG RESOLUTION ────────────────────────────────────────────────────────
 function getSlug() {
@@ -1364,7 +1439,10 @@ function showChat() {
 
   const a = agentConfig
   setTimeout(() => {
-    addAgentMessage(a.welcome_msg || `Hi! I'm ${a.agent_name}. Upload any product photo and I'll show you how it looks on you! 😊`)
+    addAgentMessage(
+      a.welcome_msg ||
+      `Hi! I'm ${a.agent_name}. Upload a product photo — or combine up to 3 items for a full outfit try-on! 😊`
+    )
   }, 300)
 }
 
@@ -1481,8 +1559,10 @@ function scrollToBottom() {
   setTimeout(() => el.scrollTop = el.scrollHeight, 60)
 }
 
-// ── PHOTO UPLOAD (product photo) ───────────────────────────────────────────
+// ── PHOTO UPLOAD (multi-product tray) ─────────────────────────────────────
 function triggerPhotoUpload() {
+  if (isGenerating || isSending) return
+  if (pendingProducts.length >= 3) { showToast('Maximum 3 items already added ✋'); return }
   document.getElementById('file-input').click()
 }
 
@@ -1492,19 +1572,21 @@ async function handleFileSelect(input) {
   if (raw.size > 5 * 1024 * 1024) { showToast('Please choose an image under 5MB.'); return }
   input.value = ''
 
+  // Push uploading placeholder
+  const idx = pendingProducts.length
+  pendingProducts.push({ url: null, base64: null, uploading: true })
+  renderProductTray()
+
   const file = await resizeImageFile(raw)
 
-  const reader = new FileReader()
-  reader.onload = e => {
-    uploadBase64 = e.target.result
-    document.getElementById('preview-img').src = uploadBase64
-    document.getElementById('upload-preview').classList.add('show')
-    const spinner = document.getElementById('preview-spinner')
-    spinner.classList.add('show')
-    document.getElementById('preview-label-text').textContent = 'Uploading…'
-    scrollToBottom()
-  }
-  reader.readAsDataURL(file)
+  // Read base64 for immediate preview
+  const base64 = await new Promise(resolve => {
+    const r = new FileReader()
+    r.onload = e => resolve(e.target.result)
+    r.readAsDataURL(file)
+  })
+  pendingProducts[idx].base64 = base64
+  renderProductTray()
 
   try {
     const presignRes = await fetch(`${API}/public/upload/presign`, {
@@ -1519,85 +1601,159 @@ async function handleFileSelect(input) {
     const uploadRes = await fetch(upload_url, { method:'PUT', headers:{'Content-Type':file.type}, body:file })
     if (!uploadRes.ok) throw new Error(`S3 upload failed: HTTP ${uploadRes.status}`)
 
-    uploadUrl = public_url
-    document.getElementById('preview-spinner').classList.remove('show')
-    document.getElementById('preview-label-text').textContent = hasBaseImage
-      ? '✨ Ready — generating your look…'
-      : '📸 Photo ready'
-
-    // Auto-send immediately when upload is complete
-    await autoSend()
+    pendingProducts[idx].url      = public_url
+    pendingProducts[idx].uploading = false
+    renderProductTray()
   } catch(e) {
     console.error('[productUpload]', e.message)
-    showToast('Upload failed. Please try again.')
-    uploadUrl    = null
-    uploadBase64 = null
-    document.getElementById('upload-preview').classList.remove('show')
+    showToast(`Upload failed: ${e.message}`)
+    pendingProducts.splice(idx, 1)
+    renderProductTray()
   }
 }
 
-// Auto-trigger try-on after photo upload completes
-async function autoSend() {
-  if (isSending || isGenerating) return
-  if (!uploadUrl) return
+/* Render the tray thumbnails + add-slot + generate button */
+function renderProductTray() {
+  const trayWrap  = document.getElementById('product-tray-wrap')
+  const tray      = document.getElementById('product-tray')
+  const uploadBtn = document.getElementById('tryon-upload-btn')
+  const genBtn    = document.getElementById('generate-btn')
+  const labelEl   = document.getElementById('tray-meta-label')
+  const hintEl    = document.getElementById('tray-meta-hint')
 
-  isSending = true
+  if (pendingProducts.length === 0) {
+    trayWrap.style.display  = 'none'
+    uploadBtn.style.display = 'block'
+    return
+  }
 
-  addUserMessage(null, uploadBase64)
+  trayWrap.style.display  = 'block'
+  uploadBtn.style.display = 'none'
 
-  const imgUrl = uploadUrl
-  removeUpload()
+  // Labels
+  const count = pendingProducts.length
+  labelEl.textContent = `${count} item${count > 1 ? 's' : ''} selected`
+  hintEl.textContent  = count >= 3
+    ? '3/3 · Max reached'
+    : `${count}/3 · Tap + to add more`
 
-  if (imgUrl && hasBaseImage) {
-    await generateTryon(imgUrl, '')
-  } else {
-    showTyping()
-    try {
-      const res  = await fetch(`${API}/public/chat`, {
-        method:  'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body:    JSON.stringify({
-          agent_id:   agentConfig._id,
-          session_id: sessionId,
-          message:    'I uploaded a product photo.',
-          image_url:  imgUrl || null,
-        }),
-      })
-      const json = await res.json()
-      hideTyping()
-      addAgentMessage(json.data?.reply || json.error || 'Sorry, please try again.')
-    } catch(e) {
-      hideTyping()
-      addAgentMessage('Sorry, something went wrong. Please check your connection.')
+  // Build thumbnails
+  let html = pendingProducts.map((p, i) => {
+    if (!p.base64 && p.uploading) {
+      // No preview yet — show spinner slot
+      return `<div class="tray-item-loading"><div class="mini-spin"></div></div>`
     }
+    return `<div class="tray-item">
+      <img src="${p.base64}" alt="Item ${i+1}" onclick="viewImage(this.src)" style="cursor:pointer">
+      <div class="tray-item-num">${i+1}</div>
+      ${p.uploading
+        ? `<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.45);border-radius:9px"><div class="mini-spin"></div></div>`
+        : `<button class="tray-item-rm" onclick="removeTrayItem(${i})" title="Remove">✕</button>`
+      }
+    </div>`
+  }).join('')
+
+  // Add-item slot (if < 3 and not all uploading)
+  if (count < 3) {
+    html += `<button class="tray-add-slot" onclick="triggerPhotoUpload()" title="Add another item">
+      <span class="tray-add-icon">＋</span>
+      <span class="tray-add-label">Add item</span>
+    </button>`
   }
 
-  isSending = false
+  tray.innerHTML = html
+
+  // Enable generate only when all uploads are done
+  const allReady = pendingProducts.length > 0 && pendingProducts.every(p => !p.uploading && p.url)
+  genBtn.disabled = !allReady
+  if (allReady) {
+    const isCombo = pendingProducts.length > 1
+    genBtn.innerHTML = isCombo
+      ? `✨ Generate Look <span class="gen-btn-combo-badge">COMBO</span>`
+      : `✨ Generate Look`
+  } else {
+    genBtn.innerHTML = `⏳ Uploading…`
+  }
 }
 
-function removeUpload() {
-  uploadUrl    = null
-  uploadBase64 = null
-  document.getElementById('upload-preview').classList.remove('show')
-  document.getElementById('preview-img').src = ''
+function removeTrayItem(idx) {
+  pendingProducts.splice(idx, 1)
+  renderProductTray()
+  if (pendingProducts.length === 0) {
+    document.getElementById('tryon-upload-btn').style.display = 'block'
+  }
+}
+
+/* Called when user taps "Generate Look" */
+async function generateCombinedTryon() {
+  if (isGenerating || isSending) return
+  const ready = pendingProducts.filter(p => !p.uploading && p.url)
+  if (ready.length === 0) return
+
+  const urls     = ready.map(p => p.url)
+  const previews = ready.map(p => p.base64)
+
+  // Show user message bubbles with all product thumbnails
+  addUserMessageMulti(previews)
+
+  // Clear tray
+  pendingProducts = []
+  renderProductTray()
+  document.getElementById('tryon-upload-btn').style.display = 'block'
+
+  await generateTryon(urls, '')
+}
+
+/* Add user message showing multiple product images side-by-side */
+function addUserMessageMulti(base64Array) {
+  if (!base64Array || base64Array.length === 0) return
+  const wrap = document.createElement('div')
+  wrap.className = 'msg-wrap user'
+
+  if (base64Array.length === 1) {
+    wrap.innerHTML = `
+      <div class="bubble-img" onclick="viewImage(this.querySelector('img').src)">
+        <img src="${base64Array[0]}" alt="Product">
+        <div class="bubble-img-caption">📸 Product photo</div>
+      </div>
+      <div class="bubble-time">${nowTime()}</div>`
+  } else {
+    const labels = ['Item 1','Item 2','Item 3']
+    const imgs = base64Array.map((src, i) => `
+      <div class="bubble-img" style="max-width:${base64Array.length===3?'88px':'110px'}"
+           onclick="viewImage(this.querySelector('img').src)">
+        <img src="${src}" alt="Item ${i+1}">
+        <div class="bubble-img-caption" style="font-size:10px">📸 ${labels[i]||'Item'}</div>
+      </div>`).join('')
+    wrap.innerHTML = `
+      <div style="display:flex;gap:5px;flex-wrap:wrap;justify-content:flex-end">${imgs}</div>
+      <div class="bubble-time" style="text-align:right;margin-top:4px">${nowTime()}</div>`
+  }
+  document.getElementById('messages').appendChild(wrap)
+  scrollToBottom()
 }
 
 // ── TRY-ON GENERATION ──────────────────────────────────────────────────────
-async function generateTryon(productImageUrl, userMessage) {
+// productImageUrls: string | string[]
+async function generateTryon(productImageUrls, userMessage) {
   isGenerating = true
   showTryonIndicator()
   const genStart = Date.now()
+
+  // Normalise to array
+  const urlArray = Array.isArray(productImageUrls) ? productImageUrls : [productImageUrls]
 
   try {
     const res  = await fetch(`${API}/public/tryon`, {
       method:  'POST',
       headers: { 'Content-Type': 'application/json' },
       body:    JSON.stringify({
-        agent_id:          agentConfig._id,
+        agent_id:           agentConfig._id,
         mobile,
-        session_id:        sessionId,
-        product_image_url: productImageUrl,
-        message:           userMessage || '',
+        session_id:         sessionId,
+        product_image_url:  urlArray[0],    // backward-compat single
+        product_image_urls: urlArray,        // new multi-item field
+        message:            userMessage || '',
       }),
     })
     const json = await res.json()
@@ -1612,7 +1768,7 @@ async function generateTryon(productImageUrl, userMessage) {
       albumItems.unshift({
         id:                tryon_id,
         result_url:        result_url,
-        product_image_url: productImageUrl,
+        product_image_url: urlArray[0],
         created_at:        new Date().toISOString(),
       })
       updateAlbumBadge()
@@ -1633,13 +1789,13 @@ async function generateTryon(productImageUrl, userMessage) {
         body:    JSON.stringify({
           agent_id:   agentConfig._id,
           session_id: sessionId,
-          message:    userMessage || 'I uploaded a product photo.',
-          image_url:  productImageUrl,
+          message:    userMessage || 'I uploaded product photos.',
+          image_url:  urlArray[0],
         }),
       })
       const json = await res.json()
       hideTyping()
-      addAgentMessage(json.data?.reply || 'Thanks for sharing the product photo!')
+      addAgentMessage(json.data?.reply || 'Thanks for sharing the product photos!')
     } catch {
       hideTyping()
       addAgentMessage('Sorry, something went wrong. Please try again.')
