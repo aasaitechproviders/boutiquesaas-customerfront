@@ -877,6 +877,103 @@ html, body { height:100%; height:100dvh; overflow:hidden; background:var(--bg); 
   .album-item-footer { padding:7px 8px; }
   .album-dl-btn, .album-del-btn { width:26px; height:26px; font-size:12px; }
 }
+
+/* ── STYLE PROFILE CARD ── */
+.style-profile-card {
+  max-width:92%; border-radius:18px; overflow:hidden;
+  background:linear-gradient(145deg,rgba(var(--brand-rgb),.13),rgba(var(--brand-rgb),.05));
+  border:1px solid rgba(var(--brand-rgb),.28);
+  box-shadow:0 6px 28px rgba(0,0,0,.4);
+  animation:msgIn .4s var(--ease) both;
+}
+.spc-header {
+  display:flex; align-items:center; gap:10px;
+  padding:13px 16px 10px;
+  border-bottom:1px solid rgba(var(--brand-rgb),.15);
+}
+.spc-sparkle { font-size:20px; flex-shrink:0; }
+.spc-title { font-family:var(--ff-head); font-size:15px; font-weight:500; color:var(--cream); }
+.spc-sub   { font-size:10.5px; color:var(--text3); margin-top:1px; }
+.spc-body  { padding:12px 16px 14px; display:flex; flex-direction:column; gap:11px; }
+.spc-row   { display:flex; flex-direction:column; gap:5px; }
+.spc-label { font-size:10px; font-weight:700; color:var(--text3); text-transform:uppercase; letter-spacing:.1em; }
+.spc-tone-badge {
+  display:inline-flex; align-items:center; gap:7px;
+  padding:4px 11px 4px 6px; border-radius:20px;
+  background:rgba(var(--brand-rgb),.1); border:1px solid rgba(var(--brand-rgb),.2);
+  font-size:12.5px; color:var(--text); font-weight:500; width:fit-content;
+}
+.spc-tone-dot {
+  width:14px; height:14px; border-radius:50%; flex-shrink:0;
+  border:1.5px solid rgba(255,255,255,.2);
+}
+.spc-undertone {
+  font-size:10px; color:var(--text3); background:rgba(255,255,255,.06);
+  padding:2px 7px; border-radius:10px; margin-left:2px;
+}
+.color-swatches-row {
+  display:flex; gap:6px; flex-wrap:wrap; align-items:center;
+}
+.color-dot-wrap { display:flex; flex-direction:column; align-items:center; gap:2px; }
+.color-dot {
+  width:26px; height:26px; border-radius:50%; cursor:default;
+  border:2px solid rgba(255,255,255,.18);
+  box-shadow:0 2px 8px rgba(0,0,0,.35);
+  transition:transform .15s; flex-shrink:0;
+}
+.color-dot:hover { transform:scale(1.2); }
+.color-dot-label { font-size:8.5px; color:var(--text3); text-align:center; max-width:30px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.color-avoid-row { display:flex; gap:6px; flex-wrap:wrap; align-items:center; }
+.color-avoid-dot {
+  width:22px; height:22px; border-radius:50%;
+  border:2px dashed rgba(239,68,68,.5);
+  opacity:.6; position:relative; overflow:hidden;
+  flex-shrink:0;
+}
+.color-avoid-dot::after {
+  content:''; position:absolute; inset:0;
+  background:linear-gradient(135deg,transparent 43%,rgba(239,68,68,.7) 43%,rgba(239,68,68,.7) 57%,transparent 57%);
+}
+.style-chips-row { display:flex; gap:6px; flex-wrap:wrap; }
+.style-chip {
+  padding:4px 10px; border-radius:20px;
+  background:rgba(var(--brand-rgb),.12);
+  border:1px solid rgba(var(--brand-rgb),.25);
+  font-size:11.5px; color:var(--brand); font-weight:500;
+  white-space:nowrap;
+}
+.spc-summary {
+  font-size:12.5px; color:var(--text2); line-height:1.65;
+  padding:10px 12px;
+  background:rgba(0,0,0,.2);
+  border-radius:10px;
+  border-left:3px solid rgba(var(--brand-rgb),.4);
+  font-style:italic;
+}
+
+/* ── ANALYZING OVERLAY (base screen) ── */
+.base-analyzing {
+  display:none; flex-direction:column; align-items:center; gap:10px;
+  margin-top:14px; text-align:center;
+}
+.base-analyzing.show { display:flex; }
+.ba-ring {
+  width:38px; height:38px; border-radius:50%;
+  border:2.5px solid rgba(var(--brand-rgb),.15);
+  border-top-color:var(--brand);
+  animation:spin .9s linear infinite;
+}
+.ba-text { font-size:13.5px; color:var(--text2); }
+.ba-sub  { font-size:11px; color:var(--text3); }
+
+/* ── STYLE CARD DISMISS ── */
+.spc-dismiss {
+  width:100%; padding:8px; text-align:center;
+  background:none; border:none; border-top:1px solid rgba(var(--brand-rgb),.1);
+  color:var(--text3); font-family:var(--ff-body); font-size:11px;
+  cursor:pointer; transition:color .15s;
+}
+.spc-dismiss:hover { color:var(--text2); }
 </style>
 </head>
 <body>
@@ -930,7 +1027,12 @@ html, body { height:100%; height:100dvh; overflow:hidden; background:var(--bg); 
   <button id="base-upload-btn" onclick="submitBaseImage()">Use This Photo ✓</button>
   <div class="base-uploading" id="base-uploading">
     <div class="mini-spin"></div>
-    Saving your photo…
+    <span id="base-uploading-text">Uploading your photo…</span>
+  </div>
+  <div class="base-analyzing" id="base-analyzing">
+    <div class="ba-ring"></div>
+    <div class="ba-text">✨ Analysing your style…</div>
+    <div class="ba-sub">Finding your perfect colours & silhouettes</div>
   </div>
   <button id="base-cancel-btn" onclick="cancelBaseUpdate()">Cancel</button>
 </div>
@@ -1098,6 +1200,8 @@ let isGenerating     = false
 let isUpdatingPhoto  = false
 let albumItems       = []
 let pendingProducts  = []   // [{url, base64, uploading}] — up to 3
+let styleProfile     = null  // style analysis result from CUSTOMER-02
+let personalizedWelcome = null // formatted welcome from backend
 
 // ── SLUG RESOLUTION ────────────────────────────────────────────────────────
 function getSlug() {
@@ -1112,7 +1216,154 @@ function getSlug() {
   return { domain: hostname, mode: 'domain' }
 }
 
-// ── LOAD AGENT ─────────────────────────────────────────────────────────────
+// ── COLOR UTILS FOR STYLE CARD ────────────────────────────────────────────
+const COLOR_MAP = {
+  // Reds & Pinks
+  'red':'#e53e3e','coral':'#ff6b6b','rose':'#f43f5e','pink':'#ec4899',
+  'hot pink':'#ff69b4','magenta':'#d946ef','maroon':'#7f1d1d',
+  'burgundy':'#800020','crimson':'#dc143c','cherry':'#de3163',
+  'blush':'#ffb6c1','salmon':'#fa8072','peach':'#ffcba4',
+  // Oranges
+  'orange':'#f97316','warm orange':'#ea580c','amber':'#d97706',
+  'tangerine':'#f77f00','rust':'#b45309',
+  // Yellows & Golds
+  'yellow':'#eab308','gold':'#d4a017','golden':'#ffd700',
+  'mustard':'#e3a008','saffron':'#f59e0b','cream':'#fffdd0',
+  // Greens
+  'olive':'#6b7c24','olive green':'#6b7c24','green':'#22c55e',
+  'emerald':'#059669','mint':'#6ee7b7','sage':'#87ae73','khaki':'#c3b091',
+  // Blues
+  'blue':'#3b82f6','navy':'#1e3a5f','navy blue':'#1e3a5f',
+  'royal blue':'#4169e1','sky blue':'#87ceeb','teal':'#0d9488',
+  'turquoise':'#40e0d0','peacock blue':'#1e9ab0','indigo':'#4f46e5',
+  'cobalt':'#0047ab','powder blue':'#b0e0e6','steel blue':'#4682b4',
+  // Purples
+  'purple':'#7c3aed','violet':'#7c3aed','lavender':'#c4a7e7',
+  'plum':'#673147','grape':'#6f2da8','mauve':'#c78fbe','lilac':'#c8a2c8',
+  // Neutrals
+  'white':'#f0e6d3','off white':'#faf9f6','ivory':'#fffff0',
+  'beige':'#f5f5dc','champagne':'#fad6a5','nude':'#e8c9a0',
+  'tan':'#d2b48c','camel':'#c19a6b','brown':'#92400e',
+  'chocolate':'#3d1515','black':'#1a1a1a','charcoal':'#374151',
+  'grey':'#6b7280','gray':'#6b7280','silver':'#9ca3af',
+  // Indian fashion tones
+  'terracotta':'#c17a52','burnt orange':'#cc5500','copper':'#b87333',
+  'warm red':'#c0392b','deep red':'#8b0000','rani pink':'#e75480',
+  'peacock':'#1e9ab0','mehendi':'#7d8c1f','sandal':'#c8a96e',
+  'pastel yellow':'#fef08a','pastel pink':'#fecdd3','pastel blue':'#bae6fd',
+}
+
+function colorNameToHex(name) {
+  if (!name) return '#888'
+  const key = name.toLowerCase().trim()
+  if (COLOR_MAP[key]) return COLOR_MAP[key]
+  // Partial match
+  for (const [k, v] of Object.entries(COLOR_MAP)) {
+    if (key.includes(k) || k.includes(key)) return v
+  }
+  // Fallback: deterministic color from name hash
+  let hash = 0
+  for (let i = 0; i < name.length; i++) hash = name.charCodeAt(i) + ((hash << 5) - hash)
+  const h = Math.abs(hash) % 360
+  return `hsl(${h},55%,55%)`
+}
+
+// ── SHOW STYLE PROFILE CARD ────────────────────────────────────────────────
+function showStyleProfileCard(sp, welcomeMsg) {
+  if (!sp) return
+
+  // Color swatches (recommended)
+  const colors     = sp.recommended_colors || []
+  const avoidClrs  = sp.avoid_colors       || []
+  const styles     = sp.best_styles        || []
+
+  const swatches = colors.slice(0, 7).map(c => {
+    const hex   = colorNameToHex(c)
+    const label = c.length > 10 ? c.slice(0, 9) + '…' : c
+    return `<div class="color-dot-wrap">
+      <div class="color-dot" style="background:${hex}" title="${escHtml(c)}"></div>
+      <div class="color-dot-label">${escHtml(label)}</div>
+    </div>`
+  }).join('')
+
+  const avoidSwatches = avoidClrs.slice(0, 3).map(c => {
+    const hex = colorNameToHex(c)
+    return `<div class="color-avoid-dot" style="background:${hex}" title="Avoid: ${escHtml(c)}"></div>`
+  }).join('')
+
+  const styleChips = styles.slice(0, 5).map(s =>
+    `<span class="style-chip">${escHtml(s)}</span>`
+  ).join('')
+
+  // Skin tone indicator color
+  const skinToneColors = {
+    'fair':'#f7dfc0','wheatish':'#d4a574','medium':'#c08050',
+    'dusky':'#8b6040','deep':'#5c3820',
+  }
+  const toneKey = (sp.skin_tone || '').toLowerCase().trim()
+  let skinDotColor = skinToneColors[toneKey]
+  if (!skinDotColor) {
+    for (const [k, v] of Object.entries(skinToneColors)) {
+      if (toneKey.includes(k) || k.includes(toneKey)) { skinDotColor = v; break }
+    }
+    if (!skinDotColor) skinDotColor = '#d4a574'
+  }
+
+  const cap = s => s ? s.charAt(0).toUpperCase() + s.slice(1) : ''
+
+  const wrap = document.createElement('div')
+  wrap.className = 'msg-wrap agent'
+  wrap.innerHTML = `${agentAvatarHtml()}<div>
+    <div class="style-profile-card">
+      <div class="spc-header">
+        <span class="spc-sparkle">🎨</span>
+        <div>
+          <div class="spc-title">Your Style Profile</div>
+          <div class="spc-sub">Personalised from your photo</div>
+        </div>
+      </div>
+      <div class="spc-body">
+        ${sp.skin_tone ? `<div class="spc-row">
+          <div class="spc-label">Skin Tone</div>
+          <div class="spc-tone-badge">
+            <div class="spc-tone-dot" style="background:${skinDotColor}"></div>
+            ${escHtml(cap(sp.skin_tone))}
+            ${sp.undertone ? `<span class="spc-undertone">${escHtml(cap(sp.undertone))} undertone</span>` : ''}
+          </div>
+        </div>` : ''}
+
+        ${colors.length ? `<div class="spc-row">
+          <div class="spc-label">Colours That Flatter You</div>
+          <div class="color-swatches-row">${swatches}</div>
+        </div>` : ''}
+
+        ${avoidClrs.length ? `<div class="spc-row">
+          <div class="spc-label">Avoid These</div>
+          <div class="color-avoid-row">
+            ${avoidSwatches}
+            <span style="font-size:11px;color:var(--text3)">${avoidClrs.slice(0,3).map(c => escHtml(c)).join(', ')}</span>
+          </div>
+        </div>` : ''}
+
+        ${styles.length ? `<div class="spc-row">
+          <div class="spc-label">Best Silhouettes For You</div>
+          <div class="style-chips-row">${styleChips}</div>
+        </div>` : ''}
+
+        ${sp.style_summary ? `<div class="spc-summary">${escHtml(sp.style_summary)}</div>` : ''}
+      </div>
+      <button class="spc-dismiss" onclick="this.closest('.msg-wrap').style.opacity='0.5';this.closest('.msg-wrap').style.height='0';this.closest('.msg-wrap').style.overflow='hidden';">
+        Hide profile ↑
+      </button>
+    </div>
+    <div class="bubble-time">${nowTime()}</div>
+  </div>`
+
+  document.getElementById('messages').appendChild(wrap)
+  scrollToBottom()
+}
+
+// ── LOAD AGENT ─────────────────────────────────────────────────────────────────
 async function loadAgent() {
   const ref = getSlug()
   const url = ref.mode === 'slug'
@@ -1306,6 +1557,10 @@ async function initSession() {
       if (json.data.base_image_url) {
         updateUserAvatar(json.data.base_image_url)
       }
+      // Returning customer: restore their stored style profile
+      if (json.data.style_profile) {
+        styleProfile = json.data.style_profile
+      }
     }
   } catch(e) {
     console.warn('[identify]', e.message)
@@ -1407,14 +1662,27 @@ async function submitBaseImage() {
     const uploadRes = await fetch(upload_url, { method:'PUT', headers:{'Content-Type':file.type}, body:file })
     if (!uploadRes.ok) throw new Error(`S3 upload failed: HTTP ${uploadRes.status}`)
 
+    // Stage 2: switch to "analysing style" state
+    document.getElementById('base-uploading').classList.remove('show')
+    document.getElementById('base-analyzing').classList.add('show')
+
     const regRes = await fetch(`${API}/public/customer/base-image`, {
       method:  'POST',
       headers: { 'Content-Type': 'application/json' },
       body:    JSON.stringify({ agent_id: agentConfig._id, mobile, base_image_url: public_url }),
     })
+    document.getElementById('base-analyzing').classList.remove('show')
     if (!regRes.ok) {
-      const regJson = await regRes.json().catch(() => ({}))
-      throw new Error(regJson.error || 'Failed to save photo on server')
+      const regErrJson = await regRes.json().catch(() => ({}))
+      throw new Error(regErrJson.error || 'Failed to save photo on server')
+    }
+
+    // Read style profile from response (CUSTOMER-02 now runs analysis)
+    const regJson = await regRes.json().catch(() => ({}))
+    const regData = regJson.data || regJson
+    if (regData.style_profile) {
+      styleProfile        = regData.style_profile
+      personalizedWelcome = regData.personalized_welcome || null
     }
 
     hasBaseImage = true
@@ -1423,7 +1691,12 @@ async function submitBaseImage() {
 
     if (isUpdatingPhoto) {
       isUpdatingPhoto = false
-      showToast('Photo updated! ✨ Future try-ons will use your new photo.')
+      if (styleProfile) {
+        showToast('Photo updated! ✨ Refreshing your style profile…')
+        setTimeout(() => showStyleProfileCard(styleProfile, null), 500)
+      } else {
+        showToast('Photo updated! ✨ Future try-ons will use your new photo.')
+      }
     } else {
       showChat()
       loadAlbum()
@@ -1431,6 +1704,7 @@ async function submitBaseImage() {
   } catch(e) {
     console.error('[base upload]', e.message)
     document.getElementById('base-uploading').classList.remove('show')
+    document.getElementById('base-analyzing').classList.remove('show')
     document.getElementById('base-upload-btn').style.display     = 'block'
     document.getElementById('base-preview-change').style.display = 'block'
     document.getElementById('base-cancel-btn').style.display     = isUpdatingPhoto ? 'block' : 'none'
@@ -1447,12 +1721,25 @@ function showChat() {
   }
 
   const a = agentConfig
-  setTimeout(() => {
-    addAgentMessage(
-      a.welcome_msg ||
-      `Hi! I'm ${a.agent_name}. Upload a product photo — or combine up to 3 items for a full outfit try-on! 😊`
-    )
-  }, 300)
+
+  // Show style profile card first (if we have one), then the welcome message
+  if (styleProfile) {
+    setTimeout(() => {
+      showStyleProfileCard(styleProfile, null)
+    }, 350)
+    setTimeout(() => {
+      const welcomeText = personalizedWelcome ||
+        (a.welcome_msg || `Hi! I'm ${a.agent_name}. I've personalised your experience! Upload a product photo to try it on. 😊`)
+      addAgentMessage(welcomeText)
+    }, 800)
+  } else {
+    setTimeout(() => {
+      addAgentMessage(
+        a.welcome_msg ||
+        `Hi! I'm ${a.agent_name}. Upload a product photo — or combine up to 3 items for a full outfit try-on! 😊`
+      )
+    }, 300)
+  }
 }
 
 // ── MESSAGING ──────────────────────────────────────────────────────────────
@@ -1798,6 +2085,7 @@ async function generateTryon(productImageUrls, userMessage) {
         body:    JSON.stringify({
           agent_id:   agentConfig._id,
           session_id: sessionId,
+          mobile,
           message:    userMessage || 'I uploaded product photos.',
           image_url:  urlArray[0],
         }),
