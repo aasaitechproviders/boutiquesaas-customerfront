@@ -39,8 +39,9 @@
 html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--ff);-webkit-font-smoothing:antialiased;overflow:hidden}
 
 /* ═══════════════ LOADING ═══════════════ */
-#loading{position:fixed;inset:0;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;gap:18px;transition:opacity .35s,visibility .35s}
-#loading.hidden{opacity:0;visibility:hidden;pointer-events:none}
+#loading{position:fixed;inset:0;background:var(--bg);display:none;flex-direction:column;align-items:center;justify-content:center;z-index:9999;gap:18px;transition:opacity .35s,visibility .35s}
+#loading.show{display:flex;opacity:1;visibility:visible}
+#loading.hidden{opacity:0;visibility:hidden;pointer-events:none;display:none}
 .load-ring{width:44px;height:44px;border-radius:50%;border:2.5px solid rgba(123,69,232,.18);border-top-color:var(--brand);animation:spin .85s linear infinite}
 .load-text{font-size:13px;color:var(--text3);letter-spacing:.04em}
 @keyframes spin{to{transform:rotate(360deg)}}
@@ -286,7 +287,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
 <body>
 
 <!-- Loading -->
-<div id="loading">
+<div id="loading" class="show">
   <div class="load-ring"></div>
   <div class="load-text">Loading your boutique…</div>
 </div>
@@ -623,8 +624,16 @@ async function boot() {
   const url = ref.mode === 'slug'
     ? `${API}/public/agent/${ref.slug}`
     : `${API}/public/agent/by-domain?domain=${encodeURIComponent(ref.domain)}`
+
+  // Timeout helper — avoids hanging forever if Lambda is cold/unresponsive
+  const fetchWithTimeout = (u, opts = {}, ms = 10000) => {
+    const ctrl = new AbortController()
+    const timer = setTimeout(() => ctrl.abort(), ms)
+    return fetch(u, { ...opts, signal: ctrl.signal }).finally(() => clearTimeout(timer))
+  }
+
   try {
-    const res  = await fetch(url)
+    const res  = await fetchWithTimeout(url)
     const json = await res.json()
     if (!json.success || !json.data) throw new Error(json.error || 'Agent not found')
     agentConfig = json.data
@@ -633,7 +642,8 @@ async function boot() {
     showPhoneModal()
   } catch(err) {
     hide('loading')
-    showToast('Could not load boutique: ' + err.message)
+    const msg = err.name === 'AbortError' ? 'Request timed out' : err.message
+    showToast('Could not load boutique: ' + msg)
     // still show phone modal in demo mode
     agentConfig = { _id: 'demo', agent_name: 'BoutiqueAI', business_name: 'My Boutique', brand_color: '#7B45E8', category: 'mixed' }
     showPhoneModal()
