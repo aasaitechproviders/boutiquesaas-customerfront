@@ -382,29 +382,11 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
     </div>
 
     <nav class="sidebar-nav">
-      <button class="nav-item" onclick="navClick('dashboard')">
-        <span class="nav-icon">⊟</span> Dashboard
-      </button>
       <button class="nav-item active" id="nav-tryons" onclick="navClick('tryons')">
         <span class="nav-icon">⊞</span> Try-Ons
       </button>
-      <button class="nav-item" onclick="navClick('collections')">
-        <span class="nav-icon">◫</span> Collections
-      </button>
-      <button class="nav-item" onclick="navClick('orders')">
-        <span class="nav-icon">◈</span> Orders
-      </button>
-      <button class="nav-item" onclick="navClick('customers')">
-        <span class="nav-icon">◎</span> Customers
-      </button>
-      <button class="nav-item" onclick="navClick('credits')">
-        <span class="nav-icon">◉</span> Credits &amp; Plan
-      </button>
-      <button class="nav-item" onclick="openBaseModal('change')" id="nav-myphoto" style="display:none">
+      <button class="nav-item" onclick="openBaseModal('change')" id="nav-myphoto">
         <span class="nav-icon">🤳</span> My Photo
-      </button>
-      <button class="nav-item" onclick="navClick('settings')">
-        <span class="nav-icon">⊙</span> Settings
       </button>
       <button class="nav-item" onclick="signOut()" style="margin-top:auto">
         <span class="nav-icon">↩</span> Sign Out
@@ -412,27 +394,13 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
     </nav>
 
     <div class="sidebar-credits">
-      <div class="credits-label">Your Status</div>
-      <div class="credits-count" id="sb-credits-count">— <span>/ —</span></div>
+      <div class="credits-label">Customer</div>
+      <div class="credits-count" id="sb-credits-count">—</div>
       <div class="credits-bar"><div class="credits-bar-fill" id="sb-credits-bar" style="width:0%"></div></div>
-      <div class="credits-renew" id="sb-credits-renew">Renews on —</div>
+      <div class="credits-renew" id="sb-credits-renew"></div>
       <button class="credits-upgrade" onclick="openTryonModal()">
         <span>✨</span> New Try-on
       </button>
-    </div>
-
-    <div class="sidebar-help">
-      <div class="help-row">
-        <span class="help-icon">💬</span>
-        <div class="help-info">
-          <div class="help-title">Need help?</div>
-          <div class="help-sub">We're here for you</div>
-        </div>
-      </div>
-      <div class="help-row">
-        <span class="help-icon">🔗</span>
-        <div class="help-info"><div class="help-title">Visit Help Center</div></div>
-      </div>
     </div>
   </aside>
 
@@ -495,22 +463,19 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
     </div>
     <div class="detail-panel-scroll">
       <!-- Image -->
-      <div class="detail-img-wrap">
+      <div class="detail-img-wrap" style="cursor:zoom-in" onclick="viewImageFull()" title="Click to view fullscreen">
         <img class="detail-img" id="dp-img" src="" alt="" onerror="this.style.opacity='.3'">
         <div class="detail-img-actions">
-          <button class="detail-img-btn" title="Share" onclick="shareItem()">
+          <button class="detail-img-btn" title="Share" onclick="event.stopPropagation();shareItem()">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
           </button>
-          <button class="detail-img-btn" title="Download" id="dp-download-btn" onclick="downloadSelected()">
+          <button class="detail-img-btn" title="Download" id="dp-download-btn" onclick="event.stopPropagation();downloadSelected()">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
           </button>
-          <button class="detail-img-btn" title="More">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="19" r="1.5"/></svg>
-          </button>
         </div>
-        <button class="detail-view-original" onclick="viewImageFull()">
+        <button class="detail-view-original" onclick="event.stopPropagation();viewImageFull()">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-          View original
+          View fullscreen
         </button>
       </div>
 
@@ -536,17 +501,25 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
       <!-- Actions -->
       <div class="detail-section-title">Actions</div>
       <div class="detail-actions">
-        <button class="detail-action-btn primary" onclick="openTryonModal()">
+        <button class="detail-action-btn primary" onclick="viewImageFull()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          View Full Screen
+        </button>
+        <button class="detail-action-btn secondary" onclick="downloadSelected()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Download Look
+        </button>
+        <button class="detail-action-btn secondary" onclick="shareItem()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+          Share with Customer
+        </button>
+        <button class="detail-action-btn secondary" onclick="openTryonModal()">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 4v6h6"/><path d="M3.51 15a9 9 0 1 0 .49-3.87"/></svg>
           Try Another Look
         </button>
-        <button class="detail-action-btn secondary" onclick="showToast('Coming soon!')">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-          Show Similar Styles
-        </button>
-        <button class="detail-action-btn secondary" onclick="showToast('Added to collection!')">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
-          Add to Collection
+        <button class="detail-action-btn secondary" style="color:var(--red);border-color:rgba(239,68,68,.25)" onclick="deleteSelected()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
+          Remove Look
         </button>
       </div>
 
@@ -710,7 +683,7 @@ async function showPhoneModal() {
         styleProfile = json.data.style_profile   || null
       }
     } catch(e) { console.warn('[restore-session identify]', e.message) }
-    initDashboard()
+    initDashboard(false)
     return
   }
   qs('#phone-overlay').classList.add('show')
@@ -745,13 +718,13 @@ async function continuePhone() {
   localStorage.setItem('ba_mobile', mobile)
   localStorage.setItem('ba_agent_id', agentConfig._id)
   hide('phone-overlay')
-  initDashboard()
+  initDashboard(true)
 }
 
 /* ═══════════════════════════════════════════════════════
    DASHBOARD INIT
 ═══════════════════════════════════════════════════════ */
-async function initDashboard() {
+async function initDashboard(freshLogin) {
   sessionId = genId()
   showApp()
   renderSidebarCredits()
@@ -760,7 +733,8 @@ async function initDashboard() {
   renderGrid()
   renderCreateBanner()
 
-  if (!hasBaseImage) {
+  // Only prompt for photo on a fresh login AND if they genuinely have no photo
+  if (freshLogin && !hasBaseImage) {
     openBaseModal('init')
   }
 }
@@ -771,7 +745,6 @@ function signOut() {
   localStorage.removeItem('ba_agent_id')
   mobile = null; hasBaseImage = false; baseImageUrl = null; styleProfile = null; albumItems = []
   qs('#app').classList.remove('show')
-  qs('#nav-myphoto').style.display = 'none'
   qs('#phone-input').value = ''
   qs('#phone-continue-btn').disabled = true
   qs('#phone-continue-btn').textContent = 'Continue →'
@@ -780,7 +753,6 @@ function signOut() {
 
 function showApp() {
   qs('#app').classList.add('show')
-  qs('#nav-myphoto').style.display = 'flex'
 }
 
 function renderSidebarCredits() {
@@ -894,20 +866,24 @@ function renderGrid() {
       html += `
         <div class="try-card${item.id === selectedItemId ? ' selected' : ''}" 
              style="animation:fadeUp .25s ${i*30}ms both"
-             onclick="selectItem('${safeId}')">
+             data-id="${safeId}" data-url="${safeUrl}"
+             onclick="handleCardClick(event,this)">
           <div class="try-card-img-wrap">
-            <img class="try-card-img" src="${safeUrl}" alt="" loading="lazy" onerror="this.style.opacity='.25'">
+            <img class="try-card-img card-main-img" src="${safeUrl}" alt="" loading="lazy" onerror="this.style.opacity='.25'">
             <div class="try-card-look-badge"><span class="look-icon">⚡</span>LOOK</div>
             ${thumbsHtml ? `<div class="try-card-thumb">${thumbsHtml}</div>` : ''}
           </div>
           <div class="try-card-footer">
             <span class="try-card-time">${timeStr}</span>
             <div class="try-card-actions">
-              <button class="try-card-action" title="View" onclick="event.stopPropagation();viewImageFull('${safeUrl}')">
+              <button class="try-card-action" title="View" onclick="event.stopPropagation();viewImageFromCard(this)">
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
               </button>
-              <button class="try-card-action" title="More" onclick="event.stopPropagation();cardMenu('${safeId}','${safeUrl}')">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="19" r="1.5"/></svg>
+              <button class="try-card-action" title="Download" onclick="event.stopPropagation();downloadFromCard(this)">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              </button>
+              <button class="try-card-action" title="Delete" onclick="event.stopPropagation();deleteFromCard(this)">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
               </button>
             </div>
           </div>
@@ -920,13 +896,52 @@ function renderGrid() {
 }
 
 /* ═══════════════════════════════════════════════════════
+   CARD INTERACTION HELPERS
+═══════════════════════════════════════════════════════ */
+function getCardRoot(el) {
+  return el.closest('.try-card')
+}
+
+function handleCardClick(event, card) {
+  // If clicking the image area itself → open viewer directly
+  if (event.target.classList.contains('card-main-img') || event.target.classList.contains('try-card-img-wrap')) {
+    const url = card.dataset.url
+    if (url) { viewImageFull(url); return }
+  }
+  const id = card.dataset.id
+  if (id) selectItem(id)
+}
+
+function viewImageFromCard(btn) {
+  const card = getCardRoot(btn)
+  if (card) viewImageFull(card.dataset.url)
+}
+
+function downloadFromCard(btn) {
+  const card = getCardRoot(btn)
+  if (!card) return
+  const id  = card.dataset.id
+  const url = card.dataset.url
+  downloadTryon(id, url)
+}
+
+function deleteFromCard(btn) {
+  const card = getCardRoot(btn)
+  if (!card) return
+  deleteTryon(card.dataset.id)
+}
+
+/* ═══════════════════════════════════════════════════════
    ITEM SELECTION → DETAIL PANEL
 ═══════════════════════════════════════════════════════ */
 function selectItem(id) {
   selectedItemId = id
   const item = albumItems.find(i => i.id === id)
   if (!item) return
-  renderGrid()  // re-render to update selected state
+  // Update selected class without full re-render to avoid wiping card event context
+  document.querySelectorAll('.try-card').forEach(c => {
+    c.classList.toggle('selected', c.dataset.id === id)
+  })
   openDetailPanel(item)
 }
 
@@ -958,12 +973,16 @@ function openDetailPanel(item) {
 function closeDetailPanel() {
   qs('#detail-panel').classList.remove('open')
   selectedItemId = null
-  renderGrid()
+  document.querySelectorAll('.try-card').forEach(c => c.classList.remove('selected'))
 }
 
 function downloadSelected() {
   const item = albumItems.find(i => i.id === selectedItemId)
   if (item) downloadTryon(item.id, item.result_url)
+}
+
+function deleteSelected() {
+  if (selectedItemId) deleteTryon(selectedItemId)
 }
 
 function shareItem() {
@@ -984,13 +1003,6 @@ function viewImageFull(url) {
   qs('#img-viewer').classList.add('show')
 }
 
-function cardMenu(id, url) {
-  if (confirm('Options:\n• Download this look?\n\nPress OK to download, Cancel to delete.')) {
-    downloadTryon(id, url)
-  } else {
-    deleteTryon(id)
-  }
-}
 
 /* ═══════════════════════════════════════════════════════
    BASE PHOTO MODAL
@@ -1200,7 +1212,8 @@ async function startGenerate() {
       renderGrid()
       renderCreateBanner()
       showToast('Your look is ready! ✨')
-      selectItem(newItem.id)
+      // Open fullscreen viewer immediately so salesperson/customer sees result right away
+      viewImageFull(newItem.result_url)
     } else {
       throw new Error(json.error || 'Generation failed')
     }
@@ -1250,8 +1263,11 @@ async function deleteTryon(id) {
     await fetch(`${API}/public/album/${id}?mobile=${encodeURIComponent(mobile)}`, { method: 'DELETE' })
   } catch(e) { console.warn('[delete]', e.message) }
   albumItems = albumItems.filter(i => i.id !== id)
-  if (selectedItemId === id) closeDetailPanel()
-  else renderGrid()
+  if (selectedItemId === id) {
+    selectedItemId = null
+    qs('#detail-panel').classList.remove('open')
+  }
+  renderGrid()
   renderCreateBanner()
   showToast('Removed from album')
 }
@@ -1279,8 +1295,6 @@ function navClick(section) {
   document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'))
   if (section === 'tryons') {
     qs('#nav-tryons').classList.add('active')
-  } else {
-    showToast(`${section.charAt(0).toUpperCase()+section.slice(1)} — coming soon!`)
   }
 }
 
