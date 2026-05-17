@@ -315,7 +315,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
   <div class="base-modal">
     <div class="base-modal-title">📸 Add Your Photo</div>
     <div class="base-modal-sub">Upload a clear full-body or half-body photo to try on clothes virtually</div>
-    <div class="base-upload-zone" onclick="document.getElementById('base-file-input').click()">
+    <div class="base-upload-zone" id="base-upload-zone" onclick="document.getElementById('base-file-input').click()">
       <div class="base-upload-icon">🤳</div>
       <div class="base-upload-text">Tap to upload your photo</div>
     </div>
@@ -400,18 +400,24 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
       <button class="nav-item" onclick="navClick('credits')">
         <span class="nav-icon">◉</span> Credits &amp; Plan
       </button>
+      <button class="nav-item" onclick="openBaseModal('change')" id="nav-myphoto" style="display:none">
+        <span class="nav-icon">🤳</span> My Photo
+      </button>
       <button class="nav-item" onclick="navClick('settings')">
         <span class="nav-icon">⊙</span> Settings
+      </button>
+      <button class="nav-item" onclick="signOut()" style="margin-top:auto">
+        <span class="nav-icon">↩</span> Sign Out
       </button>
     </nav>
 
     <div class="sidebar-credits">
-      <div class="credits-label">Credits Remaining</div>
+      <div class="credits-label">Your Status</div>
       <div class="credits-count" id="sb-credits-count">— <span>/ —</span></div>
       <div class="credits-bar"><div class="credits-bar-fill" id="sb-credits-bar" style="width:0%"></div></div>
       <div class="credits-renew" id="sb-credits-renew">Renews on —</div>
-      <button class="credits-upgrade" onclick="navClick('credits')">
-        <span>👑</span> Upgrade Plan
+      <button class="credits-upgrade" onclick="openTryonModal()">
+        <span>✨</span> New Try-on
       </button>
     </div>
 
@@ -637,6 +643,15 @@ async function boot() {
     const json = await res.json()
     if (!json.success || !json.data) throw new Error(json.error || 'Agent not found')
     agentConfig = json.data
+
+    // If stored session belongs to a different agent, clear it so we don't
+    // carry someone else's photo into a different boutique
+    const storedAgentId = localStorage.getItem('ba_agent_id')
+    if (storedAgentId && storedAgentId !== String(agentConfig._id)) {
+      localStorage.removeItem('ba_mobile')
+      localStorage.removeItem('ba_agent_id')
+    }
+
     applyBranding(agentConfig)
     hide('loading')
     showPhoneModal()
@@ -675,11 +690,26 @@ function applyBranding(a) {
 /* ═══════════════════════════════════════════════════════
    PHONE MODAL
 ═══════════════════════════════════════════════════════ */
-function showPhoneModal() {
-  // Restore session if available
-  const saved = sessionStorage.getItem('ba_mobile')
+async function showPhoneModal() {
+  // Restore session if available — use localStorage so it persists across tab closes
+  const saved = localStorage.getItem('ba_mobile')
   if (saved) {
     mobile = saved
+    // CRITICAL: re-fetch customer state so hasBaseImage is correct.
+    // Without this, hasBaseImage stays false and the photo modal pops up every time.
+    try {
+      const res  = await fetch(`${API}/public/customer/identify`, {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify({ agent_id: agentConfig._id, mobile })
+      })
+      const json = await res.json()
+      if (json.success && json.data) {
+        hasBaseImage = json.data.has_base_image  || false
+        baseImageUrl = json.data.base_image_url  || null
+        styleProfile = json.data.style_profile   || null
+      }
+    } catch(e) { console.warn('[restore-session identify]', e.message) }
     initDashboard()
     return
   }
@@ -712,7 +742,8 @@ async function continuePhone() {
     }
   } catch(e) { console.warn('[identify]', e.message) }
 
-  sessionStorage.setItem('ba_mobile', mobile)
+  localStorage.setItem('ba_mobile', mobile)
+  localStorage.setItem('ba_agent_id', agentConfig._id)
   hide('phone-overlay')
   initDashboard()
 }
@@ -734,17 +765,31 @@ async function initDashboard() {
   }
 }
 
+function signOut() {
+  if (!confirm('Sign out? You will need to re-enter your mobile number.')) return
+  localStorage.removeItem('ba_mobile')
+  localStorage.removeItem('ba_agent_id')
+  mobile = null; hasBaseImage = false; baseImageUrl = null; styleProfile = null; albumItems = []
+  qs('#app').classList.remove('show')
+  qs('#nav-myphoto').style.display = 'none'
+  qs('#phone-input').value = ''
+  qs('#phone-continue-btn').disabled = true
+  qs('#phone-continue-btn').textContent = 'Continue →'
+  qs('#phone-overlay').classList.add('show')
+}
+
 function showApp() {
   qs('#app').classList.add('show')
+  qs('#nav-myphoto').style.display = 'flex'
 }
 
 function renderSidebarCredits() {
-  // Credits from boutique owner — not customer. Show placeholder unless we have data.
-  // In real deployment this comes from /credits/balance with auth.
-  // Here we show a neutral placeholder.
-  qs('#sb-credits-count').innerHTML = `<span style="font-size:14px;color:var(--text3)">Try-ons ready</span>`
-  qs('#sb-credits-bar').style.width = '65%'
-  qs('#sb-credits-renew').textContent = ''
+  // Show customer info and photo status in the credits area
+  qs('#sb-credits-count').innerHTML = hasBaseImage
+    ? `<span style="color:var(--green);font-size:13px">📸 Photo uploaded ✓</span>`
+    : `<span style="font-size:13px;color:var(--text3)">No photo yet</span>`
+  qs('#sb-credits-bar').style.width = hasBaseImage ? '100%' : '0%'
+  qs('#sb-credits-renew').textContent = mobile ? `+91 ****${mobile.slice(-4)}` : ''
 }
 
 function renderCreateBanner() {
@@ -1016,6 +1061,7 @@ async function submitBasePhoto() {
       baseImageUrl = public_url
       styleProfile = saveJson.data?.style_profile || null
       updateNewTryonBaseThumb()
+      renderSidebarCredits()
       showToast('Photo saved! ✓')
       hide('base-overlay')
 
