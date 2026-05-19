@@ -92,6 +92,8 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
 .base-upload-icon{font-size:38px}
 .base-upload-text{font-size:13.5px;font-weight:500;color:var(--text2)}
 #base-preview-wrap{display:none;width:100%;flex-direction:column;align-items:center;gap:12px}
+#base-preview-wrap .base-preview-name{font-size:11.5px;color:var(--text3);letter-spacing:.02em}
+#base-preview-img{border:2px solid var(--brand-mid)}
 #base-preview-img{width:160px;height:200px;object-fit:cover;border-radius:var(--r-lg);border:1px solid var(--border2)}
 .base-preview-name{font-size:12.5px;color:var(--text2)}
 .base-submit-btn{width:100%;padding:13px;background:linear-gradient(135deg,var(--brand),#9B6FFF);border:none;border-radius:var(--r);color:#fff;font-family:var(--ff);font-size:14px;font-weight:600;cursor:pointer;transition:opacity .2s,box-shadow .2s;box-shadow:var(--shadow-brand);letter-spacing:.02em}
@@ -1046,9 +1048,24 @@ function viewImageFull(url) {
 function openBaseModal(context) {
   baseModalContext = context
   baseFileSelected = null
-  qs('#base-preview-wrap').style.display = 'none'
-  qs('#base-upload-zone').style.display = 'flex'
+
+  // If user already has a profile photo, show it as current preview
+  if (hasBaseImage && baseImageUrl) {
+    qs('#base-preview-img').src = baseImageUrl
+    qs('#base-preview-name').textContent = 'Current profile photo'
+    qs('#base-preview-wrap').style.display = 'flex'
+    qs('#base-upload-zone').style.display = 'flex'
+    qs('#base-upload-zone').style.marginTop = '8px'
+    qs('#base-upload-zone').querySelector('.base-upload-text').textContent = 'Tap to replace your photo'
+  } else {
+    qs('#base-preview-wrap').style.display = 'none'
+    qs('#base-upload-zone').style.display = 'flex'
+    qs('#base-upload-zone').style.marginTop = ''
+    qs('#base-upload-zone').querySelector('.base-upload-text').textContent = 'Tap to upload your photo'
+  }
+
   qs('#base-submit-btn').disabled = true
+  qs('#base-submit-btn').textContent = 'Use This Photo ✓'
   qs('#base-cancel-btn').style.display = context === 'init' && !hasBaseImage ? 'none' : 'block'
   qs('#base-overlay').classList.add('show')
 }
@@ -1068,7 +1085,9 @@ function onBaseFileSelected(input) {
     baseFileSelected = { file, base64: e.target.result }
     qs('#base-preview-img').src = e.target.result
     qs('#base-preview-name').textContent = file.name
+    // Always hide upload zone once a new file is picked and show preview
     qs('#base-upload-zone').style.display = 'none'
+    qs('#base-upload-zone').style.marginTop = ''
     qs('#base-preview-wrap').style.display = 'flex'
     qs('#base-submit-btn').disabled = false
   }
