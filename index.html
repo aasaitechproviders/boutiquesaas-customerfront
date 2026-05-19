@@ -15,7 +15,7 @@
   --brand-soft:  rgba(124,58,237,.10);
   --brand-mid:   rgba(124,58,237,.30);
   --brand-glow:  rgba(124,58,237,.14);
-  --bg:          #F5F6FA;
+  --bg:          #E8EAF2;
   --sidebar-bg:  #FFFFFF;
   --surface:     #FFFFFF;
   --surface2:    #EEF0F6;
@@ -279,8 +279,8 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
 @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 
 /* ═══════════════ MOBILE FOOTER NAV ═══════════════ */
-.mobile-footer-nav{display:none;position:fixed;bottom:0;left:0;right:0;height:64px;background:var(--sidebar-bg);border-top:1px solid var(--border);z-index:100;justify-content:space-around;align-items:center}
-.mfn-item{display:flex;flex-direction:column;align-items:center;gap:2px;background:none;border:none;color:var(--text3);font-family:var(--ff);font-size:11px;font-weight:500;cursor:pointer;padding:8px 12px;transition:color .15s}
+.mobile-footer-nav{display:none;position:fixed;bottom:0;left:0;right:0;height:64px;background:var(--sidebar-bg);border-top:1px solid var(--border2);box-shadow:0 -2px 12px rgba(0,0,0,.07);z-index:100;justify-content:space-around;align-items:center}
+.mfn-item{display:flex;flex-direction:column;align-items:center;gap:2px;background:none;border:none;color:#5C6680;font-family:var(--ff);font-size:11px;font-weight:600;cursor:pointer;padding:8px 12px;transition:color .15s}
 .mfn-item .mfn-icon{font-size:20px;line-height:1}
 .mfn-item:hover{color:var(--text)}
 .mfn-item.active{color:var(--brand)}
