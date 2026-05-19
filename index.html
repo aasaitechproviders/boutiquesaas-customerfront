@@ -101,6 +101,9 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
 .base-submit-btn:disabled{opacity:.3;pointer-events:none;box-shadow:none}
 .base-cancel-btn{background:transparent;border:none;font-family:var(--ff);font-size:13px;color:var(--text3);cursor:pointer;padding:4px 8px;transition:color .15s}
 .base-cancel-btn:hover{color:var(--text2)}
+.base-modal-header{display:flex;align-items:center;justify-content:space-between;width:100%}
+.base-modal-close{background:var(--surface2);border:1px solid var(--border);width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text2);font-size:14px;transition:background .2s,color .2s,border-color .2s;flex-shrink:0}
+.base-modal-close:hover{background:var(--surface3);color:var(--text);border-color:var(--border2)}
 
 /* ═══════════════ NEW TRY-ON MODAL ═══════════════ */
 #tryon-overlay{position:fixed;inset:0;background:rgba(0,0,0,.80);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);z-index:802;display:none;align-items:center;justify-content:center}
@@ -384,7 +387,10 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
 <!-- Base Photo Modal -->
 <div id="base-overlay">
   <div class="base-modal">
-    <div class="base-modal-title">📸 Add Your Photo</div>
+    <div class="base-modal-header">
+      <div class="base-modal-title">📸 Add Your Photo</div>
+      <button class="base-modal-close" onclick="cancelBase()">✕</button>
+    </div>
     <div class="base-modal-sub">Upload a clear full-body or half-body photo to try on clothes virtually</div>
     <div class="base-upload-zone" id="base-upload-zone" onclick="document.getElementById('base-file-input').click()">
       <div class="base-upload-icon">🤳</div>
