@@ -128,6 +128,19 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
 .tryon-gen-spin{width:16px;height:16px;border-radius:50%;border:1.5px solid rgba(124,58,237,.2);border-top-color:var(--brand);animation:spin .8s linear infinite;flex-shrink:0}
 .tryon-gen-text{font-size:13px;color:var(--text2);font-weight:500}
 
+/* ═══════════════ MOBILE BRAND BAR (top) ═══════════════ */
+.mobile-brand-bar{display:none;position:fixed;top:0;left:0;right:0;height:48px;background:var(--sidebar-bg);border-bottom:1px solid var(--border);z-index:100;align-items:center;padding:0 12px;gap:10px}
+.mb-logo{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--brand),#9B6FFF);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#fff;overflow:hidden}
+.mb-logo img{width:100%;height:100%;object-fit:cover}
+.mb-name{font-family:var(--ff-display);font-size:16px;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* ═══════════════ MOBILE FOOTER NAV ═══════════════ */
+.mobile-footer-nav{display:none;position:fixed;bottom:0;left:0;right:0;height:64px;background:var(--sidebar-bg);border-top:1px solid var(--border);z-index:100;justify-content:space-around;align-items:center}
+.mfn-item{display:flex;flex-direction:column;align-items:center;gap:2px;background:none;border:none;color:var(--text3);font-family:var(--ff);font-size:11px;font-weight:500;cursor:pointer;padding:8px 12px;transition:color .15s}
+.mfn-item .mfn-icon{font-size:20px;line-height:1}
+.mfn-item:hover{color:var(--text)}
+.mfn-item.active{color:var(--brand)}
+
 /* ═══════════════ APP LAYOUT ═══════════════ */
 #app{display:none;height:100vh;overflow:hidden}
 #app.show{display:flex}
@@ -169,7 +182,9 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
 .main{flex:1;min-width:0;display:flex;flex-direction:column;height:100vh;overflow:hidden;background:var(--bg)}
 .main-header{padding:18px 24px 0;flex-shrink:0}
 .main-header-row{display:flex;align-items:center;gap:16px;margin-bottom:16px}
-.page-title{font-size:22px;font-weight:700;color:var(--text);flex-shrink:0}
+.page-title{font-size:22px;font-weight:700;color:var(--text);flex-shrink:0;display:flex;align-items:center;gap:10px}
+.page-title .header-logo{width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,var(--brand),#9B6FFF);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#fff;overflow:hidden;flex-shrink:0}
+.page-title .header-logo img{width:100%;height:100%;object-fit:cover}
 .page-count{font-size:12px;font-weight:500;color:var(--text3);background:var(--surface2);border:1px solid var(--border);border-radius:20px;padding:3px 10px;margin-left:4px;flex-shrink:0}
 .header-search{flex:1;position:relative;max-width:340px;margin:0 auto}
 .header-search-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:14px;color:var(--text3);pointer-events:none}
@@ -293,9 +308,17 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
 @media(max-width:700px){
   :root{--sidebar-w:0px}
   .sidebar{display:none}
-  .try-grid{grid-template-columns:repeat(2,1fr)}
+  .mobile-brand-bar{display:flex}  /* show mobile top bar */
+  .mobile-footer-nav{display:flex} /* show mobile bottom nav */
+  body{overflow:auto;padding-top:48px;padding-bottom:64px}
+  #app{display:block;height:auto;overflow:visible}
+  .main{height:auto;overflow:visible}
+  .main-header{padding:10px 16px 0}
   .main-header-row{flex-wrap:wrap;gap:10px}
+  .page-title{display:none} /* hide desktop page title, brand bar provides identity */
   .header-search{max-width:none;order:3;flex-basis:100%}
+  .try-grid{grid-template-columns:repeat(2,1fr)}
+  .main-scroll{padding:12px 16px 20px}
 }
 </style>
 </head>
@@ -386,6 +409,12 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
 <!-- Main App -->
 <div id="app">
 
+  <!-- Mobile Brand Bar (visible only on mobile) -->
+  <div class="mobile-brand-bar">
+    <div class="mb-logo" id="mb-logo">✨</div>
+    <div class="mb-name" id="mb-name">BoutiqueAI</div>
+  </div>
+
   <!-- Sidebar -->
   <aside class="sidebar">
     <div class="sidebar-brand">
@@ -423,7 +452,10 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
   <main class="main">
     <div class="main-header">
       <div class="main-header-row">
-        <span class="page-title">My Try-ons</span>
+        <span class="page-title" id="page-title-container">
+          <span class="header-logo" id="header-logo"></span>
+          <span id="header-brand-name">BoutiqueAI</span>
+        </span>
         <span class="page-count" id="page-count">0 looks</span>
         <div class="header-search">
           <span class="header-search-icon">🔍</span>
@@ -548,6 +580,26 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
       </div>
     </div>
   </aside>
+
+  <!-- Mobile Footer Navigation (visible only on mobile) -->
+  <div class="mobile-footer-nav">
+    <button class="mfn-item" id="mfn-profile" onclick="openBaseModal('change')">
+      <span class="mfn-icon">🤳</span>
+      <span class="mfn-label">Profile</span>
+    </button>
+    <button class="mfn-item" id="mfn-tryon" onclick="openTryonModal()">
+      <span class="mfn-icon">✨</span>
+      <span class="mfn-label">Try-On</span>
+    </button>
+    <button class="mfn-item" id="mfn-looks" onclick="scrollToLooks()">
+      <span class="mfn-icon">⊞</span>
+      <span class="mfn-label">Looks</span>
+    </button>
+    <button class="mfn-item" id="mfn-logout" onclick="signOut()">
+      <span class="mfn-icon">↩</span>
+      <span class="mfn-label">Logout</span>
+    </button>
+  </div>
 </div>
 
 <!-- Fullscreen viewer -->
@@ -619,7 +671,6 @@ async function boot() {
     ? `${API}/public/agent/${ref.slug}`
     : `${API}/public/agent/by-domain?domain=${encodeURIComponent(ref.domain)}`
 
-  // Timeout helper — avoids hanging forever if Lambda is cold/unresponsive
   const fetchWithTimeout = (u, opts = {}, ms = 10000) => {
     const ctrl = new AbortController()
     const timer = setTimeout(() => ctrl.abort(), ms)
@@ -632,8 +683,6 @@ async function boot() {
     if (!json.success || !json.data) throw new Error(json.error || 'Agent not found')
     agentConfig = json.data
 
-    // If stored session belongs to a different agent, clear it so we don't
-    // carry someone else's photo into a different boutique
     const storedAgentId = localStorage.getItem('ba_agent_id')
     if (storedAgentId && storedAgentId !== String(agentConfig._id)) {
       localStorage.removeItem('ba_mobile')
@@ -647,7 +696,6 @@ async function boot() {
     hide('loading')
     const msg = err.name === 'AbortError' ? 'Request timed out' : err.message
     showToast('Could not load boutique: ' + msg)
-    // still show phone modal in demo mode
     agentConfig = { _id: 'demo', agent_name: 'BoutiqueAI', business_name: 'My Boutique', brand_color: '#7B45E8', category: 'mixed' }
     showPhoneModal()
   }
@@ -673,18 +721,35 @@ function applyBranding(a) {
     logo.textContent  = (a.agent_name || 'B')[0].toUpperCase()
     pmLogo.textContent= (a.agent_name || 'B')[0].toUpperCase()
   }
+
+  // Update mobile brand bar
+  const mbLogo = qs('#mb-logo')
+  const mbName = qs('#mb-name')
+  mbName.textContent = a.agent_name
+  if (a.logo_url) {
+    mbLogo.innerHTML = `<img src="${a.logo_url}" alt="">`
+  } else {
+    mbLogo.textContent = (a.agent_name || 'B')[0].toUpperCase()
+  }
+
+  // Update desktop header brand elements
+  const headerLogo = qs('#header-logo')
+  const headerBrandName = qs('#header-brand-name')
+  headerBrandName.textContent = a.agent_name
+  if (a.logo_url) {
+    headerLogo.innerHTML = `<img src="${a.logo_url}" alt="">`
+  } else {
+    headerLogo.textContent = (a.agent_name || 'B')[0].toUpperCase()
+  }
 }
 
 /* ═══════════════════════════════════════════════════════
    PHONE MODAL
 ═══════════════════════════════════════════════════════ */
 async function showPhoneModal() {
-  // Restore session if available — use localStorage so it persists across tab closes
   const saved = localStorage.getItem('ba_mobile')
   if (saved) {
     mobile = saved
-    // CRITICAL: re-fetch customer state so hasBaseImage is correct.
-    // Without this, hasBaseImage stays false and the photo modal pops up every time.
     try {
       const res  = await fetch(`${API}/public/customer/identify`, {
         method:  'POST',
@@ -743,12 +808,11 @@ async function initDashboard(freshLogin) {
   sessionId = genId()
   showApp()
   renderSidebarCredits()
-  renderGrid()   // show skeletons immediately
+  renderGrid()
   await loadAlbum()
   renderGrid()
   renderCreateBanner()
 
-  // Only prompt for photo on a fresh login AND if they genuinely have no photo
   if (freshLogin && !hasBaseImage) {
     openBaseModal('init')
   }
@@ -771,7 +835,6 @@ function showApp() {
 }
 
 function renderSidebarCredits() {
-  // Show customer info and photo status in the credits area
   qs('#sb-credits-count').innerHTML = hasBaseImage
     ? `<span style="color:var(--green);font-size:13px">📸 Photo uploaded ✓</span>`
     : `<span style="font-size:13px;color:var(--text3)">No photo yet</span>`
@@ -837,7 +900,6 @@ function renderGrid() {
   const container = qs('#grid-container')
   const items     = applyFiltersAndSearch()
 
-  // Update count badge
   qs('#page-count').textContent = `${albumItems.length} look${albumItems.length !== 1 ? 's' : ''}`
 
   if (!albumItems.length) {
@@ -871,7 +933,6 @@ function renderGrid() {
       const safeId  = escAttr(item.id || '')
       const safeUrl = escAttr(item.result_url || '')
 
-      // Product thumbnails in top-right
       let thumbsHtml = ''
       const thumbUrls = item.product_image_urls?.slice(0, 2) || (item.product_image_url ? [item.product_image_url] : [])
       thumbsHtml = thumbUrls.map(u =>
@@ -918,7 +979,6 @@ function getCardRoot(el) {
 }
 
 function handleCardClick(event, card) {
-  // If clicking the image area itself → open viewer directly
   if (event.target.classList.contains('card-main-img') || event.target.classList.contains('try-card-img-wrap')) {
     const url = card.dataset.url
     if (url) { viewImageFull(url); return }
@@ -935,9 +995,7 @@ function viewImageFromCard(btn) {
 function downloadFromCard(btn) {
   const card = getCardRoot(btn)
   if (!card) return
-  const id  = card.dataset.id
-  const url = card.dataset.url
-  downloadTryon(id, url)
+  downloadTryon(card.dataset.id, card.dataset.url)
 }
 
 function deleteFromCard(btn) {
@@ -953,7 +1011,6 @@ function selectItem(id) {
   selectedItemId = id
   const item = albumItems.find(i => i.id === id)
   if (!item) return
-  // Update selected class without full re-render to avoid wiping card event context
   document.querySelectorAll('.try-card').forEach(c => {
     c.classList.toggle('selected', c.dataset.id === id)
   })
@@ -969,7 +1026,6 @@ function openDetailPanel(item) {
   qs('#dp-sub').textContent = `${dateStr} • ID: #TRN-${(item.id || '').slice(-4).toUpperCase()}`
   qs('#dp-img').src = item.result_url || ''
 
-  // Product thumb
   const thumbWrap = qs('#dp-prod-thumb-wrap')
   const prodUrl   = item.product_image_url || (item.product_image_urls?.[0])
   if (prodUrl) {
@@ -1018,7 +1074,6 @@ function viewImageFull(url) {
   qs('#img-viewer').classList.add('show')
 }
 
-
 /* ═══════════════════════════════════════════════════════
    BASE PHOTO MODAL
 ═══════════════════════════════════════════════════════ */
@@ -1061,7 +1116,6 @@ async function submitBasePhoto() {
   qs('#base-submit-btn').textContent = 'Uploading…'
 
   try {
-    // Get presigned URL
     const presignRes  = await fetch(`${API}/public/upload/presign`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -1072,11 +1126,9 @@ async function submitBasePhoto() {
 
     const { upload_url, public_url } = presignJson.data
 
-    // Upload to S3
     const buf = await resizeImageFile(baseFileSelected.file, 1024)
     await fetch(upload_url, { method: 'PUT', body: buf, headers: { 'Content-Type': baseFileSelected.file.type || 'image/jpeg' } })
 
-    // Save to customer
     const saveRes  = await fetch(`${API}/public/customer/base-image`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -1187,7 +1239,6 @@ async function startGenerate() {
   updateGenerateBtn()
 
   try {
-    // Upload product images
     const productUrls = []
     for (const pf of productFiles) {
       const ctype = pf.file.type || 'image/jpeg'
@@ -1214,7 +1265,6 @@ async function startGenerate() {
 
     if (json.success && json.data?.result_url) {
       hide('tryon-overlay')
-      // Add to album
       const newItem = {
         id:                 json.data.tryon_id,
         result_url:         json.data.result_url,
@@ -1227,7 +1277,6 @@ async function startGenerate() {
       renderGrid()
       renderCreateBanner()
       showToast('Your look is ready! ✨')
-      // Open fullscreen viewer immediately so salesperson/customer sees result right away
       viewImageFull(newItem.result_url)
     } else {
       throw new Error(json.error || 'Generation failed')
@@ -1317,6 +1366,14 @@ function navClick(section) {
    IMAGE VIEWER
 ═══════════════════════════════════════════════════════ */
 function closeViewer() { hide('img-viewer') }
+
+/* ═══════════════════════════════════════════════════════
+   MOBILE FOOTER: Scroll to top of try-ons
+═══════════════════════════════════════════════════════ */
+function scrollToLooks() {
+  const grid = qs('#grid-container')
+  if (grid) grid.scrollIntoView({ behavior: 'smooth' })
+}
 
 /* ═══════════════════════════════════════════════════════
    TOAST
