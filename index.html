@@ -38,7 +38,7 @@
   --r-xl:        20px;
   --sidebar-w:   228px;
   --panel-w:     360px;
-  --mobile-header-h: 52px; /* reduced height for compact header */
+  --mobile-header-h: 68px; /* taller header for a polished look */
   --ease:        cubic-bezier(.22,.68,0,1.2);
   --ease-out:    cubic-bezier(0,.55,.45,1);
   --shadow-sm:   0 1px 3px rgba(0,0,0,.4), 0 1px 2px rgba(0,0,0,.3);
@@ -294,21 +294,21 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
   #app{display:block;height:auto;overflow:visible}
   .main{height:auto;overflow:visible}
 
-  /* Fixed compact header on mobile */
+  /* Fixed header on mobile — taller & polished */
   .main-header{
     position:fixed;
     top:0; left:0; right:0;
     z-index:90;
     background:var(--sidebar-bg);
-    backdrop-filter:blur(12px);
-    -webkit-backdrop-filter:blur(12px);
-    border-bottom:1px solid var(--border);
-    padding:8px 16px;
+    backdrop-filter:blur(16px);
+    -webkit-backdrop-filter:blur(16px);
+    border-bottom:1px solid var(--border2);
+    padding:0 18px;
     height:var(--mobile-header-h);
     display:flex;
     align-items:center;
     justify-content:space-between;
-    box-shadow:0 2px 12px rgba(0,0,0,.4);
+    box-shadow:0 2px 16px rgba(0,0,0,.45);
   }
 
   .main-header-row{
@@ -320,25 +320,29 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
   }
 
   .page-title{
-    font-size:17px;
+    font-size:18px;
     font-weight:700;
-    gap:8px;
+    gap:10px;
     white-space:nowrap;
     overflow:hidden;
     text-overflow:ellipsis;
     flex:1;
   }
-  .page-title .header-logo{width:28px;height:28px;font-size:13px}
+  .page-title .header-logo{width:34px;height:34px;font-size:15px;border-radius:10px}
 
   .page-count{
-    margin-left:8px;
-    margin-right:8px;
+    margin-left:10px;
+    margin-right:10px;
+    font-size:12px;
+    padding:4px 11px;
   }
 
   .new-tryon-btn{
-    padding:6px 12px;
-    font-size:12.5px;
+    padding:9px 15px;
+    font-size:13px;
+    border-radius:10px;
     margin-left:auto;
+    gap:5px;
   }
 
   .main-scroll{
