@@ -38,13 +38,13 @@
   --r-xl:        20px;
   --sidebar-w:   228px;
   --panel-w:     360px;
+  --mobile-header-h: 52px; /* reduced height for compact header */
   --ease:        cubic-bezier(.22,.68,0,1.2);
   --ease-out:    cubic-bezier(0,.55,.45,1);
   --shadow-sm:   0 1px 3px rgba(0,0,0,.4), 0 1px 2px rgba(0,0,0,.3);
   --shadow-md:   0 4px 16px rgba(0,0,0,.5), 0 1px 3px rgba(0,0,0,.3);
   --shadow-lg:   0 12px 40px rgba(0,0,0,.6), 0 4px 12px rgba(0,0,0,.4);
   --shadow-brand: 0 8px 24px rgba(124,58,237,.3);
-  --mobile-header-h: 88px; /* height of fixed mobile header (2 rows) */
 }
 
 /* ═══════════════ RESET ═══════════════ */
@@ -168,30 +168,14 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
 
 /* ═══════════════ MAIN CONTENT ═══════════════ */
 .main{flex:1;min-width:0;display:flex;flex-direction:column;height:100vh;overflow:hidden;background:var(--bg)}
-.main-header{padding:12px 24px 0;flex-shrink:0;background:var(--bg); /* background to hide content behind */}
+.main-header{padding:12px 24px 0;flex-shrink:0;background:var(--bg)}
 .main-header-row{display:flex;align-items:center;gap:16px;margin-bottom:10px}
 .page-title{font-size:22px;font-weight:700;color:var(--text);flex-shrink:0;display:flex;align-items:center;gap:10px}
 .page-title .header-logo{width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,var(--brand),#9B6FFF);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#fff;overflow:hidden;flex-shrink:0}
 .page-title .header-logo img{width:100%;height:100%;object-fit:cover}
 .page-count{font-size:12px;font-weight:500;color:var(--text3);background:var(--surface2);border:1px solid var(--border);border-radius:20px;padding:3px 10px;margin-left:4px;flex-shrink:0}
-.header-search{flex:1;position:relative;max-width:340px;margin:0 auto}
-.header-search-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:14px;color:var(--text3);pointer-events:none}
-.header-search-input{width:100%;padding:9px 60px 9px 36px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);color:var(--text);font-family:var(--ff);font-size:13.5px;outline:none;transition:border-color .2s}
-.header-search-input::placeholder{color:var(--text3)}
-.header-search-input:focus{border-color:var(--border2)}
-.search-shortcut{position:absolute;right:10px;top:50%;transform:translateY(-50%);background:var(--surface2);border:1px solid var(--border);border-radius:5px;padding:2px 6px;font-size:11px;color:var(--text3);pointer-events:none;white-space:nowrap}
-.new-tryon-btn{display:flex;align-items:center;gap:7px;padding:9px 16px;background:var(--brand);border:none;border-radius:var(--r);color:#fff;font-family:var(--ff);font-size:13.5px;font-weight:600;cursor:pointer;transition:opacity .2s,transform .15s;flex-shrink:0;white-space:nowrap}
+.new-tryon-btn{display:flex;align-items:center;gap:7px;padding:9px 16px;background:var(--brand);border:none;border-radius:var(--r);color:#fff;font-family:var(--ff);font-size:13.5px;font-weight:600;cursor:pointer;transition:opacity .2s,transform .15s;flex-shrink:0;white-space:nowrap;margin-left:auto}
 .new-tryon-btn:hover{opacity:.88;transform:translateY(-1px)}
-.filter-row{display:flex;align-items:center;gap:8px;padding-bottom:14px;border-bottom:1px solid var(--border);flex-wrap:nowrap;overflow-x:auto}
-.filter-row::-webkit-scrollbar{display:none}
-.filter-pill{display:flex;align-items:center;gap:5px;padding:6px 12px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-sm);font-size:13px;color:var(--text2);cursor:pointer;transition:border-color .2s,color .2s;white-space:nowrap;flex-shrink:0;font-family:var(--ff)}
-.filter-pill:hover{border-color:var(--border2);color:var(--text)}
-.filter-pill.active{border-color:var(--brand-mid);color:var(--brand);background:var(--brand-soft)}
-.filter-pill svg{width:14px;height:14px;opacity:.7}
-.filter-sep{flex:1;min-width:8px}
-.view-toggle{display:flex;gap:2px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-sm);padding:3px;flex-shrink:0}
-.view-btn{width:28px;height:28px;border:none;border-radius:5px;background:transparent;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text3);font-size:13px;transition:background .15s,color .15s}
-.view-btn.active{background:var(--brand);color:#fff}
 
 /* ═══════════════ GRID SCROLL AREA ═══════════════ */
 .main-scroll{flex:1;overflow-y:auto;overflow-x:hidden;padding:18px 24px 32px}
@@ -305,12 +289,12 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
   .sidebar{display:none}
   .mobile-footer-nav{display:flex}
 
-  body{overflow:auto;padding-bottom:64px} /* footer height */
+  body{overflow:auto;padding-bottom:64px}
 
   #app{display:block;height:auto;overflow:visible}
   .main{height:auto;overflow:visible}
 
-  /* Fixed header on mobile */
+  /* Fixed compact header on mobile */
   .main-header{
     position:fixed;
     top:0; left:0; right:0;
@@ -319,61 +303,46 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
     backdrop-filter:blur(12px);
     -webkit-backdrop-filter:blur(12px);
     border-bottom:1px solid var(--border);
-    padding:8px 16px 0;
-    min-height:var(--mobile-header-h);
+    padding:8px 16px;
+    height:var(--mobile-header-h);
     display:flex;
-    flex-direction:column;
-    justify-content:center;
+    align-items:center;
+    justify-content:space-between;
     box-shadow:0 2px 12px rgba(0,0,0,.4);
   }
 
-  /* main content top padding = header height */
-  .main-scroll{
-    padding:calc(var(--mobile-header-h) + 10px) 16px 20px;
-  }
-
   .main-header-row{
-    flex-wrap:wrap;
-    gap:6px;
+    display:flex;
     align-items:center;
+    width:100%;
+    gap:0;
+    margin-bottom:0;
   }
 
   .page-title{
-    font-size:18px;
+    font-size:17px;
     font-weight:700;
     gap:8px;
-    flex:1;
     white-space:nowrap;
     overflow:hidden;
     text-overflow:ellipsis;
-    order:1;
+    flex:1;
   }
   .page-title .header-logo{width:28px;height:28px;font-size:13px}
 
   .page-count{
-    order:2;
-    margin-left:0;
-    margin-right:auto;
+    margin-left:8px;
+    margin-right:8px;
   }
 
   .new-tryon-btn{
-    order:3;
-    padding:7px 12px;
+    padding:6px 12px;
     font-size:12.5px;
+    margin-left:auto;
   }
 
-  .header-search{
-    order:4;
-    flex-basis:100%;
-    max-width:none;
-    margin:0;
-  }
-
-  .filter-row{
-    /* move filter row into main-scroll so it scrolls away */
-    /* we'll move it via JS/HTML restructuring */
-    /* but here we just hide it from header, we already moved it */
-    display:none;
+  .main-scroll{
+    padding:calc(var(--mobile-header-h) + 8px) 16px 20px;
   }
 
   .try-grid{grid-template-columns:repeat(2,1fr)}
@@ -502,7 +471,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
 
   <!-- Main Content -->
   <main class="main">
-    <!-- Fixed header (contains only brand/search/button) -->
+    <!-- Fixed header (brand, count, button) -->
     <div class="main-header">
       <div class="main-header-row">
         <span class="page-title" id="page-title-container">
@@ -510,39 +479,14 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
           <span id="header-brand-name">BoutiqueAI</span>
         </span>
         <span class="page-count" id="page-count">0 looks</span>
-        <div class="header-search">
-          <span class="header-search-icon">🔍</span>
-          <input class="header-search-input" type="text" placeholder="Search try-ons…" id="search-input" oninput="handleSearch()">
-          <span class="search-shortcut">⌘ K</span>
-        </div>
         <button class="new-tryon-btn" onclick="openTryonModal()">
           <span>+</span> New Try-on
         </button>
       </div>
     </div>
 
-    <!-- Scrollable area: filters + grid -->
+    <!-- Scrollable area: grid only -->
     <div class="main-scroll" id="main-scroll">
-      <!-- Filters moved here so they scroll with content -->
-      <div class="filter-row" id="filter-row">
-        <button class="filter-pill active" id="filter-all" onclick="setFilter('all')">All Looks ▾</button>
-        <button class="filter-pill" id="filter-single" onclick="setFilter('single')">All Products ▾</button>
-        <button class="filter-pill" id="filter-combo" onclick="setFilter('combo')">All Collections ▾</button>
-        <button class="filter-pill" onclick="">
-          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="12" height="12" rx="2"/><path d="M5 8h6M5 5h6M5 11h4"/></svg>
-          Select Date
-        </button>
-        <div class="filter-sep"></div>
-        <div class="view-toggle">
-          <button class="view-btn active" title="Grid">
-            <svg viewBox="0 0 16 16" fill="currentColor" width="14" height="14"><rect x="1" y="1" width="6" height="6" rx="1"/><rect x="9" y="1" width="6" height="6" rx="1"/><rect x="1" y="9" width="6" height="6" rx="1"/><rect x="9" y="9" width="6" height="6" rx="1"/></svg>
-          </button>
-          <button class="view-btn" title="List">
-            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><path d="M3 4h10M3 8h10M3 12h10"/></svg>
-          </button>
-        </div>
-      </div>
-
       <div id="grid-container"></div>
       <div class="create-banner" onclick="openTryonModal()" id="create-banner" style="display:none">
         <div class="create-banner-icon">📷</div>
@@ -690,10 +634,7 @@ let baseImageUrl     = null
 let styleProfile     = null
 
 let albumItems       = []       // [{id, result_url, product_image_url, product_image_urls, is_combo, created_at}]
-let filteredItems    = []
 let selectedItemId   = null
-let currentFilter    = 'all'
-let searchQuery      = ''
 
 let productFiles     = []       // [{file, base64, url}] for new try-on modal
 let baseFileSelected = null     // {file, base64} pending submission
@@ -908,22 +849,10 @@ async function loadAlbum() {
         is_combo:           t.is_combo || false,
         created_at:         t.created_at,
       }))
+      // sort newest first
+      albumItems.sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
     }
   } catch(e) { console.warn('[loadAlbum]', e.message) }
-}
-
-function applyFiltersAndSearch() {
-  let items = albumItems
-  if (currentFilter === 'single') items = items.filter(i => !i.is_combo)
-  if (currentFilter === 'combo')  items = items.filter(i => i.is_combo)
-  if (searchQuery) {
-    const q = searchQuery.toLowerCase()
-    items = items.filter(i => {
-      const d = new Date(i.created_at).toLocaleDateString()
-      return d.toLowerCase().includes(q) || (i.id || '').toLowerCase().includes(q)
-    })
-  }
-  return items
 }
 
 function groupByDay(items) {
@@ -943,8 +872,6 @@ function groupByDay(items) {
 
 function renderGrid() {
   const container = qs('#grid-container')
-  const items     = applyFiltersAndSearch()
-
   qs('#page-count').textContent = `${albumItems.length} look${albumItems.length !== 1 ? 's' : ''}`
 
   if (!albumItems.length) {
@@ -958,17 +885,7 @@ function renderGrid() {
     return
   }
 
-  if (!items.length) {
-    container.innerHTML = `
-      <div class="empty-state">
-        <div class="empty-icon">🔍</div>
-        <div class="empty-title">No results</div>
-        <div class="empty-sub">Try a different filter or search term</div>
-      </div>`
-    return
-  }
-
-  const groups = groupByDay(items)
+  const groups = groupByDay(albumItems)
   let html = ''
 
   Object.entries(groups).forEach(([label, dayItems]) => {
@@ -1382,22 +1299,6 @@ async function deleteTryon(id) {
 }
 
 /* ═══════════════════════════════════════════════════════
-   FILTER / SEARCH
-═══════════════════════════════════════════════════════ */
-function setFilter(f) {
-  currentFilter = f
-  ;['filter-all','filter-single','filter-combo'].forEach(id => qs(`#${id}`).classList.remove('active'))
-  const map = { all:'filter-all', single:'filter-single', combo:'filter-combo' }
-  if (map[f]) qs(`#${map[f]}`).classList.add('active')
-  renderGrid()
-}
-
-function handleSearch() {
-  searchQuery = qs('#search-input').value.trim()
-  renderGrid()
-}
-
-/* ═══════════════════════════════════════════════════════
    NAV (stubs)
 ═══════════════════════════════════════════════════════ */
 function navClick(section) {
@@ -1481,10 +1382,6 @@ document.addEventListener('keydown', e => {
     if (qs('#tryon-overlay').classList.contains('show')) { closeTryonModal(); return }
     if (qs('#base-overlay').classList.contains('show')) { cancelBase(); return }
     if (qs('#detail-panel').classList.contains('open')) { closeDetailPanel(); return }
-  }
-  if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
-    e.preventDefault()
-    qs('#search-input').focus()
   }
 })
 
