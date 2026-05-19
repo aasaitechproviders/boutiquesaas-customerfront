@@ -84,7 +84,9 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
 /* ═══════════════ BASE PHOTO MODAL ═══════════════ */
 #base-overlay{position:fixed;inset:0;background:rgba(0,0,0,.80);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);z-index:801;display:none;align-items:center;justify-content:center}
 #base-overlay.show{display:flex}
-.base-modal{background:var(--surface);border:1px solid var(--border2);border-radius:24px;padding:36px;width:100%;max-width:420px;display:flex;flex-direction:column;align-items:center;gap:16px;box-shadow:var(--shadow-lg)}
+.base-modal{position:relative;background:var(--surface);border:1px solid var(--border2);border-radius:24px;padding:36px;width:100%;max-width:420px;display:flex;flex-direction:column;align-items:center;gap:16px;box-shadow:var(--shadow-lg)}
+.base-modal-close{position:absolute;top:14px;right:14px;background:var(--surface2);border:1px solid var(--border);width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text2);font-size:14px;transition:background .2s,color .2s,border-color .2s}
+.base-modal-close:hover{background:var(--surface3);color:var(--text);border-color:var(--border2)}
 .base-modal-title{font-family:var(--ff-display);font-size:22px;font-weight:600;color:var(--text);text-align:center;letter-spacing:-.01em}
 .base-modal-sub{font-size:13px;color:var(--text2);text-align:center;line-height:1.7;margin-top:-6px;font-weight:400}
 .base-upload-zone{width:100%;border:1px dashed var(--border2);border-radius:var(--r-lg);padding:36px 20px;display:flex;flex-direction:column;align-items:center;gap:12px;cursor:pointer;transition:border-color .2s,background .2s}
@@ -101,9 +103,6 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
 .base-submit-btn:disabled{opacity:.3;pointer-events:none;box-shadow:none}
 .base-cancel-btn{background:transparent;border:none;font-family:var(--ff);font-size:13px;color:var(--text3);cursor:pointer;padding:4px 8px;transition:color .15s}
 .base-cancel-btn:hover{color:var(--text2)}
-.base-modal-header{display:flex;align-items:center;justify-content:space-between;width:100%}
-.base-modal-close{background:var(--surface2);border:1px solid var(--border);width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text2);font-size:14px;transition:background .2s,color .2s,border-color .2s;flex-shrink:0}
-.base-modal-close:hover{background:var(--surface3);color:var(--text);border-color:var(--border2)}
 
 /* ═══════════════ NEW TRY-ON MODAL ═══════════════ */
 #tryon-overlay{position:fixed;inset:0;background:rgba(0,0,0,.80);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);z-index:802;display:none;align-items:center;justify-content:center}
@@ -135,7 +134,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
 .tryon-gen-text{font-size:13px;color:var(--text2);font-weight:500}
 
 /* ═══════════════ APP LAYOUT ═══════════════ */
-#app{display:none;height:100vh;overflow:hidden}
+#app{display:none;height:100vh;overflow:hidden;position:relative}
 #app.show{display:flex}
 
 /* ═══════════════ SIDEBAR ═══════════════ */
@@ -223,8 +222,8 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
 .create-banner-arrow{width:36px;height:36px;background:var(--brand);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;color:#fff;flex-shrink:0}
 
 /* ═══════════════ DETAIL PANEL ═══════════════ */
-.detail-panel{width:var(--panel-w);min-width:var(--panel-w);height:100vh;background:var(--sidebar-bg);border-left:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0;overflow:hidden;transition:transform .25s var(--ease),opacity .25s;transform:translateX(var(--panel-w));opacity:0;pointer-events:none}
-.detail-panel.open{transform:translateX(0);opacity:1;pointer-events:all}
+.detail-panel{width:var(--panel-w);min-width:var(--panel-w);height:100vh;background:var(--sidebar-bg);border-left:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0;overflow:hidden;transition:transform .25s var(--ease),opacity .25s;transform:translateX(var(--panel-w));opacity:0;pointer-events:none;position:relative;z-index:3}
+.detail-panel.open{transform:translateX(0);opacity:1;pointer-events:all;z-index:3}
 .detail-panel-header{display:flex;align-items:center;justify-content:space-between;padding:18px 18px 14px;border-bottom:1px solid var(--border);flex-shrink:0}
 .detail-panel-title{font-size:15px;font-weight:600;color:var(--text)}
 .detail-panel-sub{font-size:11px;color:var(--text3);margin-top:2px}
@@ -285,6 +284,38 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
 .mfn-item .mfn-icon{font-size:20px;line-height:1}
 .mfn-item:hover{color:var(--text)}
 .mfn-item.active{color:var(--brand)}
+
+/* ═══════════════ GUIDE PANEL ═══════════════ */
+#guide-panel{position:absolute;top:0;right:0;width:var(--panel-w);height:100%;z-index:1;background:var(--sidebar-bg);border-left:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden}
+@media(max-width:1100px){#guide-panel{display:none}}
+.guide-header{padding:20px 18px 16px;border-bottom:1px solid var(--border);flex-shrink:0;display:flex;align-items:center;gap:10px}
+.guide-header-icon{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,rgba(124,58,237,.18),rgba(124,58,237,.06));border:1px solid rgba(124,58,237,.22);display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+.guide-header-text{}
+.guide-header-title{font-size:14.5px;font-weight:600;color:var(--text);line-height:1.2}
+.guide-header-sub{font-size:11px;color:var(--text3);margin-top:1px}
+.guide-scroll{flex:1;overflow-y:auto;overflow-x:hidden;padding:16px 16px 24px}
+.guide-scroll::-webkit-scrollbar{width:3px}
+.guide-scroll::-webkit-scrollbar-thumb{background:var(--surface3);border-radius:3px}
+.guide-section-label{font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.12em;margin-bottom:12px}
+.guide-steps{display:flex;flex-direction:column;margin-bottom:20px}
+.guide-step{display:flex;align-items:flex-start;gap:12px;padding:2px 0}
+.guide-step-num{width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,rgba(124,58,237,.22),rgba(124,58,237,.08));border:1px solid rgba(124,58,237,.3);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--brand);flex-shrink:0;margin-top:2px}
+.guide-step-body{flex:1;padding-bottom:2px}
+.guide-step-title{font-size:13px;font-weight:600;color:var(--text);margin-bottom:3px}
+.guide-step-sub{font-size:11.5px;color:var(--text2);line-height:1.55}
+.guide-step-connector{width:1px;height:14px;background:linear-gradient(to bottom,rgba(124,58,237,.3),rgba(124,58,237,.06));margin:3px 0 3px 12px}
+.guide-features{display:flex;flex-direction:column;gap:8px;margin-bottom:20px}
+.guide-feature{display:flex;align-items:flex-start;gap:11px;padding:11px 12px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);transition:border-color .15s,background .15s}
+.guide-feature:hover{border-color:var(--border2);background:var(--surface2)}
+.guide-feature-icon{font-size:17px;flex-shrink:0;margin-top:1px;width:22px;text-align:center}
+.guide-feature-info{flex:1;min-width:0}
+.guide-feature-title{font-size:12.5px;font-weight:600;color:var(--text);margin-bottom:2px}
+.guide-feature-sub{font-size:11px;color:var(--text2);line-height:1.4}
+.guide-cta{width:100%;padding:12.5px;background:linear-gradient(135deg,var(--brand),#9B6FFF);border:none;border-radius:var(--r);color:#fff;font-family:var(--ff);font-size:13.5px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;transition:opacity .2s,transform .15s,box-shadow .2s;box-shadow:var(--shadow-brand);letter-spacing:.02em;margin-bottom:14px}
+.guide-cta:hover{opacity:.9;transform:translateY(-1px);box-shadow:0 12px 32px rgba(124,58,237,.4)}
+.guide-tip{display:flex;align-items:flex-start;gap:9px;padding:10px 12px;background:linear-gradient(135deg,rgba(240,180,41,.06),rgba(240,180,41,.03));border:1px solid rgba(240,180,41,.18);border-radius:var(--r)}
+.guide-tip-icon{font-size:13px;flex-shrink:0;margin-top:1px}
+.guide-tip-text{font-size:11px;color:var(--text2);line-height:1.55}
 
 /* ═══════════════ RESPONSIVE ═══════════════ */
 @media(max-width:1100px){.detail-panel{position:fixed;top:0;right:0;z-index:500;height:100vh}}
@@ -387,10 +418,8 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
 <!-- Base Photo Modal -->
 <div id="base-overlay">
   <div class="base-modal">
-    <div class="base-modal-header">
-      <div class="base-modal-title">📸 Add Your Photo</div>
-      <button class="base-modal-close" onclick="cancelBase()">✕</button>
-    </div>
+    <button class="base-modal-close" onclick="cancelBase()">✕</button>
+    <div class="base-modal-title">📸 Add Your Photo</div>
     <div class="base-modal-sub">Upload a clear full-body or half-body photo to try on clothes virtually</div>
     <div class="base-upload-zone" id="base-upload-zone" onclick="document.getElementById('base-file-input').click()">
       <div class="base-upload-icon">🤳</div>
@@ -510,6 +539,86 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
       </div>
     </div>
   </main>
+
+  <!-- Guide Panel (desktop, visible when no card selected) -->
+  <div id="guide-panel">
+    <div class="guide-header">
+      <div class="guide-header-icon">✨</div>
+      <div class="guide-header-text">
+        <div class="guide-header-title">How it works</div>
+        <div class="guide-header-sub">Your AI styling assistant</div>
+      </div>
+    </div>
+    <div class="guide-scroll">
+
+      <div class="guide-section-label">Get started in 3 steps</div>
+      <div class="guide-steps">
+        <div class="guide-step">
+          <div class="guide-step-num">1</div>
+          <div class="guide-step-body">
+            <div class="guide-step-title">📸 Upload your photo</div>
+            <div class="guide-step-sub">Add a clear full-body or half-body photo of yourself. Good lighting works best.</div>
+          </div>
+        </div>
+        <div class="guide-step-connector"></div>
+        <div class="guide-step">
+          <div class="guide-step-num">2</div>
+          <div class="guide-step-body">
+            <div class="guide-step-title">👗 Pick a product</div>
+            <div class="guide-step-sub">Upload any outfit image — from our store or any website. Try up to 3 at once.</div>
+          </div>
+        </div>
+        <div class="guide-step-connector"></div>
+        <div class="guide-step">
+          <div class="guide-step-num">3</div>
+          <div class="guide-step-body">
+            <div class="guide-step-title">✨ See your look</div>
+            <div class="guide-step-sub">AI places the outfit on your photo in 20–30 seconds. Download or share instantly.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="guide-section-label">What you can do</div>
+      <div class="guide-features">
+        <div class="guide-feature">
+          <div class="guide-feature-icon">🪄</div>
+          <div class="guide-feature-info">
+            <div class="guide-feature-title">AI Virtual Try-On</div>
+            <div class="guide-feature-sub">See any outfit on yourself before buying — no fitting room needed</div>
+          </div>
+        </div>
+        <div class="guide-feature">
+          <div class="guide-feature-icon">👚</div>
+          <div class="guide-feature-info">
+            <div class="guide-feature-title">Mix &amp; Match (up to 3)</div>
+            <div class="guide-feature-sub">Combine multiple products in one look to complete a full outfit</div>
+          </div>
+        </div>
+        <div class="guide-feature">
+          <div class="guide-feature-icon">💾</div>
+          <div class="guide-feature-info">
+            <div class="guide-feature-title">Download &amp; Share</div>
+            <div class="guide-feature-sub">Save looks to your device or send them to anyone in one tap</div>
+          </div>
+        </div>
+        <div class="guide-feature">
+          <div class="guide-feature-icon">📁</div>
+          <div class="guide-feature-info">
+            <div class="guide-feature-title">Personal Look Album</div>
+            <div class="guide-feature-sub">Every try-on is saved here. Tap any card on the left to review it.</div>
+          </div>
+        </div>
+      </div>
+
+      <button class="guide-cta" onclick="openTryonModal()">✨ Start Your First Try-on</button>
+
+      <div class="guide-tip">
+        <div class="guide-tip-icon">💡</div>
+        <div class="guide-tip-text">Best results come from a well-lit photo with a plain background and a neutral pose.</div>
+      </div>
+
+    </div>
+  </div>
 
   <!-- Detail Panel -->
   <aside class="detail-panel" id="detail-panel">
