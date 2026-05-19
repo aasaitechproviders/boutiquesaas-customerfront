@@ -128,19 +128,6 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
 .tryon-gen-spin{width:16px;height:16px;border-radius:50%;border:1.5px solid rgba(124,58,237,.2);border-top-color:var(--brand);animation:spin .8s linear infinite;flex-shrink:0}
 .tryon-gen-text{font-size:13px;color:var(--text2);font-weight:500}
 
-/* ═══════════════ MOBILE BRAND BAR (top) ═══════════════ */
-.mobile-brand-bar{display:none;position:fixed;top:0;left:0;right:0;height:48px;background:var(--sidebar-bg);border-bottom:1px solid var(--border);z-index:100;align-items:center;padding:0 12px;gap:10px}
-.mb-logo{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--brand),#9B6FFF);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#fff;overflow:hidden}
-.mb-logo img{width:100%;height:100%;object-fit:cover}
-.mb-name{font-family:var(--ff-display);font-size:16px;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-
-/* ═══════════════ MOBILE FOOTER NAV ═══════════════ */
-.mobile-footer-nav{display:none;position:fixed;bottom:0;left:0;right:0;height:64px;background:var(--sidebar-bg);border-top:1px solid var(--border);z-index:100;justify-content:space-around;align-items:center}
-.mfn-item{display:flex;flex-direction:column;align-items:center;gap:2px;background:none;border:none;color:var(--text3);font-family:var(--ff);font-size:11px;font-weight:500;cursor:pointer;padding:8px 12px;transition:color .15s}
-.mfn-item .mfn-icon{font-size:20px;line-height:1}
-.mfn-item:hover{color:var(--text)}
-.mfn-item.active{color:var(--brand)}
-
 /* ═══════════════ APP LAYOUT ═══════════════ */
 #app{display:none;height:100vh;overflow:hidden}
 #app.show{display:flex}
@@ -302,20 +289,35 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
 .skel-card{border-radius:var(--r-lg);overflow:hidden;background:var(--surface);border:1px solid var(--border);aspect-ratio:.62}
 @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 
+/* ═══════════════ MOBILE FOOTER NAV ═══════════════ */
+.mobile-footer-nav{display:none;position:fixed;bottom:0;left:0;right:0;height:64px;background:var(--sidebar-bg);border-top:1px solid var(--border);z-index:100;justify-content:space-around;align-items:center}
+.mfn-item{display:flex;flex-direction:column;align-items:center;gap:2px;background:none;border:none;color:var(--text3);font-family:var(--ff);font-size:11px;font-weight:500;cursor:pointer;padding:8px 12px;transition:color .15s}
+.mfn-item .mfn-icon{font-size:20px;line-height:1}
+.mfn-item:hover{color:var(--text)}
+.mfn-item.active{color:var(--brand)}
+
 /* ═══════════════ RESPONSIVE ═══════════════ */
 @media(max-width:1100px){.detail-panel{position:fixed;top:0;right:0;z-index:500;height:100vh}}
 @media(max-width:900px){.try-grid{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:700px){
   :root{--sidebar-w:0px}
   .sidebar{display:none}
-  .mobile-brand-bar{display:flex}  /* show mobile top bar */
   .mobile-footer-nav{display:flex} /* show mobile bottom nav */
-  body{overflow:auto;padding-top:48px;padding-bottom:64px}
+  body{overflow:auto;padding-bottom:64px}
   #app{display:block;height:auto;overflow:visible}
   .main{height:auto;overflow:visible}
   .main-header{padding:10px 16px 0}
   .main-header-row{flex-wrap:wrap;gap:10px}
-  .page-title{display:none} /* hide desktop page title, brand bar provides identity */
+  .page-title{
+    font-size:18px;  /* smaller for mobile, still clear */
+    font-weight:700;
+    gap:8px;
+    flex:1;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+  .page-title .header-logo{width:28px;height:28px;font-size:13px}
   .header-search{max-width:none;order:3;flex-basis:100%}
   .try-grid{grid-template-columns:repeat(2,1fr)}
   .main-scroll{padding:12px 16px 20px}
@@ -408,12 +410,6 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
 
 <!-- Main App -->
 <div id="app">
-
-  <!-- Mobile Brand Bar (visible only on mobile) -->
-  <div class="mobile-brand-bar">
-    <div class="mb-logo" id="mb-logo">✨</div>
-    <div class="mb-name" id="mb-name">BoutiqueAI</div>
-  </div>
 
   <!-- Sidebar -->
   <aside class="sidebar">
@@ -581,7 +577,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
     </div>
   </aside>
 
-  <!-- Mobile Footer Navigation (visible only on mobile) -->
+  <!-- Mobile Footer Navigation -->
   <div class="mobile-footer-nav">
     <button class="mfn-item" id="mfn-profile" onclick="openBaseModal('change')">
       <span class="mfn-icon">🤳</span>
@@ -720,16 +716,6 @@ function applyBranding(a) {
   } else {
     logo.textContent  = (a.agent_name || 'B')[0].toUpperCase()
     pmLogo.textContent= (a.agent_name || 'B')[0].toUpperCase()
-  }
-
-  // Update mobile brand bar
-  const mbLogo = qs('#mb-logo')
-  const mbName = qs('#mb-name')
-  mbName.textContent = a.agent_name
-  if (a.logo_url) {
-    mbLogo.innerHTML = `<img src="${a.logo_url}" alt="">`
-  } else {
-    mbLogo.textContent = (a.agent_name || 'B')[0].toUpperCase()
   }
 
   // Update desktop header brand elements
@@ -1353,7 +1339,7 @@ function handleSearch() {
 }
 
 /* ═══════════════════════════════════════════════════════
-   NAV (stubs — boutique is public-facing, no auth nav)
+   NAV (stubs)
 ═══════════════════════════════════════════════════════ */
 function navClick(section) {
   document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'))
