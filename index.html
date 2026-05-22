@@ -1339,7 +1339,12 @@ async function startGenerate() {
   qs('#tryon-generate-btn').style.display = 'none'
   updateGenerateBtn()
 
+  // Update the generating text to reflect async queue
+  const genText = qs('.tryon-gen-text')
+  if (genText) genText.textContent = 'Queuing your look…'
+
   try {
+    // ── Step 1: Upload product images ──────────────────────────────────────
     const productUrls = []
     for (const pf of productFiles) {
       const ctype = pf.file.type || 'image/jpeg'
@@ -1354,6 +1359,7 @@ async function startGenerate() {
       productUrls.push(prj.data.public_url)
     }
 
+    // ── Step 2: Enqueue the try-on job ─────────────────────────────────────
     const body = {
       agent_id: agentConfig._id, mobile, session_id: sessionId,
       product_image_urls: productUrls
@@ -1363,25 +1369,32 @@ async function startGenerate() {
       body: JSON.stringify(body)
     })
     const json = await res.json()
+    if (!json.success) throw new Error(json.error || 'Failed to queue try-on')
 
-    if (json.success && json.data?.result_url) {
-      hide('tryon-overlay')
-      const newItem = {
-        id:                 json.data.tryon_id,
-        result_url:         json.data.result_url,
-        product_image_url:  productUrls[0],
-        product_image_urls: productUrls,
-        is_combo:           productUrls.length > 1,
-        created_at:         new Date().toISOString(),
-      }
-      albumItems.unshift(newItem)
-      renderGrid()
-      renderCreateBanner()
-      showToast('Your look is ready! ✨')
-      viewImageFull(newItem.result_url)
-    } else {
-      throw new Error(json.error || 'Generation failed')
+    const jobId = json.data?.job_id
+    if (!jobId) throw new Error('No job ID returned')
+
+    if (genText) genText.textContent = 'Generating your look… (1–2 minutes)'
+
+    // ── Step 3: Poll for result ────────────────────────────────────────────
+    const result_url = await pollForResult(jobId, genText)
+
+    // ── Step 4: Show result ────────────────────────────────────────────────
+    hide('tryon-overlay')
+    const newItem = {
+      id:                 jobId,
+      result_url,
+      product_image_url:  productUrls[0],
+      product_image_urls: productUrls,
+      is_combo:           productUrls.length > 1,
+      created_at:         new Date().toISOString(),
     }
+    albumItems.unshift(newItem)
+    renderGrid()
+    renderCreateBanner()
+    showToast('Your look is ready! ✨')
+    viewImageFull(result_url)
+
   } catch(e) {
     console.error('[generate]', e.message)
     showToast('Failed: ' + e.message)
@@ -1389,8 +1402,53 @@ async function startGenerate() {
     isGenerating = false
     qs('#tryon-generating-row').style.display = 'none'
     qs('#tryon-generate-btn').style.display = 'flex'
+    if (genText) genText.textContent = 'Generating your look… (1–2 minutes)'
     updateGenerateBtn()
   }
+}
+
+// Polls /public/tryon/status/:job_id every 4 seconds until completed or failed
+function pollForResult(jobId, genText) {
+  return new Promise((resolve, reject) => {
+    const POLL_INTERVAL = 4000   // 4 seconds
+    const MAX_WAIT_MS   = 3 * 60 * 1000  // 3 minutes max
+    const startedAt     = Date.now()
+    let   attempt       = 0
+
+    const timer = setInterval(async () => {
+      try {
+        attempt++
+        const elapsed = Math.floor((Date.now() - startedAt) / 1000)
+        if (genText) genText.textContent = `Generating your look… (${elapsed}s)`
+
+        // Timeout guard
+        if (Date.now() - startedAt > MAX_WAIT_MS) {
+          clearInterval(timer)
+          reject(new Error('Try-on timed out — please try again'))
+          return
+        }
+
+        const res  = await fetch(`${API}/public/tryon/status/${jobId}`)
+        const json = await res.json()
+        if (!json.success) return // keep polling on network blip
+
+        const { status, result_url, error } = json.data
+
+        if (status === 'completed' && result_url) {
+          clearInterval(timer)
+          resolve(result_url)
+        } else if (status === 'failed') {
+          clearInterval(timer)
+          reject(new Error(error || 'Try-on generation failed — please try again'))
+        }
+        // status === 'queued' or 'processing' → keep polling
+
+      } catch (err) {
+        // Network error — keep polling, don't reject
+        console.warn('[poll] network error, retrying…', err.message)
+      }
+    }, POLL_INTERVAL)
+  })
 }
 
 /* ═══════════════════════════════════════════════════════
