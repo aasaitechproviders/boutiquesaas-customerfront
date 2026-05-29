@@ -1341,7 +1341,7 @@ async function startGenerate() {
 
   // Update the generating text to reflect async queue
   const genText = qs('.tryon-gen-text')
-  if (genText) genText.textContent = 'Queuing your look…'
+  if (genText) genText.textContent = 'Generating your look…'
 
   try {
     // ── Step 1: Upload product images ──────────────────────────────────────
@@ -1371,18 +1371,28 @@ async function startGenerate() {
     const json = await res.json()
     if (!json.success) throw new Error(json.error || 'Failed to queue try-on')
 
-    const jobId = json.data?.job_id
-    if (!jobId) throw new Error('No job ID returned')
+    let result_url
+    let itemId
 
-    if (genText) genText.textContent = 'Generating your look… (1–2 minutes)'
+    // ── SYNC mode: gemini-api returned result immediately ──────────────────
+    if (json.data?.status === 'completed' && json.data?.result_url) {
+      result_url = json.data.result_url
+      itemId     = json.data.tryon_id || ('sync_' + Date.now())
+      if (genText) genText.textContent = 'Done! ✨'
 
-    // ── Step 3: Poll for result ────────────────────────────────────────────
-    const result_url = await pollForResult(jobId, genText)
+    // ── ASYNC mode: job was queued, poll for result ────────────────────────
+    } else {
+      const jobId = json.data?.job_id
+      if (!jobId) throw new Error('No job ID returned')
+      if (genText) genText.textContent = 'Generating your look… (1–2 minutes)'
+      result_url = await pollForResult(jobId, genText)
+      itemId     = jobId
+    }
 
-    // ── Step 4: Show result ────────────────────────────────────────────────
+    // ── Show result ────────────────────────────────────────────────────────
     hide('tryon-overlay')
     const newItem = {
-      id:                 jobId,
+      id:                 itemId,
       result_url,
       product_image_url:  productUrls[0],
       product_image_urls: productUrls,
@@ -1402,7 +1412,7 @@ async function startGenerate() {
     isGenerating = false
     qs('#tryon-generating-row').style.display = 'none'
     qs('#tryon-generate-btn').style.display = 'flex'
-    if (genText) genText.textContent = 'Generating your look… (1–2 minutes)'
+    if (genText) genText.textContent = 'Generating your look…'
     updateGenerateBtn()
   }
 }
