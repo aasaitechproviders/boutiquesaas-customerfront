@@ -57,7 +57,7 @@
 html,body{height:100%}
 body{
   font-family:var(--ff);color:var(--ink);
-  background:#E4E4EE;
+  background:#DDDDE8;
   -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
   overflow:hidden;
 }
@@ -70,16 +70,61 @@ input{font-family:inherit}
 #page{
   height:100dvh;display:flex;align-items:center;justify-content:center;
   background:
-    radial-gradient(1200px 800px at 10% -10%,rgba(124,58,237,.10),transparent 60%),
-    radial-gradient(1000px 700px at 110% 110%,rgba(124,58,237,.08),transparent 55%),
-    #E4E4EE;
+    radial-gradient(900px 600px at 8% 0%,rgba(124,58,237,.13),transparent 55%),
+    radial-gradient(700px 500px at 92% 100%,rgba(124,58,237,.10),transparent 50%),
+    radial-gradient(600px 400px at 50% 50%,rgba(200,190,255,.06),transparent 60%),
+    #DDDDE8;
+  overflow:hidden;
 }
+
+/* Floating ambient blobs (desktop only) */
+#page::before,#page::after{
+  content:"";position:absolute;border-radius:50%;pointer-events:none;
+  animation:blob-float 8s ease-in-out infinite alternate;
+}
+#page::before{
+  width:560px;height:560px;top:-120px;left:-140px;
+  background:radial-gradient(circle,rgba(124,58,237,.09),transparent 70%);
+  animation-duration:9s;
+}
+#page::after{
+  width:480px;height:480px;bottom:-100px;right:-100px;
+  background:radial-gradient(circle,rgba(124,58,237,.07),transparent 70%);
+  animation-duration:11s;animation-delay:-4s;
+}
+@keyframes blob-float{
+  0%{transform:translate(0,0) scale(1)}
+  100%{transform:translate(30px,20px) scale(1.08)}
+}
+
 #app{
   position:relative;width:100%;max-width:var(--maxw);height:100dvh;
   background:var(--bg);overflow:hidden;isolation:isolate;
 }
 @media(min-width:520px){
-  #app{height:min(940px,96dvh);border-radius:34px;box-shadow:var(--sh-lg),0 0 0 1px rgba(0,0,0,.04)}
+  #app{
+    height:min(900px,95dvh);
+    border-radius:38px;
+    box-shadow:
+      var(--sh-lg),
+      0 0 0 1px rgba(255,255,255,.18),
+      0 0 0 8px rgba(255,255,255,.06),
+      0 40px 80px rgba(20,20,43,.18);
+  }
+  /* Desktop watermark badge */
+  #page-badge{
+    position:absolute;bottom:22px;left:50%;transform:translateX(-50%);
+    display:flex;align-items:center;gap:8px;
+    background:rgba(255,255,255,.60);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+    border:1px solid rgba(255,255,255,.7);border-radius:40px;
+    padding:7px 18px;font-size:12px;font-weight:700;color:var(--ink-2);
+    letter-spacing:.02em;box-shadow:0 2px 12px rgba(20,20,43,.08);
+    pointer-events:none;white-space:nowrap;
+  }
+  #page-badge span{color:var(--brand);font-weight:800}
+}
+@media(max-width:519px){
+  #page-badge{display:none}
 }
 
 /* ════════════════════ LOADING ════════════════════ */
@@ -423,6 +468,194 @@ input{font-family:inherit}
 @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
 .skel{background:linear-gradient(100deg,#ececf3 30%,#f5f5fa 50%,#ececf3 70%);background-size:200% 100%;animation:shimmer 1.3s infinite}
 @keyframes shimmer{to{background-position:-200% 0}}
+
+/* ════════════════════ MOBILE COMPACT (real phone) ════════════════════
+   Applied when the app fills a real phone screen (< 520px viewport),
+   NOT when shown inside a desktop device-frame                         */
+@media(max-width:519px){
+
+  /* ── Spacing system ── */
+  :root{
+    --r-sm:10px; --r:13px; --r-lg:18px; --r-xl:22px;
+  }
+
+  /* ── App header ── */
+  .app-header{padding:max(10px,env(safe-area-inset-top)) 14px 10px}
+  .hdr-btn{width:36px;height:36px;border-radius:11px}
+  .hdr-btn svg{width:20px;height:20px}
+  .hdr-brand-name{font-size:17px}
+  .hdr-logo{width:29px;height:29px;border-radius:8px}
+  .hdr-title{font-size:16px}
+
+  /* ── Home ── */
+  .home-pad{padding:2px 14px 100px}
+  .stat-row{gap:10px;margin-bottom:14px}
+  .stat-card{padding:12px 13px;border-radius:14px;gap:10px}
+  .stat-ic{width:36px;height:36px;border-radius:10px}
+  .stat-ic svg{width:18px;height:18px}
+  .stat-num{font-size:18px}
+  .stat-lbl{font-size:11px;margin-top:2px}
+  .new-btn{font-size:13.5px;border-radius:14px;gap:7px}
+  .new-btn svg{width:17px;height:17px}
+
+  /* ── Chips ── */
+  .chips{gap:7px;margin-bottom:14px}
+  .chip{height:34px;padding:0 14px;border-radius:11px;font-size:13px}
+
+  /* ── Section heads ── */
+  .section-head{margin:4px 0 10px}
+  .section-title{font-size:16px}
+  .see-all{font-size:12.5px}
+
+  /* ── Look cards ── */
+  .look-row{gap:10px;margin-bottom:16px}
+  .look-row .look-card{flex:0 0 54%}
+  .look-grid{gap:10px}
+  .look-card{border-radius:14px}
+  .look-badge{height:24px;padding:0 9px 0 8px;font-size:10.5px;border-radius:8px;top:9px;left:9px}
+  .look-badge svg{width:11px;height:11px}
+  .look-menu{width:27px;height:27px}
+  .look-menu svg{width:15px;height:15px}
+  .look-time{font-size:11.5px;left:10px;bottom:9px}
+
+  /* ── Bottom nav ── */
+  .bottom-nav{
+    left:10px;right:10px;bottom:calc(10px + var(--safe-b));
+    height:58px;border-radius:18px;
+  }
+  .nav-i svg{width:20px;height:20px}
+  .nav-i span{font-size:10px}
+  .nav-i.active::before{top:8px;width:22px;height:2.5px}
+
+  /* ── Try-On screen ── */
+  .tryon-pad{padding:0 14px 14px}
+  .panel{padding:15px;margin-bottom:14px;border-radius:14px}
+  .panel-title{font-size:15px;margin-bottom:12px}
+  .panel-title .hint{font-size:12px}
+  .yp-thumb{width:88px;height:88px;border-radius:14px;font-size:30px}
+  .yp-status{font-size:14px;margin-bottom:9px}
+  .yp-status svg{width:16px;height:16px}
+  .yp-change{font-size:13.5px}
+  .prod-grid{gap:10px}
+  .prod-cam{width:38px;height:38px;border-radius:11px}
+  .prod-cam svg{width:19px;height:19px}
+  .prod-add-lbl{font-size:12px}
+  .tryon-foot{padding:11px 14px calc(14px + var(--safe-b))}
+  .gen-btn{height:52px;border-radius:15px;font-size:15.5px;gap:9px}
+  .gen-btn .spark{width:19px;height:19px}
+
+  /* ── Stepper ── */
+  .stepper{padding:4px 20px 16px}
+  .step-dot{width:32px;height:32px;font-size:13px}
+  .step-dot svg{width:16px;height:16px}
+  .step-lbl{font-size:11.5px}
+  .step-line{margin-bottom:20px}
+
+  /* ── Generating screen ── */
+  .gen-ring-wrap{width:174px;height:174px;margin-bottom:24px}
+  .gen-ring{--r:87px}
+  .gen-core{inset:22px}
+  .gen-core svg{width:62px;height:62px}
+  .gen-title{font-size:24px;margin-bottom:9px}
+  .gen-sub{font-size:14px}
+  .gen-bar-row{margin:22px 0 20px}
+  .gen-bar{height:9px}
+  .gen-pct{font-size:15px}
+  .gen-feats{gap:9px}
+  .gen-feat{border-radius:14px;padding:14px 6px;gap:7px}
+  .gen-feat svg{width:24px;height:24px}
+  .gen-feat span{font-size:12px}
+  .gen-safe{font-size:13px;gap:7px;margin-top:22px}
+  .gen-safe svg{width:16px;height:16px}
+
+  /* ── Result screen ── */
+  .result-pad{padding:0 14px 100px}
+  .success-banner{padding:13px;border-radius:14px;gap:11px;margin-bottom:14px}
+  .success-ic{width:36px;height:36px}
+  .success-ic svg{width:19px;height:19px}
+  .success-t{font-size:14.5px}
+  .success-s{font-size:12.5px}
+  .carousel{gap:10px;margin:0 -14px 10px;padding:0 14px}
+  .car-slide{border-radius:14px;flex:0 0 72%}
+  .car-fav{width:34px;height:34px;top:10px;right:10px}
+  .car-fav svg{width:17px;height:17px}
+  .car-dots{gap:6px;margin-bottom:16px}
+  .dot{width:7px;height:7px}
+  .dot.on{width:18px}
+  .detail-card{padding:13px;border-radius:14px;gap:12px;margin-bottom:18px}
+  .detail-ic{width:38px;height:38px;border-radius:11px}
+  .detail-ic svg{width:19px;height:19px}
+  .detail-t{font-size:14.5px}
+  .detail-s{font-size:12.5px}
+  .ask-title{font-size:15px;margin-bottom:11px}
+  .action-grid{gap:8px;margin-bottom:16px}
+  .action{padding:12px 5px;border-radius:14px;gap:8px}
+  .action-ic{width:42px;height:42px;border-radius:50%}
+  .action-ic svg{width:20px;height:20px}
+  .action span{font-size:11.5px}
+  .saved-card{padding:13px;border-radius:14px;gap:11px}
+  .saved-ic{width:36px;height:36px;border-radius:10px}
+  .saved-ic svg{width:18px;height:18px}
+  .saved-t{font-size:13.5px}
+  .saved-s{font-size:12px}
+
+  /* ── Profile screen ── */
+  .profile-pad{padding:6px 14px 100px}
+  .pf-avatar{width:92px;height:92px;font-size:38px;margin:10px auto 12px}
+  .pf-name{font-size:19px}
+  .pf-num{font-size:13.5px;margin-top:3px}
+  .pf-list{margin-top:18px;border-radius:14px}
+  .pf-item{padding:14px 15px;gap:12px}
+  .pf-item .ic{width:34px;height:34px;border-radius:10px}
+  .pf-item .ic svg{width:17px;height:17px}
+  .pf-item .txt{font-size:14.5px}
+  .pf-item .chev svg{width:16px;height:16px}
+
+  /* ── Welcome screen ── */
+  .w-top{padding:10px 24px 0}
+  .w-logo{width:68px;height:68px;border-radius:18px;margin-bottom:13px;font-size:28px}
+  .w-hi{font-size:16px}
+  .w-name{font-size:34px;margin-bottom:10px}
+  .w-sub{font-size:13.5px}
+  .w-hero{margin:14px 0 -8px;min-height:120px}
+  .w-hero-img{max-height:260px}
+  .w-card{padding:20px 18px calc(18px + var(--safe-b));border-radius:24px 24px 0 0}
+  .w-label{font-size:12.5px;margin-bottom:7px}
+  .phone-cc{height:50px;padding:0 11px;font-size:14.5px}
+  .flag{font-size:18px}
+  #phone-input{height:50px;padding:0 13px;font-size:16px}
+  .btn-primary{height:52px;border-radius:15px;font-size:15.5px}
+  .safe-note{font-size:12px;margin-top:12px}
+  .powered{font-size:12px;padding:12px 0 6px}
+
+  /* ── Sheets & drawers ── */
+  .sheet{padding:8px 18px calc(20px + var(--safe-b));border-radius:22px 22px 0 0}
+  .sheet-title{font-size:18px}
+  .sheet-sub{font-size:13px;margin:6px auto 16px}
+  .upload-zone{padding:28px 16px;border-radius:16px;gap:9px}
+  .upload-ic{width:52px;height:52px;border-radius:14px}
+  .upload-ic svg{width:24px;height:24px}
+  .upload-txt{font-size:14px}
+  .upload-hint{font-size:12px}
+  #base-preview-img{width:130px;height:164px;border-radius:14px}
+  .sheet .btn-primary{margin-top:14px}
+  .as-i{padding:13px 12px;font-size:14.5px;border-radius:12px}
+  .as-i svg{width:19px;height:19px}
+  .drawer{padding:max(20px,env(safe-area-inset-top)) 18px calc(18px + var(--safe-b))}
+  .drawer-bname{font-size:16px}
+  .drawer-i{padding:12px 10px;font-size:14.5px;border-radius:12px}
+  .drawer-i svg{width:19px;height:19px}
+
+  /* ── Toast ── */
+  #toast{bottom:calc(84px + var(--safe-b));font-size:13px;padding:11px 18px;border-radius:12px}
+
+  /* ── Empty state ── */
+  .empty{padding:36px 24px}
+  .empty-emoji{font-size:48px;margin-bottom:6px}
+  .empty-t{font-size:16px}
+  .empty-s{font-size:13px}
+  .empty-cta{height:44px;padding:0 22px;font-size:14px;border-radius:13px}
+}
 </style>
 </head>
 <body>
@@ -818,6 +1051,7 @@ input{font-family:inherit}
   </div>
 
 </div><!-- /#app -->
+<div id="page-badge">✦ <span>BoutiqueAI</span> · Virtual Try-On</div>
 </div><!-- /#page -->
 
 <!-- Fullscreen viewer -->
